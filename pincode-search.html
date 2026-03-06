@@ -173,6 +173,16 @@
         box-shadow: 0 4px 20px rgba(0, 0, 0, .1)
     }
 
+    .pin-card-click {
+        cursor: pointer;
+        padding: 14px 18px;
+    }
+
+    .pin-card-click:hover {
+        transform: translateX(4px);
+        border-left-color: #1d4ed8;
+    }
+
     .pin-card h3 {
         color: #1e40af;
         margin-bottom: 12px;
@@ -567,6 +577,43 @@
             showLoad(false); updateUrl();
         }
 
+        // Load detailed view from API search results
+        window.loadDetailedView = async function (pin, apiSt, apiDt, apiOf) {
+            showLoad(true);
+            try {
+                var stName = Object.keys(stateIndex).find(function (s) { return s.toLowerCase() === apiSt.toLowerCase() || slugify(s) === slugify(apiSt) });
+                if (!stName) {
+                    for (var k in stateIndex) {
+                        if (slugify(k).replace(/h/g, '') === slugify(apiSt).replace(/h/g, '')) { stName = k; break; }
+                        if (apiSt.toLowerCase() === 'orissa' && k === 'ODISHA') { stName = k; break; }
+                        if (apiSt.toLowerCase() === 'pondicherry' && k === 'PUDUCHERRY') { stName = k; break; }
+                    }
+                }
+
+                if (stName) {
+                    var data = await loadState(stName);
+                    var poss = data.filter(function (r) { return r.p === pin });
+                    var rec = null;
+                    if (poss.length === 1) {
+                        rec = poss[0];
+                    } else if (poss.length > 1) {
+                        rec = poss.find(function (r) { return slugify(r.o) === slugify(apiOf) }) ||
+                            poss.find(function (r) { return r.o.toLowerCase().includes(apiOf.toLowerCase().split(' ')[0]) }) || poss[0];
+                    }
+                    if (rec) {
+                        var url = BASE_URL + '?' + stateIndex[stName].s + '/' + slugify(rec.d) + '/' + slugify(rec.o) + '/' + rec.p;
+                        history.pushState({}, '', url);
+                        await checkUrl();
+                        return;
+                    }
+                }
+                resDiv.innerHTML = '<div class="pin-error">Detailed record not found. Browse to search manually.</div>';
+            } catch (e) {
+                resDiv.innerHTML = '<div class="pin-error">Error loading details.</div>';
+            }
+            showLoad(false);
+        };
+
         // Direct pincode search via API
         window.pinSearchDirect = async function () {
             var pin = $('pinInput').value.trim();
@@ -578,12 +625,12 @@
                     var posts = data[0].PostOffice;
                     var html = '<div class="pin-count">Found <strong>' + posts.length + '</strong> post office' + (posts.length > 1 ? 's' : '') + ' for PIN code <strong>' + pin + '</strong></div>';
                     posts.forEach(function (po) {
-                        html += '<div class="pin-card"><h3>' + escHtml(po.Name) + ' <span class="pin-badge">' + escHtml(po.Pincode) + '</span></h3>' +
-                            '<div class="pin-card-row"><div class="pin-card-col">' +
-                            item('State', po.State) + item('District', po.District) + item('Division', po.Division) + item('Region', po.Region) +
-                            '</div><div class="pin-card-col">' +
-                            item('Circle', po.Circle) + item('Block', po.Block) + item('Branch Type', po.BranchType) + item('Delivery', po.DeliveryStatus) +
-                            '</div></div></div>';
+                        html += '<div class="pin-card pin-card-click" onclick="loadDetailedView(\'' + po.Pincode + '\', \'' + po.State.replace(/'/g, "\\'").trim() + '\', \'' + po.District.replace(/'/g, "\\'").trim() + '\', \'' + po.Name.replace(/'/g, "\\'").trim() + '\')">' +
+                            '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+                            '<div><h3 style="margin-bottom:5px;border:none;padding:0;font-size:1.15rem;color:#1e40af;">' + escHtml(po.Name) + ' <span class="pin-badge" style="font-size:12px;padding:2px 8px;vertical-align:middle;margin-left:5px;">' + escHtml(po.Pincode) + '</span></h3>' +
+                            '<p style="font-size:13px;color:#6b7280;margin:0;">' + escHtml(po.District) + ', ' + escHtml(po.State) + ' &nbsp;|&nbsp; Type: ' + escHtml(po.BranchType) + '</p></div>' +
+                            '<div style="color:#2563eb;font-size:1.5rem;padding-left:15px;font-weight:bold;">&#8250;</div>' +
+                            '</div></div>';
                     });
                     resDiv.innerHTML = html;
                     updateSeo(pin, posts[0].Name, posts[0].District, posts[0].State);
