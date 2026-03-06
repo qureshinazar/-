@@ -492,8 +492,7 @@
         'use strict';
         var CDN = 'https://cdn.jsdelivr.net/gh/qureshinazar/-/tools/PincodeSearch/pincode-data';
         var API = 'https://api.postalpincode.in/pincode/';
-        var pMatch = location.pathname.match(/.*?\.html/);
-        var BASE_URL = location.origin + (pMatch ? pMatch[0] : location.pathname);
+        var BASE_URL = location.origin + location.pathname;
 
         var stateIndex = null, stateData = null, loadedState = '', map = null, marker = null;
         var $ = function (id) { return document.getElementById(id) };
@@ -602,7 +601,7 @@
                             poss.find(function (r) { return r.o.toLowerCase().includes(apiOf.toLowerCase().split(' ')[0]) }) || poss[0];
                     }
                     if (rec) {
-                        var url = BASE_URL + '/' + stateIndex[stName].s + '/' + slugify(rec.d) + '/' + slugify(rec.o) + '/' + rec.p;
+                        var url = BASE_URL + '?' + stateIndex[stName].s + '/' + slugify(rec.d) + '/' + slugify(rec.o) + '/' + rec.p;
                         history.pushState({}, '', url);
                         await checkUrl();
                         return;
@@ -663,8 +662,8 @@
             nearbyBody.innerHTML = '';
             nearby.slice(0, 100).forEach(function (r) {
                 var tr = document.createElement('tr');
-                var url = BASE_URL + '/' + slugify(st) + '/' + slugify(r.d) + '/' + slugify(r.o) + '/' + r.p;
-                tr.innerHTML = '<td><a href="' + url + '" onclick="event.preventDefault();history.pushState({},\'\',\'' + url + '\');checkUrl();window.scrollTo(0,0);">' + escHtml(r.o) + '</a></td><td>' + escHtml(r.p) + '</td><td>' + escHtml(r.t) + '</td>';
+                var url = BASE_URL + '?' + slugify(st) + '/' + slugify(r.d) + '/' + slugify(r.o) + '/' + r.p;
+                tr.innerHTML = '<td><a href="' + url + '">' + escHtml(r.o) + '</a></td><td>' + escHtml(r.p) + '</td><td>' + escHtml(r.t) + '</td>';
                 nearbyBody.appendChild(tr);
             });
             nearbyDiv.style.display = 'block';
@@ -689,7 +688,7 @@
             meta.content = 'PIN code ' + pin + ' belongs to ' + office + ' post office in ' + district + ', ' + state + '. Find delivery status, office type, division, region and map location.';
             var can = document.querySelector('link[rel="canonical"]');
             if (!can) { can = document.createElement('link'); can.rel = 'canonical'; document.head.appendChild(can) }
-            can.href = BASE_URL + '/' + slugify(state) + '/' + slugify(district) + '/' + slugify(office) + '/' + pin;
+            can.href = BASE_URL + '?' + slugify(state) + '/' + slugify(district) + '/' + slugify(office) + '/' + pin;
             // Update JSON-LD
             var ld = { "@context": "https://schema.org", "@type": "PostalAddress", "addressLocality": district, "addressRegion": state, "postalCode": pin, "addressCountry": "IN", "name": office + " Post Office" };
             $('pinJsonLd').textContent = JSON.stringify(ld);
@@ -702,15 +701,11 @@
             var parts = [slugify(st)];
             if (dt) parts.push(slugify(dt));
             if (of) { var pin = ofSel.options[ofSel.selectedIndex].dataset.pin; parts.push(slugify(of)); if (pin) parts.push(pin) }
-            history.replaceState({}, '', BASE_URL + '/' + parts.join('/'));
+            history.replaceState({}, '', BASE_URL + '?' + parts.join('/'));
         }
 
-        window.checkUrl = async function () {
-            var basePath = BASE_URL.replace(location.origin, '');
-            var q = location.pathname.substring(basePath.length);
-            if (q.startsWith('/')) q = q.substring(1);
-            if (!q) q = location.search.substring(1);
-            if (!q) return;
+        async function checkUrl() {
+            var q = location.search.substring(1); if (!q) return;
             var parts = q.split('/'); if (parts.length < 1) return;
             var stSlug = parts[0], dtSlug = parts[1], ofSlug = parts[2], pin = parts[3];
             // Find state by slug
