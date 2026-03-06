@@ -664,7 +664,7 @@
             nearby.slice(0, 100).forEach(function (r) {
                 var tr = document.createElement('tr');
                 var url = BASE_URL + '/' + slugify(st) + '/' + slugify(r.d) + '/' + slugify(r.o) + '/' + r.p;
-                tr.innerHTML = '<td><a href="' + url + '">' + escHtml(r.o) + '</a></td><td>' + escHtml(r.p) + '</td><td>' + escHtml(r.t) + '</td>';
+                tr.innerHTML = '<td><a href="' + url + '" onclick="event.preventDefault();history.pushState({},\'\',\'' + url + '\');checkUrl();window.scrollTo(0,0);">' + escHtml(r.o) + '</a></td><td>' + escHtml(r.p) + '</td><td>' + escHtml(r.t) + '</td>';
                 nearbyBody.appendChild(tr);
             });
             nearbyDiv.style.display = 'block';
@@ -705,7 +705,7 @@
             history.replaceState({}, '', BASE_URL + '/' + parts.join('/'));
         }
 
-        async function checkUrl() {
+        window.checkUrl = async function () {
             var basePath = BASE_URL.replace(location.origin, '');
             var q = location.pathname.substring(basePath.length);
             if (q.startsWith('/')) q = q.substring(1);
