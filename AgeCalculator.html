@@ -1,0 +1,244 @@
+<!-- Age Calculator - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Age Calculator",
+  "description": "Free online Age Calculator tool to calculate your exact age in years, months, days, weeks, hours, minutes, and seconds from your date of birth.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How to calculate my exact age?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Select your Date of Birth and the Age Calculation Date in the Age Calculator tool, then click 'Calculate Age' to instantly see your age in years, months, days, weeks, hours, minutes, and seconds."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I calculate age for a specific date?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, you can select any specific date in the 'Age Calculation Date' field to calculate your age as of that date."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    /* Age Calculator Styles */
+    .age-calc-container {
+        text-align: center;
+        max-width: 700px;
+        margin: 20px auto;
+        padding: 30px;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        background-color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .age-calc-container label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+        font-size: 20px;
+    }
+
+    .age-calc-container input[type="date"] {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        margin-bottom: 10px;
+        font-size: 18px;
+        color: #333;
+        background-color: #fff;
+        text-align: center;
+        width: 200px;
+    }
+
+    .age-calc-container br {
+        margin-bottom: 15px;
+    }
+
+    .age-calc-container button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .age-calc-container button:hover {
+        background-color: #45a049;
+    }
+
+    .age-calc-container table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+        font-size: 20px;
+    }
+
+    .age-calc-container th,
+    .age-calc-container td {
+        border: 2px solid #6495ED;
+        padding: 10px;
+        text-align: center;
+    }
+</style>
+
+<h2>Age Calculator Tool – How to Know Your Age?</h2>
+
+<p>If you want to calculate your exact age or the age of any person, you can use our <strong>Age Calculator
+        Tool</strong> below. Simply enter your <strong>Date of Birth</strong> and the <strong>Age Calculation
+        Date</strong>, then click the <strong>"Calculate Age"</strong> button to get your result instantly in years,
+    months, days, and more.</p>
+
+<div class="age-calc-container">
+
+    <h1>Age Calculator</h1>
+
+    <label for="dob">Date of Birth:</label>
+    <input type="date" id="dob">
+    <br>
+
+    <label for="ageDate">Age Calculation Date:</label>
+    <input type="date" id="ageDate">
+    <br>
+
+    <button onclick="calculateAge()">Calculate Age</button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+    function calculateAge() {
+        var dobValue = document.getElementById("dob").value;
+        var ageDateValue = document.getElementById("ageDate").value;
+
+        if (!dobValue || !ageDateValue) {
+            alert("Please submit the dates.");
+            return;
+        }
+
+        const dob = new Date(dobValue);
+        const ageDate = new Date(ageDateValue);
+
+        if (ageDate < dob) {
+            alert("Please select valid dates");
+            return;
+        }
+
+        if (isNaN(dob) || isNaN(ageDate)) {
+            alert("Please enter valid dates.");
+            return;
+        }
+
+        var ageInMilliseconds = ageDate - dob;
+
+        var years = ageDate.getFullYear() - dob.getFullYear();
+        var months = ageDate.getMonth() - dob.getMonth();
+        var days = ageDate.getDate() - dob.getDate();
+
+        if (days < 0) {
+            months--;
+            days += new Date(ageDate.getFullYear(), ageDate.getMonth(), 0).getDate();
+        }
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+
+        var result = "<h2>RESULT</h2><table><tr><th>Years</th><th>Months</th><th>Days</th></tr>";
+        result += "<tr><td>" + years + "</td><td>" + months + "</td><td>" + days + "</td></tr></table>";
+
+        var ageInDays = Math.floor(ageInMilliseconds / (24 * 60 * 60 * 1000));
+        var ageInHours = Math.floor(ageInMilliseconds / (60 * 60 * 1000));
+        var ageInMinutes = Math.floor(ageInMilliseconds / (60 * 1000));
+        var ageInSeconds = Math.floor(ageInMilliseconds / 1000);
+        var ageInMonths = (years * 12) + months;
+
+        result += "<h2>Exact Age in Different Units</h2>";
+        result += "<table><tr><th>Unit</th><th>Value</th></tr>";
+        result += "<tr><td>Month and Days</td><td>" + ageInMonths + " months " + days + " days</td></tr>";
+
+        if (ageInDays >= 7) {
+            var fullWeeks = Math.floor(ageInDays / 7);
+            var remainingDays = ageInDays % 7;
+            result += "<tr><td>Weeks</td><td>" + fullWeeks + " weeks and " + remainingDays + " days</td></tr>";
+        } else {
+            result += "<tr><td>Weeks</td><td>0 weeks and " + ageInDays + " days</td></tr>";
+        }
+
+        result += "<tr><td>Days</td><td>" + ageInDays + " days</td></tr>";
+        result += "<tr><td>Hours</td><td>" + ageInHours + " hours</td></tr>";
+        result += "<tr><td>Minutes</td><td>" + ageInMinutes + " minutes</td></tr>";
+        result += "<tr><td>Seconds</td><td>" + ageInSeconds + " seconds</td></tr></table>";
+
+        document.getElementById("result").innerHTML = result;
+    }
+</script>
+
+<h2>Age Calculator Tool – How to Know Your Age?</h2>
+
+<p>If you want to calculate your exact age or the age of any person, you can use our Age Calculator Tool. This tool
+    calculates the time difference between your date of birth and any desired date, and shows your age in years, months,
+    and days. It also displays your age in weeks, days, hours, minutes, and seconds.</p>
+
+<p>Using this tool is very simple. Let's understand step by step how to use it.</p>
+
+<h2>How to Calculate Age</h2>
+
+<p>First, you need to select your <strong>Date of Birth</strong>. To do this, click on the input box provided in the
+    tool and choose your birth date from the calendar. Make sure the selected date is correct so that the result remains
+    accurate.</p>
+
+<p>After that, you will see another option called <strong>"Age Calculation Date"</strong>. This is the date on which you
+    want to calculate your age. You can select today's date or any other specific date for which you want to know your
+    age.</p>
+
+<p>Once you enter both dates, click on the <strong>"Calculate Age"</strong> button. As soon as you press the button, the
+    tool will instantly display your result. The result will appear in a separate box showing your age in <strong>years,
+        months, and days</strong> format.</p>
+
+<p>Along with this, your age will also be displayed in detailed formats such as:</p>
+
+<ul>
+    <li>Total months and days</li>
+    <li>Total weeks and days</li>
+    <li>Total days</li>
+    <li>Total hours</li>
+    <li>Total minutes</li>
+    <li>Total seconds</li>
+</ul>
+
+<p>The interface of this tool is simple and responsive, making it easy to use on both mobile and desktop devices. This
+    tool is especially helpful for people who want to calculate their or someone else's exact age accurately.</p>
+
+<p>If you want to check again, simply select new dates and click the <strong>"Calculate Age"</strong> button once more.
+    The tool will instantly show the updated result.</p>
+
+<p>We hope this tool will be useful for you. Now you don't need to calculate your age manually — with just one click,
+    you can get complete age details instantly!</p>

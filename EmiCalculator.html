@@ -1,0 +1,347 @@
+<!-- EMI Calculator - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "EMI Calculator",
+  "description": "Free online EMI Calculator tool to instantly calculate your monthly EMI, total interest payable, and total payment for home, car, personal, or education loans.",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How to calculate loan EMI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Enter the loan amount, annual interest rate, and loan tenure in months in the EMI Calculator, then click 'Calculate EMI' to instantly see your monthly payment, total interest, and total amount payable."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use this for home loans or car loans?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, this EMI Calculator can be used to estimate monthly payments for any type of loan, including home loans, car loans, personal loans, and education loans."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    /* EMI Calculator Styles */
+    .emi-calculator {
+        max-width: 420px;
+        margin: 20px auto;
+        padding: 25px;
+        border-radius: 12px;
+        background: #ffffff;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+        border: 1px solid #ddd;
+    }
+
+    .emi-calculator h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #007bff;
+        font-size: 24px;
+    }
+
+    .emi-calculator .input-group {
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+    .emi-calculator .input-group label {
+        font-weight: bold;
+        font-size: 14px;
+        display: block;
+        color: #333;
+    }
+
+    .emi-calculator .input-group input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 6px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        box-sizing: border-box;
+        background-color: #fff;
+        color: #333;
+    }
+
+    .emi-calculator button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        background: #28a745;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .emi-calculator button:hover {
+        background: #218838;
+    }
+
+    #result-box {
+        margin-top: 20px;
+        display: none;
+    }
+
+    .emi-calculator .result-card {
+        background: #f1f9ff;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        border-left: 4px solid #007bff;
+        text-align: left;
+    }
+
+    .emi-calculator .result-card h4 {
+        margin: 0;
+        font-size: 14px;
+        color: #555;
+        font-family: Arial, sans-serif;
+    }
+
+    .emi-calculator .result-card p {
+        margin: 4px 0 0;
+        font-size: 18px;
+        font-weight: bold;
+        color: #000;
+    }
+</style>
+
+<h2>EMI Calculator – Calculate Your Loan EMI Instantly</h2>
+
+<p>If you are planning to take a loan or want to estimate the monthly EMI for your existing loan, this EMI Calculator
+    tool can help you quickly determine your monthly payment amount. It instantly calculates the monthly EMI, total
+    interest payable, and total payment based on the loan details you enter.</p>
+
+<p>This tool is designed to make financial planning easier and helps you understand how much you will need to pay every
+    month before applying for a loan.</p>
+
+<div class="emi-calculator">
+    <h2>Loan EMI Calculator</h2>
+
+    <div class="input-group">
+        <label for="loan-amount">Loan Amount (₹)</label>
+        <input id="loan-amount" type="number" placeholder="e.g. 500000">
+    </div>
+
+    <div class="input-group">
+        <label for="interest-rate">Annual Interest Rate (%)</label>
+        <input id="interest-rate" type="number" placeholder="e.g. 10">
+    </div>
+
+    <div class="input-group">
+        <label for="loan-tenure">Loan Tenure (Months)</label>
+        <input id="loan-tenure" type="number" placeholder="e.g. 60">
+    </div>
+
+    <button onclick="calculateEMI()">Calculate EMI</button>
+
+    <div id="result-box">
+        <div class="result-card">
+            <h4>Monthly EMI</h4>
+            <p id="emi"></p>
+        </div>
+
+        <div class="result-card">
+            <h4>Total Interest</h4>
+            <p id="interest"></p>
+        </div>
+
+        <div class="result-card">
+            <h4>Total Payment</h4>
+            <p id="total"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function formatCurrency(num) {
+        return "\u20B9" + num.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function calculateEMI() {
+        var loanAmount = parseFloat(document.getElementById("loan-amount").value);
+        var interestRate = parseFloat(document.getElementById("interest-rate").value) / 100 / 12;
+        var loanTenure = parseInt(document.getElementById("loan-tenure").value);
+
+        // Validate inputs
+        if (isNaN(loanAmount) || isNaN(interestRate) || isNaN(loanTenure) || loanAmount <= 0 || loanTenure <= 0) {
+            alert("Please enter valid positive values for all fields.");
+            return;
+        }
+
+        var emi = (loanAmount * interestRate * Math.pow(1 + interestRate, loanTenure)) / (Math.pow(1 + interestRate, loanTenure) - 1);
+        var totalPayment = emi * loanTenure;
+        var totalInterest = totalPayment - loanAmount;
+
+        document.getElementById("emi").innerText = formatCurrency(emi);
+        document.getElementById("interest").innerText = formatCurrency(totalInterest);
+        document.getElementById("total").innerText = formatCurrency(totalPayment);
+
+        document.getElementById("result-box").style.display = "block";
+    }
+</script>
+
+<h3>How to Use the EMI Calculator</h3>
+
+<p>Using this EMI calculator is simple. Follow these steps:</p>
+
+<h4>1. Enter Loan Amount</h4>
+<p>First, enter the loan amount you plan to borrow from a bank or financial institution. For example: ₹50,000 or
+    ₹500,000.</p>
+
+<h4>2. Enter Interest Rate</h4>
+<p>Next, input the annual interest rate (%) applied to your loan. For instance, if the bank offers a loan at 10%
+    interest per year, enter 10.</p>
+
+<h4>3. Enter Loan Tenure</h4>
+<p>Then enter the loan tenure in months. For example, if the loan duration is 5 years, enter 60 months.</p>
+
+<h4>4. Click "Calculate EMI"</h4>
+<p>After entering all the details, click the <strong>Calculate EMI</strong> button. The calculator will instantly
+    display the results.</p>
+
+<h3>Results You Will See</h3>
+
+<p>The EMI calculator provides the following information:</p>
+
+<ul>
+    <li><strong>Monthly EMI</strong> – The amount you need to pay every month.</li>
+    <li><strong>Total Interest Payable</strong> – The total interest you will pay over the loan period.</li>
+    <li><strong>Total Payment</strong> – The complete amount you will repay including the loan principal and interest.
+    </li>
+</ul>
+
+<h3>Why Use This EMI Calculator?</h3>
+
+<ul>
+    <li>Instant and accurate EMI calculation</li>
+    <li>Easy to use interface</li>
+    <li>Works on both mobile and desktop devices</li>
+    <li>Helps with better financial planning before taking a loan</li>
+</ul>
+
+<p>Whether you are planning a personal loan, home loan, car loan, or education loan, this calculator helps you estimate
+    your monthly financial commitment in seconds.</p>
+
+<div class="education-loan-calculator">
+    <h2>Education Loan Calculator</h2>
+    <label for="education-loan-amount">Loan Amount (&#8377;):</label>
+    <input type="number" id="education-loan-amount" placeholder="Enter loan amount">
+
+    <label for="education-interest-rate">Annual Interest Rate (%):</label>
+    <input type="number" id="education-interest-rate" step="0.01" placeholder="Enter interest rate">
+
+    <label for="education-loan-tenure">Loan Tenure (Months):</label>
+    <input type="number" id="education-loan-tenure" placeholder="Enter loan tenure in months">
+
+    <button onclick="calculateEducationLoanEMI()">Calculate EMI</button>
+    <div id="education-result-box">
+        <h3>Result</h3>
+        <p id="education-result"></p>
+    </div>
+</div>
+
+<style>
+    .education-loan-calculator {
+        max-width: 400px;
+        margin: auto;
+        padding: 20px;
+        border: 2px solid #28a745;
+        border-radius: 10px;
+        box-shadow: 0px 0px 15px rgba(40, 167, 69, 0.3);
+        text-align: center;
+        font-family: Arial, sans-serif;
+        background: #f8f9fa;
+    }
+
+    .education-loan-calculator h2 {
+        margin-bottom: 15px;
+        color: #28a745;
+    }
+
+    .education-loan-calculator input,
+    .education-loan-calculator button {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .education-loan-calculator button {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .education-loan-calculator button:hover {
+        background-color: #218838;
+    }
+
+    #education-result-box {
+        margin-top: 15px;
+        padding: 10px;
+        border: 1px solid #28a745;
+        border-radius: 5px;
+        background: #e9f9ec;
+        color: #155724;
+        display: none;
+        text-align: left;
+    }
+</style>
+
+<script>
+    function calculateEducationLoanEMI() {
+        var loanAmount = parseFloat(document.getElementById('education-loan-amount').value);
+        var interestRate = parseFloat(document.getElementById('education-interest-rate').value) / 100 / 12;
+        var loanTenure = parseInt(document.getElementById('education-loan-tenure').value);
+
+        if (isNaN(loanAmount) || isNaN(interestRate) || isNaN(loanTenure) || loanAmount <= 0 || loanTenure <= 0) {
+            document.getElementById('education-result').innerText = 'Please enter valid values!';
+            document.getElementById('education-result-box').style.display = 'block';
+            return;
+        }
+
+        var emi = (loanAmount * interestRate * Math.pow(1 + interestRate, loanTenure)) / (Math.pow(1 + interestRate, loanTenure) - 1);
+        var totalPayment = emi * loanTenure;
+        var totalInterest = totalPayment - loanAmount;
+
+        document.getElementById('education-result').innerHTML = `<strong>Education Loan EMI Details:</strong><br>
+            Monthly EMI: \u20B9${emi.toFixed(2)}<br>
+            Total Interest Payable: \u20B9${totalInterest.toFixed(2)}<br>
+            Total Payment (Principal + Interest): \u20B9${totalPayment.toFixed(2)}`;
+
+        document.getElementById('education-result-box').style.display = 'block';
+    }
+</script>
+<br>

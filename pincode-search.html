@@ -1,0 +1,687 @@
+<!-- India Pincode Search - Blogger Compatible | Dynamic SEO Pages -->
+<script type="application/ld+json"
+    id="pinJsonLd">{"@context":"https://schema.org","@type":"WebApplication","name":"India Pincode Search","description":"Free India Pincode Search tool. Find post office details by pincode, state, district.","url":"https://www.aiocrafters.com/p/india-pincode-search.html","applicationCategory":"UtilityApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"author":{"@type":"Organization","name":"AIOCrafters","url":"https://www.aiocrafters.com"}}</script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+    .pin-tool {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 10px 0;
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        color: #333;
+        line-height: 1.6
+    }
+
+    .pin-tool * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0
+    }
+
+    .pin-title {
+        text-align: center;
+        color: #2563eb;
+        font-size: 1.6rem;
+        margin-bottom: 20px
+    }
+
+    .pin-search-box {
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+        margin-bottom: 24px;
+        border: 1px solid #e5e7eb
+    }
+
+    .pin-tabs {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 16px
+    }
+
+    .pin-tab {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        background: #f3f4f6;
+        color: #6b7280;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: .3s
+    }
+
+    .pin-tab.active {
+        background: #2563eb;
+        color: #fff
+    }
+
+    .pin-tab:hover:not(.active) {
+        background: #eef2ff
+    }
+
+    .pin-tab-content {
+        display: none
+    }
+
+    .pin-tab-content.active {
+        display: block
+    }
+
+    .pin-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 12px
+    }
+
+    .pin-field {
+        flex: 1;
+        min-width: 180px
+    }
+
+    .pin-tool label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #374151;
+        font-size: 13px
+    }
+
+    .pin-tool select,
+    .pin-tool input[type=text],
+    .pin-tool input[type=number] {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 15px;
+        transition: .3s;
+        background: #fff
+    }
+
+    .pin-tool select:focus,
+    .pin-tool input:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, .12)
+    }
+
+    .pin-btn {
+        padding: 10px 20px;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .3s;
+        white-space: nowrap
+    }
+
+    .pin-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, .3)
+    }
+
+    .pin-btn:disabled {
+        opacity: .5;
+        cursor: not-allowed;
+        transform: none
+    }
+
+    .pin-loading {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px
+    }
+
+    .pin-spinner {
+        width: 36px;
+        height: 36px;
+        border: 4px solid rgba(37, 99, 235, .15);
+        border-left-color: #2563eb;
+        border-radius: 50%;
+        animation: ps .8s linear infinite
+    }
+
+    @keyframes ps {
+        to {
+            transform: rotate(360deg)
+        }
+    }
+
+    .pin-results {
+        margin-bottom: 24px
+    }
+
+    .pin-card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 18px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+        margin-bottom: 14px;
+        border-left: 4px solid #2563eb;
+        transition: .3s
+    }
+
+    .pin-card:hover {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, .1)
+    }
+
+    .pin-card h3 {
+        color: #1e40af;
+        margin-bottom: 12px;
+        font-size: 1.15rem;
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 8px
+    }
+
+    .pin-card-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px
+    }
+
+    .pin-card-col {
+        flex: 1;
+        min-width: 200px
+    }
+
+    .pin-item {
+        margin-bottom: 6px;
+        font-size: 13px
+    }
+
+    .pin-lbl {
+        font-weight: 600;
+        color: #4b5563;
+        display: inline-block;
+        min-width: 100px
+    }
+
+    .pin-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #2563eb, #7c3aed);
+        color: #fff;
+        padding: 2px 12px;
+        border-radius: 16px;
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 1px
+    }
+
+    .pin-count {
+        text-align: center;
+        color: #6b7280;
+        font-size: 13px;
+        margin-bottom: 14px;
+        padding: 10px;
+        background: #f0f9ff;
+        border-radius: 8px;
+        border: 1px solid #bfdbfe
+    }
+
+    .pin-count strong {
+        color: #2563eb
+    }
+
+    .pin-map-wrap {
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, .06)
+    }
+
+    #pinMap {
+        height: 350px;
+        width: 100%;
+        display: none
+    }
+
+    .pin-map-ph {
+        height: 180px;
+        background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #94a3b8;
+        border-radius: 10px;
+        text-align: center
+    }
+
+    .pin-error {
+        color: #991b1b;
+        padding: 14px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        margin: 16px 0;
+        font-size: 14px
+    }
+
+    .pin-no-res {
+        text-align: center;
+        padding: 30px;
+        color: #6b7280
+    }
+
+    .pin-nearby {
+        display: none;
+        background: #fff;
+        border-radius: 10px;
+        padding: 18px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+        margin-bottom: 20px
+    }
+
+    .pin-nearby h3 {
+        color: #1e40af;
+        margin-bottom: 12px
+    }
+
+    .pin-tbl-wrap {
+        overflow-x: auto
+    }
+
+    .pin-tbl {
+        width: 100%;
+        border-collapse: collapse
+    }
+
+    .pin-tbl th,
+    .pin-tbl td {
+        padding: 10px 12px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 13px
+    }
+
+    .pin-tbl th {
+        background: #2563eb;
+        color: #fff
+    }
+
+    .pin-tbl tr:hover {
+        background: rgba(37, 99, 235, .04)
+    }
+
+    .pin-tbl a {
+        color: #2563eb;
+        text-decoration: none;
+        cursor: pointer
+    }
+
+    .pin-tbl a:hover {
+        text-decoration: underline
+    }
+
+    .pin-seo {
+        margin-top: 30px
+    }
+
+    .pin-seo h2 {
+        color: #1e40af;
+        margin: 24px 0 12px
+    }
+
+    .pin-seo h3 {
+        color: #374151;
+        margin: 16px 0 8px
+    }
+
+    .pin-seo p,
+    .pin-seo li {
+        font-size: 14px;
+        line-height: 1.7
+    }
+
+    .pin-seo ul,
+    .pin-seo ol {
+        padding-left: 20px;
+        margin-bottom: 12px
+    }
+
+    @media(max-width:640px) {
+        .pin-row {
+            flex-direction: column
+        }
+
+        .pin-card-row {
+            flex-direction: column
+        }
+
+        .pin-title {
+            font-size: 1.3rem
+        }
+    }
+</style>
+
+<article itemscope itemtype="https://schema.org/Article">
+    <div class="pin-tool" id="pinTool">
+        <h2 class="pin-title">📮 India Pincode Search</h2>
+        <p style="text-align:center;color:#6b7280;margin-bottom:20px;font-size:14px" id="pinIntro">Find any Indian PIN
+            code or Post Office details instantly. Search by pincode or browse by State → District → Post Office.</p>
+
+        <div class="pin-search-box">
+            <div class="pin-tabs">
+                <button class="pin-tab active" onclick="pinTab('search')">🔢 Search Pincode</button>
+                <button class="pin-tab" onclick="pinTab('browse')">📍 Browse by Location</button>
+            </div>
+
+            <!-- Tab 1: Direct Pincode Search -->
+            <div class="pin-tab-content active" id="pinTabSearch">
+                <div class="pin-row">
+                    <div class="pin-field">
+                        <label for="pinInput">Enter 6-digit PIN Code</label>
+                        <input type="number" id="pinInput" placeholder="e.g. 110001"
+                            onkeydown="if(event.key==='Enter')pinSearchDirect()">
+                    </div>
+                    <div style="display:flex;align-items:flex-end"><button class="pin-btn"
+                            onclick="pinSearchDirect()">🔍 Search</button></div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Browse by State/District/Office -->
+            <div class="pin-tab-content" id="pinTabBrowse">
+                <div class="pin-row">
+                    <div class="pin-field">
+                        <label for="pinState">State / UT</label>
+                        <select id="pinState">
+                            <option value="">Select State</option>
+                        </select>
+                    </div>
+                    <div class="pin-field">
+                        <label for="pinDistrict">District</label>
+                        <select id="pinDistrict" disabled>
+                            <option value="">Select District</option>
+                        </select>
+                    </div>
+                    <div class="pin-field">
+                        <label for="pinOffice">Post Office</label>
+                        <select id="pinOffice" disabled>
+                            <option value="">Select Post Office</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="pinLoading" class="pin-loading">
+            <div class="pin-spinner"></div>
+            <p>Loading...</p>
+        </div>
+        <div id="pinResults" class="pin-results"></div>
+
+        <!-- Nearby pincodes table -->
+        <div id="pinNearby" class="pin-nearby">
+            <h3>📋 Other Post Offices in this District</h3>
+            <div class="pin-tbl-wrap">
+                <table class="pin-tbl">
+                    <thead>
+                        <tr>
+                            <th>Post Office</th>
+                            <th>Pincode</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pinNearbyBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div class="pin-map-wrap">
+            <div id="pinMap"></div>
+            <div id="pinMapPh" class="pin-map-ph">
+                <div><span style="font-size:2.5rem">🗺️</span><br>Map will appear when location data is available</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dynamic SEO content area (updated by JS for each pincode) -->
+    <div id="pinSeoContent" class="pin-seo">
+        <section>
+            <h2 id="about-pincode">What is an Indian PIN Code?</h2>
+            <p><strong>PIN</strong> stands for <strong>Postal Index Number</strong>. It is a <strong>6-digit
+                    code</strong> used by <strong>India Post</strong> to identify post offices across India, introduced
+                on <strong>August 15, 1972</strong>.</p>
+            <h3>PIN Code Structure:</h3>
+            <ul>
+                <li><strong>1st digit:</strong> Postal region (9 zones)</li>
+                <li><strong>2nd digit:</strong> Sub-region / postal circle</li>
+                <li><strong>3rd digit:</strong> Sorting district</li>
+                <li><strong>Last 3 digits:</strong> Specific post office</li>
+            </ul>
+        </section>
+        <section>
+            <h2 id="pincode-faq">Frequently Asked Questions</h2>
+            <h3>How to find the PIN code of my area?</h3>
+            <p>Use the "Browse by Location" tab above. Select your state, district, and post office to find the exact
+                pincode.</p>
+            <h3>How many PIN codes are there in India?</h3>
+            <p>India has over <strong>1,55,000 post offices</strong> across 37 states and union territories.</p>
+        </section>
+        <section>
+            <h2 id="disclaimer">Disclaimer</h2>
+            <p>This tool uses publicly available India Post data for informational purposes only. Verify critical
+                information with <a href="https://www.indiapost.gov.in" target="_blank" rel="noopener">India Post</a>.
+            </p>
+        </section>
+    </div>
+</article>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    (function () {
+        'use strict';
+        var CDN = 'https://cdn.jsdelivr.net/gh/qureshinazar/-/pincode-data';
+        var API = 'https://api.postalpincode.in/pincode/';
+        var BASE_URL = location.origin + location.pathname;
+
+        var stateIndex = null, stateData = null, loadedState = '', map = null, marker = null;
+        var $ = function (id) { return document.getElementById(id) };
+        var stSel = $('pinState'), dtSel = $('pinDistrict'), ofSel = $('pinOffice');
+        var resDiv = $('pinResults'), loadDiv = $('pinLoading'), nearbyDiv = $('pinNearby'), nearbyBody = $('pinNearbyBody');
+        var mapDiv = $('pinMap'), mapPh = $('pinMapPh');
+
+        function slugify(s) { return s.toLowerCase().replace(/[&]/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') }
+        function escHtml(t) { if (!t) return ''; var d = document.createElement('div'); d.appendChild(document.createTextNode(t)); return d.innerHTML }
+        function showLoad(b) { loadDiv.style.display = b ? 'flex' : 'none' }
+
+        // Tab switching
+        window.pinTab = function (t) {
+            document.querySelectorAll('.pin-tab').forEach(function (b, i) { b.classList.toggle('active', i === (t === 'search' ? 0 : 1)) });
+            $('pinTabSearch').classList.toggle('active', t === 'search');
+            $('pinTabBrowse').classList.toggle('active', t === 'browse');
+        };
+
+        // Init
+        async function init() {
+            showLoad(true);
+            try {
+                var r = await fetch(CDN + '/index.json');
+                stateIndex = await r.json();
+                stSel.innerHTML = '<option value="">Select State</option>';
+                Object.keys(stateIndex).sort().forEach(function (s) {
+                    var o = document.createElement('option'); o.value = s; o.textContent = s; stSel.appendChild(o);
+                });
+                checkUrl();
+            } catch (e) { resDiv.innerHTML = '<div class="pin-error">Failed to load data. Please refresh.</div>'; console.error(e) }
+            showLoad(false);
+            stSel.addEventListener('change', onStateChange);
+            dtSel.addEventListener('change', onDistrictChange);
+            ofSel.addEventListener('change', onOfficeChange);
+        }
+
+        async function loadState(stateName) {
+            if (loadedState === stateName && stateData) return stateData;
+            var slug = stateIndex[stateName].s;
+            var r = await fetch(CDN + '/states/' + slug + '.json');
+            stateData = await r.json(); loadedState = stateName;
+            return stateData;
+        }
+
+        function onStateChange() {
+            dtSel.innerHTML = '<option value="">Select District</option>';
+            ofSel.innerHTML = '<option value="">Select Office</option>';
+            ofSel.disabled = true; clearResults();
+            var st = stSel.value;
+            if (!st) { dtSel.disabled = true; updateUrl(); return }
+            dtSel.disabled = false;
+            var districts = stateIndex[st].d;
+            districts.forEach(function (d) { var o = document.createElement('option'); o.value = d; o.textContent = d; dtSel.appendChild(o) });
+            updateUrl();
+        }
+
+        async function onDistrictChange() {
+            ofSel.innerHTML = '<option value="">Select Office</option>';
+            clearResults();
+            var st = stSel.value, dt = dtSel.value;
+            if (!dt) { ofSel.disabled = true; updateUrl(); return }
+            ofSel.disabled = false; showLoad(true);
+            try {
+                var data = await loadState(st);
+                var offices = data.filter(function (r) { return r.d === dt }).sort(function (a, b) { return a.o.localeCompare(b.o) });
+                offices.forEach(function (r) { var o = document.createElement('option'); o.value = r.o; o.textContent = r.o + ' (' + r.p + ')'; o.dataset.pin = r.p; ofSel.appendChild(o) });
+            } catch (e) { resDiv.innerHTML = '<div class="pin-error">Failed to load district data.</div>' }
+            showLoad(false); updateUrl();
+        }
+
+        async function onOfficeChange() {
+            clearResults();
+            var st = stSel.value, dt = dtSel.value, of = ofSel.value;
+            if (!of) { updateUrl(); return }
+            var pin = ofSel.options[ofSel.selectedIndex].dataset.pin;
+            showLoad(true);
+            try {
+                var data = await loadState(st);
+                var rec = data.find(function (r) { return r.d === dt && r.o === of && r.p === pin });
+                if (rec) displayResult(rec, st);
+            } catch (e) { resDiv.innerHTML = '<div class="pin-error">Error loading data.</div>' }
+            showLoad(false); updateUrl();
+        }
+
+        // Direct pincode search via API
+        window.pinSearchDirect = async function () {
+            var pin = $('pinInput').value.trim();
+            if (!pin || pin.length !== 6 || isNaN(pin)) { resDiv.innerHTML = '<div class="pin-error">Please enter a valid 6-digit PIN code.</div>'; return }
+            showLoad(true); clearResults();
+            try {
+                var r = await fetch(API + pin); var data = await r.json();
+                if (data[0].Status === 'Success') {
+                    var posts = data[0].PostOffice;
+                    var html = '<div class="pin-count">Found <strong>' + posts.length + '</strong> post office' + (posts.length > 1 ? 's' : '') + ' for PIN code <strong>' + pin + '</strong></div>';
+                    posts.forEach(function (po) {
+                        html += '<div class="pin-card"><h3>' + escHtml(po.Name) + ' <span class="pin-badge">' + escHtml(po.Pincode) + '</span></h3>' +
+                            '<div class="pin-card-row"><div class="pin-card-col">' +
+                            item('State', po.State) + item('District', po.District) + item('Division', po.Division) + item('Region', po.Region) +
+                            '</div><div class="pin-card-col">' +
+                            item('Circle', po.Circle) + item('Block', po.Block) + item('Branch Type', po.BranchType) + item('Delivery', po.DeliveryStatus) +
+                            '</div></div></div>';
+                    });
+                    resDiv.innerHTML = html;
+                    updateSeo(pin, posts[0].Name, posts[0].District, posts[0].State);
+                } else { resDiv.innerHTML = '<div class="pin-no-res">No results found for <strong>' + pin + '</strong></div>' }
+            } catch (e) { resDiv.innerHTML = '<div class="pin-error">Network error. Please try again.</div>' }
+            showLoad(false);
+        };
+
+        function displayResult(rec, stateName) {
+            var la = rec.la ? parseFloat(rec.la).toFixed(6) : 'N/A', lo = rec.lo ? parseFloat(rec.lo).toFixed(6) : 'N/A';
+            resDiv.innerHTML = '<div class="pin-card"><h3>' + escHtml(rec.o) + ' <span class="pin-badge">' + escHtml(rec.p) + '</span></h3>' +
+                '<div class="pin-card-row"><div class="pin-card-col">' +
+                item('State', stateName) + item('District', rec.d) + item('Circle', rec.c) + item('Region', rec.r) +
+                '</div><div class="pin-card-col">' +
+                item('Division', rec.dv) + item('Office Type', rec.t) + item('Delivery', rec.dl) + item('Coordinates', la + ', ' + lo) +
+                '</div></div></div>';
+            if (rec.la && rec.lo && !isNaN(parseFloat(rec.la))) showMap(parseFloat(rec.la), parseFloat(rec.lo), rec.o);
+            else hideMap();
+            showNearby(stateName, rec.d, rec.p);
+            updateSeo(rec.p, rec.o, rec.d, stateName);
+        }
+
+        function item(l, v) { return '<div class="pin-item"><span class="pin-lbl">' + l + ':</span> ' + escHtml(v || 'N/A') + '</div>' }
+
+        function showNearby(st, dt, curPin) {
+            if (!stateData) { nearbyDiv.style.display = 'none'; return }
+            var nearby = stateData.filter(function (r) { return r.d === dt && r.p !== curPin }).sort(function (a, b) { return a.o.localeCompare(b.o) });
+            if (!nearby.length) { nearbyDiv.style.display = 'none'; return }
+            nearbyBody.innerHTML = '';
+            nearby.slice(0, 100).forEach(function (r) {
+                var tr = document.createElement('tr');
+                var url = BASE_URL + '?' + slugify(st) + '/' + slugify(r.d) + '/' + slugify(r.o) + '/' + r.p;
+                tr.innerHTML = '<td><a href="' + url + '">' + escHtml(r.o) + '</a></td><td>' + escHtml(r.p) + '</td><td>' + escHtml(r.t) + '</td>';
+                nearbyBody.appendChild(tr);
+            });
+            nearbyDiv.style.display = 'block';
+        }
+
+        // Map
+        function showMap(la, lo, title) {
+            mapPh.style.display = 'none'; mapDiv.style.display = 'block';
+            if (!map) { map = L.map('pinMap').setView([la, lo], 15); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map) }
+            else map.setView([la, lo], 15);
+            if (marker) map.removeLayer(marker);
+            marker = L.marker([la, lo]).addTo(map).bindPopup(title).openPopup();
+        }
+        function hideMap() { mapDiv.style.display = 'none'; mapPh.style.display = 'flex'; if (map) { map.off(); map.remove(); map = null } }
+
+        // SEO - Update title, description, JSON-LD dynamically
+        function updateSeo(pin, office, district, state) {
+            var t = 'Pincode ' + pin + ' - ' + office + ' | ' + district + ', ' + state + ' | India Pincode Search';
+            document.title = t;
+            var meta = document.querySelector('meta[name="description"]');
+            if (!meta) { meta = document.createElement('meta'); meta.name = 'description'; document.head.appendChild(meta) }
+            meta.content = 'PIN code ' + pin + ' belongs to ' + office + ' post office in ' + district + ', ' + state + '. Find delivery status, office type, division, region and map location.';
+            var can = document.querySelector('link[rel="canonical"]');
+            if (!can) { can = document.createElement('link'); can.rel = 'canonical'; document.head.appendChild(can) }
+            can.href = BASE_URL + '?' + slugify(state) + '/' + slugify(district) + '/' + slugify(office) + '/' + pin;
+            // Update JSON-LD
+            var ld = { "@context": "https://schema.org", "@type": "PostalAddress", "addressLocality": district, "addressRegion": state, "postalCode": pin, "addressCountry": "IN", "name": office + " Post Office" };
+            $('pinJsonLd').textContent = JSON.stringify(ld);
+        }
+
+        // URL management
+        function updateUrl() {
+            var st = stSel.value, dt = dtSel.value, of = ofSel.value;
+            if (!st) { history.replaceState({}, '', BASE_URL); return }
+            var parts = [slugify(st)];
+            if (dt) parts.push(slugify(dt));
+            if (of) { var pin = ofSel.options[ofSel.selectedIndex].dataset.pin; parts.push(slugify(of)); if (pin) parts.push(pin) }
+            history.replaceState({}, '', BASE_URL + '?' + parts.join('/'));
+        }
+
+        async function checkUrl() {
+            var q = location.search.substring(1); if (!q) return;
+            var parts = q.split('/'); if (parts.length < 1) return;
+            var stSlug = parts[0], dtSlug = parts[1], ofSlug = parts[2], pin = parts[3];
+            // Find state by slug
+            var stName = Object.keys(stateIndex).find(function (s) { return stateIndex[s].s === stSlug });
+            if (!stName) return;
+            // Switch to browse tab
+            pinTab('browse');
+            stSel.value = stName; onStateChange();
+            if (!dtSlug) return;
+            // Find district by slug
+            await new Promise(function (r) { setTimeout(r, 50) });
+            var dtName = [...dtSel.options].map(function (o) { return o.value }).find(function (d) { return slugify(d) === dtSlug });
+            if (!dtName) return;
+            dtSel.value = dtName; await onDistrictChange();
+            if (!ofSlug || !pin) return;
+            await new Promise(function (r) { setTimeout(r, 50) });
+            var ofOpt = [...ofSel.options].find(function (o) { return slugify(o.value) === ofSlug && o.dataset.pin === pin });
+            if (!ofOpt) return;
+            ofSel.value = ofOpt.value; await onOfficeChange();
+        }
+
+        function clearResults() { resDiv.innerHTML = ''; nearbyDiv.style.display = 'none'; hideMap() }
+
+        document.addEventListener('DOMContentLoaded', init);
+    })();
+</script>
