@@ -65,219 +65,205 @@
 </script>
 
 <style>
-/* Scoped styles for the blog post to prevent theme conflicts */
-.aio-blog-post {
-    font-family: 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif;
-    color: #2c3e50;
-    line-height: 1.8;
-    font-size: 17px;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 10px;
-}
+    /* Scoped styles for the blog post to prevent theme conflicts */
+    .aio-blog-post {
+        font-family: 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif;
+        color: #2c3e50;
+        line-height: 1.8;
+        font-size: 17px;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 10px;
+    }
 
-.aio-blog-post h2 {
-    font-size: 26px;
-    color: #1a202c;
-    margin-top: 40px;
-    margin-bottom: 20px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #e2e8f0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+    .aio-blog-post h2 {
+        font-size: 26px;
+        color: #1a202c;
+        margin-top: 40px;
+        margin-bottom: 20px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-.aio-blog-post h3 {
-    font-size: 20px;
-    color: #2d3748;
-    margin-top: 30px;
-    margin-bottom: 15px;
-}
+    .aio-blog-post h3 {
+        font-size: 20px;
+        color: #2d3748;
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
 
-.aio-blog-post p {
-    margin-bottom: 20px;
-}
+    .aio-blog-post p {
+        margin-bottom: 20px;
+    }
 
-.aio-blog-post ul, .aio-blog-post ol {
-    margin-bottom: 24px;
-    padding-left: 24px;
-}
+    .aio-blog-post ul,
+    .aio-blog-post ol {
+        margin-bottom: 24px;
+        padding-left: 24px;
+    }
 
-.aio-blog-post li {
-    margin-bottom: 8px;
-}
+    .aio-blog-post li {
+        margin-bottom: 8px;
+    }
 
-.aio-blog-post strong {
-    color: #1a202c;
-    font-weight: 600;
-}
+    .aio-blog-post strong {
+        color: #1a202c;
+        font-weight: 600;
+    }
 
-/* Beautiful Code Blocks */
-.aio-blog-post pre {
-    background-color: #1e1e1e;
-    color: #d4d4d4;
-    border-radius: 8px;
-    padding: 16px 20px;
-    overflow-x: auto;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 15px;
-    margin: 24px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid #333;
-}
+    /* Beautiful Code Blocks */
+    .aio-blog-post pre {
+        background-color: #1e1e1e;
+        color: #d4d4d4;
+        border-radius: 8px;
+        padding: 16px 20px;
+        overflow-x: auto;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+        margin: 24px 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #333;
+    }
 
-.aio-blog-post code {
-    background-color: #edf2f7;
-    color: #e53e3e;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.9em;
-}
+    .aio-blog-post code {
+        background-color: #edf2f7;
+        color: #e53e3e;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.9em;
+    }
 
-.aio-blog-post pre code {
-    background-color: transparent;
-    color: inherit;
-    padding: 0;
-    border-radius: 0;
-}
+    .aio-blog-post pre code {
+        background-color: transparent;
+        color: inherit;
+        padding: 0;
+        border-radius: 0;
+    }
 
-/* Tip / Highlight Box */
-.aio-blog-post .tip-box {
-    background: linear-gradient(to right, #eff6ff, #dbeafe);
-    border-left: 5px solid #3b82f6;
-    padding: 20px 24px;
-    border-radius: 8px;
-    margin: 32px 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
+    /* Tip / Highlight Box */
+    .aio-blog-post .tip-box {
+        background: linear-gradient(to right, #eff6ff, #dbeafe);
+        border-left: 5px solid #3b82f6;
+        padding: 20px 24px;
+        border-radius: 8px;
+        margin: 32px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
 
-.aio-blog-post .tip-box p:last-child {
-    margin-bottom: 0;
-}
+    .aio-blog-post .tip-box p:last-child {
+        margin-bottom: 0;
+    }
 
-/* Warning Box */
-.aio-blog-post .warning-box {
-    background: linear-gradient(to right, #fffbeb, #fef3c7);
-    border-left: 5px solid #f59e0b;
-    padding: 20px 24px;
-    border-radius: 8px;
-    margin: 32px 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
+    /* Warning Box */
+    .aio-blog-post .warning-box {
+        background: linear-gradient(to right, #fffbeb, #fef3c7);
+        border-left: 5px solid #f59e0b;
+        padding: 20px 24px;
+        border-radius: 8px;
+        margin: 32px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
 
-.aio-blog-post .warning-box p:last-child {
-    margin-bottom: 0;
-}
+    .aio-blog-post .warning-box p:last-child {
+        margin-bottom: 0;
+    }
 
-/* Conclusion Box */
-.aio-blog-post .conclusion-box {
-    background: linear-gradient(to right, #f0fdf4, #dcfce7);
-    border-left: 5px solid #22c55e;
-    padding: 20px 24px;
-    border-radius: 8px;
-    margin: 32px 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
+    /* Conclusion Box */
+    .aio-blog-post .conclusion-box {
+        background: linear-gradient(to right, #f0fdf4, #dcfce7);
+        border-left: 5px solid #22c55e;
+        padding: 20px 24px;
+        border-radius: 8px;
+        margin: 32px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
 
-.aio-blog-post .conclusion-box p:last-child {
-    margin-bottom: 0;
-}
+    .aio-blog-post .conclusion-box p:last-child {
+        margin-bottom: 0;
+    }
 
-.aio-blog-post hr {
-    border: 0;
-    height: 1px;
-    background: #e2e8f0;
-    margin: 40px 0;
-}
+    .aio-blog-post hr {
+        border: 0;
+        height: 1px;
+        background: #e2e8f0;
+        margin: 40px 0;
+    }
 
-/* Step number badges */
-.aio-blog-post .step-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: #fff;
-    border-radius: 50%;
-    font-size: 15px;
-    font-weight: 700;
-    margin-right: 10px;
-    flex-shrink: 0;
-}
+    /* Step number badges */
+    .aio-blog-post .step-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: #fff;
+        border-radius: 50%;
+        font-size: 15px;
+        font-weight: 700;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
 
-/* Numbered step list */
-.aio-blog-post .step-list {
-    counter-reset: step-counter;
-    list-style: none;
-    padding-left: 0;
-}
+    /* Numbered step list */
+    .aio-blog-post .step-list {
+        counter-reset: step-counter;
+        list-style: none;
+        padding-left: 0;
+    }
 
-.aio-blog-post .step-list li {
-    counter-increment: step-counter;
-    position: relative;
-    padding-left: 36px;
-    margin-bottom: 12px;
-}
+    .aio-blog-post .step-list li {
+        counter-increment: step-counter;
+        position: relative;
+        padding-left: 36px;
+        margin-bottom: 12px;
+    }
 
-.aio-blog-post .step-list li::before {
-    content: counter(step-counter);
-    position: absolute;
-    left: 0;
-    top: 2px;
-    width: 24px;
-    height: 24px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: #fff;
-    border-radius: 50%;
-    font-size: 13px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-}
-
-/* Reason list with checkmarks */
-.aio-blog-post .reason-list {
-    list-style: none;
-    padding-left: 0;
-}
-
-.aio-blog-post .reason-list li {
-    padding-left: 28px;
-    position: relative;
-}
-
-.aio-blog-post .reason-list li::before {
-    content: "✔";
-    position: absolute;
-    left: 0;
-    color: #22c55e;
-    font-weight: 700;
-}
+    .aio-blog-post .step-list li::before {
+        content: counter(step-counter);
+        position: absolute;
+        left: 0;
+        top: 2px;
+        width: 24px;
+        height: 24px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: #fff;
+        border-radius: 50%;
+        font-size: 13px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
 </style>
 
 <div class="aio-blog-post">
 
-    <p>If you are using <strong>Visual Studio Code (VS Code)</strong> for development, you probably connect it with <strong>GitHub</strong> to manage and push your projects. However, sometimes you may need to <strong>change the GitHub account</strong> connected to your projects.</p>
+    <p>If you are using <strong>Visual Studio Code (VS Code)</strong> for development, you probably connect it with
+        <strong>GitHub</strong> to manage and push your projects. However, sometimes you may need to <strong>change the
+            GitHub account</strong> connected to your projects.</p>
 
-    <p>This situation is common when you create a <strong>new GitHub account, manage multiple accounts, or transfer projects to another profile</strong>.</p>
+    <p>This situation is common when you create a <strong>new GitHub account, manage multiple accounts, or transfer
+            projects to another profile</strong>.</p>
 
-    <p>In this guide, you will learn <strong>how to completely change the GitHub account in VS Code on Windows</strong> in a simple and safe way.</p>
+    <p>In this guide, you will learn <strong>how to completely change the GitHub account in VS Code on Windows</strong>
+        in a simple and safe way.</p>
 
     <hr>
 
     <!-- Section: Why Change -->
     <h2>🔄 Why You Might Need to Change Your GitHub Account</h2>
     <p>There are several common reasons developers switch GitHub accounts:</p>
-    <ul class="reason-list">
-        <li>You created a <strong>new GitHub account for development</strong></li>
-        <li>You want to separate <strong>personal and professional projects</strong></li>
-        <li>You are facing <strong>authentication errors while pushing code</strong></li>
-        <li>You moved your repository to another GitHub account</li>
+    <ul>
+        <li>✔ You created a <strong>new GitHub account for development</strong></li>
+        <li>✔ You want to separate <strong>personal and professional projects</strong></li>
+        <li>✔ You are facing <strong>authentication errors while pushing code</strong></li>
+        <li>✔ You moved your repository to another GitHub account</li>
     </ul>
     <p>Regardless of the reason, the process is straightforward if you follow the steps carefully.</p>
 
@@ -308,10 +294,12 @@
 
     <!-- Step 2 -->
     <h2><span class="step-badge">2</span> Remove Old GitHub Credentials from Windows</h2>
-    <p>Windows stores GitHub credentials, and sometimes VS Code automatically logs in using saved credentials. To avoid this, remove the old credentials.</p>
+    <p>Windows stores GitHub credentials, and sometimes VS Code automatically logs in using saved credentials. To avoid
+        this, remove the old credentials.</p>
 
     <div class="warning-box">
-        <p><strong>⚠ Important:</strong> If you skip this step, VS Code may automatically reconnect to the old account using saved Windows credentials.</p>
+        <p><strong>⚠ Important:</strong> If you skip this step, VS Code may automatically reconnect to the old account
+            using saved Windows credentials.</p>
     </div>
 
     <p>Follow these steps:</p>
@@ -335,14 +323,15 @@
 
     <!-- Step 3 -->
     <h2><span class="step-badge">3</span> Configure Git With Your New Account</h2>
-    <p>Now you need to update Git with your new username and email. Open the <strong>VS Code terminal</strong> (<code>Ctrl + `</code>) and run the following commands:</p>
+    <p>Now you need to update Git with your new username and email. Open the <strong>VS Code terminal</strong>
+        (<code>Ctrl + `</code>) and run the following commands:</p>
 
-<pre><code>git config --global user.name "Your New Username"
+    <pre><code>git config --global user.name "Your New Username"
 git config --global user.email "your-new-email@example.com"</code></pre>
 
     <p>For example:</p>
 
-<pre><code>git config --global user.name "Aio Crafters"
+    <pre><code>git config --global user.name "Aio Crafters"
 git config --global user.email "aiocrafters@gmail.com"</code></pre>
 
     <p>These commands set the <strong>global Git identity</strong> that will be used for all future commits.</p>
@@ -350,15 +339,18 @@ git config --global user.email "aiocrafters@gmail.com"</code></pre>
     <h3>Verify Your Configuration</h3>
     <p>To confirm the configuration has been updated correctly, run:</p>
 
-<pre><code>git config --global --list</code></pre>
+    <pre><code>git config --global --list</code></pre>
 
     <p>You should see output like:</p>
 
-<pre><code>user.name=Aio Crafters
+    <pre><code>user.name=Aio Crafters
 user.email=aiocrafters@gmail.com</code></pre>
 
     <div class="tip-box">
-        <p><strong>💡 Tip:</strong> If you work on multiple projects with different accounts, you can use <strong>local Git configuration</strong> instead of global. Navigate to the project folder and run the same commands <strong>without</strong> the <code>--global</code> flag to set the identity only for that specific repository.</p>
+        <p><strong>💡 Tip:</strong> If you work on multiple projects with different accounts, you can use <strong>local
+                Git configuration</strong> instead of global. Navigate to the project folder and run the same commands
+            <strong>without</strong> the <code>--global</code> flag to set the identity only for that specific
+            repository.</p>
     </div>
 
     <hr>
@@ -376,33 +368,36 @@ user.email=aiocrafters@gmail.com</code></pre>
         <li>Authorize <strong>Visual Studio Code</strong></li>
     </ol>
 
-    <p>Once completed, VS Code will be connected to your new GitHub account. You can verify by checking the <strong>Accounts icon</strong> in the bottom-left corner — it should now display your new account name.</p>
+    <p>Once completed, VS Code will be connected to your new GitHub account. You can verify by checking the
+        <strong>Accounts icon</strong> in the bottom-left corner — it should now display your new account name.</p>
 
     <hr>
 
     <!-- Step 5 -->
     <h2><span class="step-badge">5</span> Update the Repository Remote URL (If Needed)</h2>
-    <p>If your project was connected to the old GitHub account's repository, you must update the remote URL to point to the new account.</p>
+    <p>If your project was connected to the old GitHub account's repository, you must update the remote URL to point to
+        the new account.</p>
 
     <h3>Check the Current Remote Repository</h3>
     <p>Run the following command in the VS Code terminal:</p>
 
-<pre><code>git remote -v</code></pre>
+    <pre><code>git remote -v</code></pre>
 
     <p>This will show the current remote URLs. If they point to your old account, update them.</p>
 
     <h3>Change the Remote URL</h3>
 
-<pre><code>git remote set-url origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git</code></pre>
+    <pre><code>git remote set-url origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git</code></pre>
 
     <p>For example:</p>
 
-<pre><code>git remote set-url origin https://github.com/aiocrafters/myproject.git</code></pre>
+    <pre><code>git remote set-url origin https://github.com/aiocrafters/myproject.git</code></pre>
 
     <p>Now your project will push code to the repository under the <strong>new GitHub account</strong>.</p>
 
     <div class="tip-box">
-        <p><strong>💡 Tip:</strong> After updating the remote URL, run <code>git remote -v</code> again to confirm the change was applied successfully.</p>
+        <p><strong>💡 Tip:</strong> After updating the remote URL, run <code>git remote -v</code> again to confirm the
+            change was applied successfully.</p>
     </div>
 
     <hr>
@@ -425,19 +420,24 @@ user.email=aiocrafters@gmail.com</code></pre>
             </tr>
             <tr>
                 <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0;"><strong>Step 2</strong></td>
-                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0;">Remove old credentials from Windows Credential Manager</td>
+                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0;">Remove old credentials from Windows
+                    Credential Manager</td>
             </tr>
             <tr style="background: #f8fafc;">
                 <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0;"><strong>Step 3</strong></td>
-                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0;">Configure Git with new username and email</td>
+                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0;">Configure Git with new username and
+                    email</td>
             </tr>
             <tr>
                 <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0;"><strong>Step 4</strong></td>
-                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0;">Sign in with the new GitHub account</td>
+                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0;">Sign in with the new GitHub account
+                </td>
             </tr>
             <tr style="background: #f8fafc;">
-                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; border-radius: 0 0 0 8px;"><strong>Step 5</strong></td>
-                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; border-radius: 0 0 8px 0;">Update the remote repository URL (if needed)</td>
+                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; border-radius: 0 0 0 8px;"><strong>Step
+                        5</strong></td>
+                <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; border-radius: 0 0 8px 0;">Update the
+                    remote repository URL (if needed)</td>
             </tr>
         </tbody>
     </table>
@@ -446,7 +446,10 @@ user.email=aiocrafters@gmail.com</code></pre>
 
     <!-- Pro Tip -->
     <div class="tip-box">
-        <p><strong>🔑 Pro Tip:</strong> If you frequently switch between GitHub accounts, consider using <strong>SSH keys for multiple GitHub accounts</strong>. This allows you to manage several accounts on the same machine without repeatedly logging in and out. You can configure separate SSH keys for each account and use SSH config to route requests appropriately.</p>
+        <p><strong>🔑 Pro Tip:</strong> If you frequently switch between GitHub accounts, consider using <strong>SSH
+                keys for multiple GitHub accounts</strong>. This allows you to manage several accounts on the same
+            machine without repeatedly logging in and out. You can configure separate SSH keys for each account and use
+            SSH config to route requests appropriately.</p>
     </div>
 
     <hr>
@@ -454,11 +457,16 @@ user.email=aiocrafters@gmail.com</code></pre>
     <!-- Conclusion -->
     <div class="conclusion-box">
         <h2>✅ Final Thoughts</h2>
-        <p>Changing the GitHub account in VS Code is simple when you follow the correct process. The key steps include <strong>signing out of the old account, removing saved credentials, updating Git configuration, and signing in with the new account</strong>.</p>
-        <p>Once completed, you will be able to <strong>push, pull, and manage repositories using your new GitHub account</strong> without any authentication issues.</p>
-        <p>If you manage multiple projects or accounts, keeping your Git configuration updated will help avoid many common development problems.</p>
+        <p>Changing the GitHub account in VS Code is simple when you follow the correct process. The key steps include
+            <strong>signing out of the old account, removing saved credentials, updating Git configuration, and signing
+                in with the new account</strong>.</p>
+        <p>Once completed, you will be able to <strong>push, pull, and manage repositories using your new GitHub
+                account</strong> without any authentication issues.</p>
+        <p>If you manage multiple projects or accounts, keeping your Git configuration updated will help avoid many
+            common development problems.</p>
         <hr style="background: rgba(0,0,0,0.1); margin: 20px 0;">
-        <p><em>By keeping your development environment properly configured, you ensure a smooth and productive workflow every time you code.</em></p>
+        <p><em>By keeping your development environment properly configured, you ensure a smooth and productive workflow
+                every time you code.</em></p>
     </div>
 
 </div>
