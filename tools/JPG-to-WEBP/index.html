@@ -1,0 +1,701 @@
+<!-- AIOCrafters - JPG to WEBP Converter Tool - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "JPG to WEBP Converter",
+  "description": "Free online JPG to WEBP converter. Convert JPG/JPEG images to modern WEBP format for smaller file sizes and faster web loading. Adjustable quality — no upload, no sign-up, 100% private.",
+  "url": "https://www.aiocrafters.com/p/jpg-to-webp.html",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How to convert JPG to WEBP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Upload your JPG image using the file picker or drag-and-drop it into the tool. Adjust the quality slider if needed, then click 'Convert to WEBP'. Your converted WEBP image will be ready to preview and download instantly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this JPG to WEBP converter free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, this tool is completely free. No sign-up, no watermark, and no file size limits."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my image uploaded to any server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The entire conversion happens locally in your browser using JavaScript and HTML5 Canvas. Your images are never uploaded or stored on any server."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will converting JPG to WEBP reduce file size?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! WEBP typically produces 25–35% smaller files than JPG at equivalent visual quality. You can adjust the quality slider for even more compression."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do all browsers support WEBP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, all modern browsers support WEBP including Chrome, Firefox, Edge, Safari (14.0+), and Opera. Only very old browser versions may not support it."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .jtw-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .jtw-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .jtw-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    /* Drop Zone */
+    .jtw-drop-zone {
+        border: 3px dashed #ccc;
+        border-radius: 12px;
+        padding: 40px 20px;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: #fafbfc;
+        position: relative;
+    }
+
+    .jtw-drop-zone:hover,
+    .jtw-drop-zone.dragover {
+        border-color: #1565c0;
+        background: #e3f2fd;
+    }
+
+    .jtw-drop-zone .jtw-drop-icon {
+        font-size: 42px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .jtw-drop-zone .jtw-drop-text {
+        font-size: 16px;
+        color: #777;
+    }
+
+    .jtw-drop-zone .jtw-drop-text strong {
+        color: #1565c0;
+    }
+
+    .jtw-drop-zone input[type="file"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    /* File Info */
+    .jtw-file-info {
+        display: none;
+        margin-top: 16px;
+        padding: 12px 16px;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #166534;
+        text-align: left;
+    }
+
+    /* Quality Slider */
+    .jtw-quality-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+    }
+
+    .jtw-quality-row label {
+        font-size: 15px;
+        font-weight: 600;
+        color: #555;
+    }
+
+    .jtw-quality-row input[type="range"] {
+        width: 200px;
+        accent-color: #1565c0;
+    }
+
+    .jtw-quality-row .jtw-quality-val {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1565c0;
+        min-width: 42px;
+    }
+
+    /* Buttons */
+    .jtw-btn-row {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 18px;
+        flex-wrap: wrap;
+    }
+
+    .jtw-btn {
+        padding: 12px 28px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .jtw-btn-convert {
+        background: linear-gradient(135deg, #42a5f5, #1565c0);
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(21, 101, 192, 0.3);
+    }
+
+    .jtw-btn-convert:hover {
+        box-shadow: 0 5px 16px rgba(21, 101, 192, 0.45);
+        transform: translateY(-1px);
+    }
+
+    .jtw-btn-convert:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .jtw-btn-clear {
+        background: #f1f3f5;
+        color: #555;
+        border: 1px solid #ddd;
+    }
+
+    .jtw-btn-clear:hover {
+        background: #e9ecef;
+    }
+
+    /* Result Area */
+    .jtw-result {
+        display: none;
+        margin-top: 24px;
+        padding: 20px;
+        background: #fafbfc;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .jtw-result img {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        margin-bottom: 16px;
+    }
+
+    .jtw-result-stats {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .jtw-result-stats span {
+        background: #e3f2fd;
+        padding: 6px 14px;
+        border-radius: 6px;
+        border: 1px solid #bbdefb;
+    }
+
+    .jtw-result-stats .jtw-savings {
+        background: #f0fdf4;
+        border-color: #bbf7d0;
+        color: #166534;
+        font-weight: 600;
+    }
+
+    .jtw-download-btn {
+        display: inline-block;
+        padding: 12px 32px;
+        background: linear-gradient(135deg, #42a5f5, #1565c0);
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 15px;
+        transition: all 0.2s;
+        box-shadow: 0 3px 10px rgba(21, 101, 192, 0.3);
+    }
+
+    .jtw-download-btn:hover {
+        box-shadow: 0 5px 16px rgba(21, 101, 192, 0.45);
+        transform: translateY(-1px);
+        color: #fff;
+    }
+
+    /* --- Content Sections --- */
+    .jtw-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .jtw-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .jtw-wrapper ul,
+    .jtw-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .jtw-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .jtw-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .jtw-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .jtw-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .jtw-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .jtw-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .jtw-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    /* Comparison Table */
+    .jtw-compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .jtw-compare-table th {
+        background: #1565c0;
+        color: #fff;
+        padding: 10px 14px;
+        text-align: left;
+    }
+
+    .jtw-compare-table td {
+        border: 1px solid #e0e0e0;
+        padding: 10px 14px;
+    }
+
+    .jtw-compare-table tr:nth-child(even) {
+        background: #e3f2fd;
+    }
+
+    .jtw-highlight-box {
+        background: #e3f2fd;
+        border: 1px solid #bbdefb;
+        border-left: 5px solid #1565c0;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .jtw-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .jtw-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .jtw-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        .jtw-container {
+            padding: 20px 16px;
+        }
+
+        .jtw-drop-zone {
+            padding: 30px 14px;
+        }
+    }
+</style>
+
+<div class="jtw-wrapper">
+
+    <!-- Intro Content -->
+    <h2>🖼️ JPG to WEBP Converter — Free Online Tool</h2>
+    <p>Need to convert a <strong>JPG image to WEBP</strong> format? Our free <strong>JPG to WEBP Converter</strong>
+        transforms your JPEG images into the modern WEBP format for <strong>25–35% smaller file sizes</strong> at
+        equivalent visual quality. Everything runs in your browser — no upload, no sign-up, no watermark.</p>
+
+    <!-- Tool Container -->
+    <div class="jtw-container">
+        <h2>🔄 JPG to WEBP Converter</h2>
+
+        <!-- Drop Zone -->
+        <div class="jtw-drop-zone" id="jtwDropZone">
+            <span class="jtw-drop-icon">📁</span>
+            <span class="jtw-drop-text">Drag &amp; drop your JPG image here<br>or <strong>click to
+                    browse</strong></span>
+            <input type="file" id="jtwFileInput" accept="image/jpeg,image/jpg" onchange="jtwFileSelected()">
+        </div>
+
+        <!-- File Info -->
+        <div class="jtw-file-info" id="jtwFileInfo"></div>
+
+        <!-- Quality Slider -->
+        <div class="jtw-quality-row">
+            <label>Quality:</label>
+            <input type="range" id="jtwQuality" min="10" max="100" value="80"
+                oninput="document.getElementById('jtwQualityVal').textContent = this.value + '%'">
+            <span class="jtw-quality-val" id="jtwQualityVal">80%</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="jtw-btn-row">
+            <button class="jtw-btn jtw-btn-convert" id="jtwConvertBtn" onclick="jtwConvert()" disabled>🔄 Convert to
+                WEBP</button>
+            <button class="jtw-btn jtw-btn-clear" onclick="jtwClear()">🗑️ Clear</button>
+        </div>
+
+        <!-- Result Area -->
+        <div class="jtw-result" id="jtwResult"></div>
+    </div>
+
+    <!-- Highlight -->
+    <div class="jtw-highlight-box">
+        <strong>💡 Did You Know?</strong> Google developed the WEBP format specifically for the web. WEBP images are
+        <strong>25–35% smaller</strong> than JPG at the same visual quality — meaning faster page loads and better SEO
+        rankings.
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Convert JPG to WEBP</h2>
+    <ol>
+        <li><strong>Select a JPG Image</strong> — Click the upload area or drag and drop your JPG/JPEG file into the
+            tool.</li>
+        <li><strong>Adjust Quality (Optional)</strong> — Use the quality slider to set WEBP output quality between 10%
+            and 100%. Default is 80% for optimal compression.</li>
+        <li><strong>Click "Convert to WEBP"</strong> — The tool processes the image locally in your browser using HTML5
+            Canvas.</li>
+        <li><strong>Preview &amp; Download</strong> — View the converted WEBP with size comparison and click the
+            download button to save it.</li>
+    </ol>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="jtw-features-grid">
+        <div class="jtw-feature-card">
+            <span class="icon">⚡</span>
+            <strong>Instant Conversion</strong>
+            <p>Convert JPG to WEBP in seconds — no waiting.</p>
+        </div>
+        <div class="jtw-feature-card">
+            <span class="icon">🎚️</span>
+            <strong>Adjustable Quality</strong>
+            <p>Control output quality from 10% to 100%.</p>
+        </div>
+        <div class="jtw-feature-card">
+            <span class="icon">📉</span>
+            <strong>Smaller File Size</strong>
+            <p>WEBP is 25–35% smaller than JPG at same quality.</p>
+        </div>
+        <div class="jtw-feature-card">
+            <span class="icon">🔒</span>
+            <strong>100% Private</strong>
+            <p>No uploads. Everything runs in your browser.</p>
+        </div>
+    </div>
+
+    <!-- JPG vs WEBP Comparison -->
+    <h2>📊 JPG vs WEBP — What's the Difference?</h2>
+    <table class="jtw-compare-table">
+        <tr>
+            <th>Feature</th>
+            <th>JPG</th>
+            <th>WEBP</th>
+        </tr>
+        <tr>
+            <td>Compression</td>
+            <td>Lossy</td>
+            <td>Lossy + Lossless</td>
+        </tr>
+        <tr>
+            <td>Transparency</td>
+            <td>❌ Not supported</td>
+            <td>✅ Supported</td>
+        </tr>
+        <tr>
+            <td>File Size</td>
+            <td>Larger</td>
+            <td>25–35% smaller</td>
+        </tr>
+        <tr>
+            <td>Animation</td>
+            <td>❌ Not supported</td>
+            <td>✅ Supported</td>
+        </tr>
+        <tr>
+            <td>Browser Support</td>
+            <td>All browsers</td>
+            <td>All modern browsers</td>
+        </tr>
+        <tr>
+            <td>Best For</td>
+            <td>Photos, universal use</td>
+            <td>Web images, fast loading</td>
+        </tr>
+    </table>
+
+    <!-- Why Convert -->
+    <h2>🤔 Why Convert JPG to WEBP?</h2>
+    <ul>
+        <li><strong>Smaller File Size</strong> — WEBP images are 25–35% smaller than JPG at equivalent quality, as per
+            Google's own benchmarks.</li>
+        <li><strong>Faster Page Loading</strong> — Smaller images load faster, improving user experience and reducing
+            bounce rates.</li>
+        <li><strong>Better SEO</strong> — Google PageSpeed Insights recommends serving images in WEBP format. Using WEBP
+            can directly improve your SEO score.</li>
+        <li><strong>Save Bandwidth</strong> — Smaller files mean less bandwidth usage, which is critical for mobile
+            users and sites with high traffic.</li>
+        <li><strong>Modern Web Standard</strong> — WEBP is supported by all modern browsers including Chrome, Firefox,
+            Edge, Safari (14+), and Opera.</li>
+    </ul>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="jtw-faq-item">
+        <h3>How to convert JPG to WEBP?</h3>
+        <p>Upload your JPG image using the file picker or drag-and-drop. Adjust quality if needed, then click "Convert
+            to WEBP". Your converted image will be ready to preview and download instantly.</p>
+    </div>
+
+    <div class="jtw-faq-item">
+        <h3>Is this JPG to WEBP converter free?</h3>
+        <p>Yes, this tool is completely free. No sign-up, no watermark, and no file size limits.</p>
+    </div>
+
+    <div class="jtw-faq-item">
+        <h3>Is my image uploaded to any server?</h3>
+        <p>No. The entire conversion happens locally in your browser using JavaScript and HTML5 Canvas. Your images are
+            never uploaded or stored on any server.</p>
+    </div>
+
+    <div class="jtw-faq-item">
+        <h3>Will converting JPG to WEBP reduce quality?</h3>
+        <p>At the default 80% quality, the visual difference is nearly imperceptible while the file size reduction is
+            significant. Increase the slider to 100% for maximum quality or lower it for even smaller files.</p>
+    </div>
+
+    <div class="jtw-faq-item">
+        <h3>Do all browsers support WEBP?</h3>
+        <p>Yes, all modern browsers support WEBP — including Chrome, Firefox, Edge, Safari (14.0+), and Opera. Only very
+            old browser versions may not support it.</p>
+    </div>
+
+    <div class="jtw-faq-item">
+        <h3>Can I convert multiple images at once?</h3>
+        <p>Currently this tool converts one image at a time. Simply clear the result and upload your next image to
+            convert again.</p>
+    </div>
+
+</div>
+
+<script>
+    // --- Drag & Drop ---
+    var jtwDropZone = document.getElementById('jtwDropZone');
+
+    jtwDropZone.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        jtwDropZone.classList.add('dragover');
+    });
+
+    jtwDropZone.addEventListener('dragleave', function () {
+        jtwDropZone.classList.remove('dragover');
+    });
+
+    jtwDropZone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        jtwDropZone.classList.remove('dragover');
+        var files = e.dataTransfer.files;
+        if (files.length > 0 && (files[0].type === 'image/jpeg' || files[0].type === 'image/jpg')) {
+            document.getElementById('jtwFileInput').files = files;
+            jtwFileSelected();
+        }
+    });
+
+    // --- File Selected ---
+    function jtwFileSelected() {
+        var file = document.getElementById('jtwFileInput').files[0];
+        if (!file) return;
+
+        var fileInfo = document.getElementById('jtwFileInfo');
+        var sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        var sizeKB = (file.size / 1024).toFixed(1);
+        var displaySize = file.size >= 1048576 ? sizeMB + ' MB' : sizeKB + ' KB';
+
+        fileInfo.style.display = 'block';
+        fileInfo.innerHTML = '✅ <strong>File:</strong> ' + file.name + ' &nbsp;|&nbsp; <strong>Size:</strong> ' + displaySize;
+
+        document.getElementById('jtwConvertBtn').disabled = false;
+        document.getElementById('jtwResult').style.display = 'none';
+    }
+
+    // --- Convert ---
+    function jtwConvert() {
+        var file = document.getElementById('jtwFileInput').files[0];
+        if (!file) {
+            alert('Please select a JPG file first.');
+            return;
+        }
+
+        var quality = parseInt(document.getElementById('jtwQuality').value) / 100;
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = function (e) {
+            var img = new Image();
+            img.src = e.target.result;
+
+            img.onload = function () {
+                var canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, img.width, img.height);
+
+                canvas.toBlob(function (blob) {
+                    var webpURL = URL.createObjectURL(blob);
+                    var resultDiv = document.getElementById('jtwResult');
+
+                    var origSizeKB = (file.size / 1024).toFixed(1);
+                    var newSizeKB = (blob.size / 1024).toFixed(1);
+                    var savings = Math.round((1 - blob.size / file.size) * 100);
+                    var origName = file.name.replace(/\.(jpg|jpeg)$/i, '');
+
+                    resultDiv.style.display = 'block';
+                    resultDiv.innerHTML =
+                        '<img src="' + webpURL + '" alt="Converted WEBP">' +
+                        '<div class="jtw-result-stats">' +
+                        '<span>📐 ' + img.width + ' × ' + img.height + ' px</span>' +
+                        '<span>📦 Original JPG: ' + origSizeKB + ' KB</span>' +
+                        '<span>📦 Converted WEBP: ' + newSizeKB + ' KB</span>' +
+                        (savings > 0 ? '<span class="jtw-savings">✅ ' + savings + '% smaller</span>' : '') +
+                        '</div>' +
+                        '<a class="jtw-download-btn" href="' + webpURL + '" download="' + origName + '.webp">⬇️ Download WEBP</a>';
+                }, 'image/webp', quality);
+            };
+        };
+    }
+
+    // --- Clear ---
+    function jtwClear() {
+        document.getElementById('jtwFileInput').value = '';
+        document.getElementById('jtwFileInfo').style.display = 'none';
+        document.getElementById('jtwResult').style.display = 'none';
+        document.getElementById('jtwConvertBtn').disabled = true;
+    }
+</script>

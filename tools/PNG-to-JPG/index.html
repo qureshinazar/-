@@ -1,0 +1,632 @@
+<!-- AIOCrafters - PNG to JPG Converter Tool - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PNG to JPG Converter",
+  "description": "Free online PNG to JPG converter. Convert PNG images to compressed JPG format instantly in your browser. Adjustable quality, white background for transparency — no upload, no sign-up, 100% private.",
+  "url": "https://www.aiocrafters.com/p/png-to-jpg.html",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How to convert PNG to JPG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Upload your PNG image using the file picker or drag-and-drop it into the tool. Adjust the quality slider if needed, then click 'Convert to JPG'. Your converted JPG image will be ready to preview and download instantly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this PNG to JPG converter free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, this tool is completely free. No sign-up, no watermark, and no file size limits."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my image uploaded to any server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The entire conversion happens locally in your browser using JavaScript and HTML5 Canvas. Your images are never uploaded or stored on any server."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to transparent areas when converting PNG to JPG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Since JPG does not support transparency, all transparent areas in your PNG image will be filled with a white background during conversion."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will converting PNG to JPG reduce file size?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. JPG uses lossy compression, so the converted file is typically much smaller than the original PNG. You can control the trade-off between quality and file size using the quality slider."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .ptj-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .ptj-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .ptj-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    /* Drop Zone */
+    .ptj-drop-zone {
+        border: 3px dashed #ccc;
+        border-radius: 12px;
+        padding: 40px 20px;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: #fafbfc;
+        position: relative;
+    }
+
+    .ptj-drop-zone:hover,
+    .ptj-drop-zone.dragover {
+        border-color: #00897b;
+        background: #e0f2f1;
+    }
+
+    .ptj-drop-zone .ptj-drop-icon {
+        font-size: 42px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .ptj-drop-zone .ptj-drop-text {
+        font-size: 16px;
+        color: #777;
+    }
+
+    .ptj-drop-zone .ptj-drop-text strong {
+        color: #00897b;
+    }
+
+    .ptj-drop-zone input[type="file"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    /* File Info */
+    .ptj-file-info {
+        display: none;
+        margin-top: 16px;
+        padding: 12px 16px;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #166534;
+        text-align: left;
+    }
+
+    /* Quality Slider */
+    .ptj-quality-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+    }
+
+    .ptj-quality-row label {
+        font-size: 15px;
+        font-weight: 600;
+        color: #555;
+    }
+
+    .ptj-quality-row input[type="range"] {
+        width: 200px;
+        accent-color: #00897b;
+    }
+
+    .ptj-quality-row .ptj-quality-val {
+        font-size: 15px;
+        font-weight: 700;
+        color: #00897b;
+        min-width: 42px;
+    }
+
+    /* Buttons */
+    .ptj-btn-row {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 18px;
+        flex-wrap: wrap;
+    }
+
+    .ptj-btn {
+        padding: 12px 28px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .ptj-btn-convert {
+        background: linear-gradient(135deg, #42e695, #3bb2b8);
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(0, 137, 123, 0.3);
+    }
+
+    .ptj-btn-convert:hover {
+        box-shadow: 0 5px 16px rgba(0, 137, 123, 0.45);
+        transform: translateY(-1px);
+    }
+
+    .ptj-btn-convert:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .ptj-btn-clear {
+        background: #f1f3f5;
+        color: #555;
+        border: 1px solid #ddd;
+    }
+
+    .ptj-btn-clear:hover {
+        background: #e9ecef;
+    }
+
+    /* Result Area */
+    .ptj-result {
+        display: none;
+        margin-top: 24px;
+        padding: 20px;
+        background: #fafbfc;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .ptj-result img {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        margin-bottom: 16px;
+    }
+
+    .ptj-result-stats {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .ptj-result-stats span {
+        background: #e0f2f1;
+        padding: 6px 14px;
+        border-radius: 6px;
+        border: 1px solid #b2dfdb;
+    }
+
+    .ptj-result-stats .ptj-savings {
+        background: #f0fdf4;
+        border-color: #bbf7d0;
+        color: #166534;
+        font-weight: 600;
+    }
+
+    .ptj-download-btn {
+        display: inline-block;
+        padding: 12px 32px;
+        background: linear-gradient(135deg, #42e695, #3bb2b8);
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 15px;
+        transition: all 0.2s;
+        box-shadow: 0 3px 10px rgba(0, 137, 123, 0.3);
+    }
+
+    .ptj-download-btn:hover {
+        box-shadow: 0 5px 16px rgba(0, 137, 123, 0.45);
+        transform: translateY(-1px);
+        color: #fff;
+    }
+
+    /* --- Content Sections --- */
+    .ptj-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .ptj-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .ptj-wrapper ul,
+    .ptj-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .ptj-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .ptj-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .ptj-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .ptj-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .ptj-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .ptj-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .ptj-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    .ptj-note-box {
+        background: #fffde7;
+        border: 1px solid #fff9c4;
+        border-left: 5px solid #fbc02d;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .ptj-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .ptj-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .ptj-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        .ptj-container {
+            padding: 20px 16px;
+        }
+
+        .ptj-drop-zone {
+            padding: 30px 14px;
+        }
+    }
+</style>
+
+<div class="ptj-wrapper">
+
+    <!-- Intro Content -->
+    <h2>🖼️ PNG to JPG Converter — Free Online Tool</h2>
+    <p>Need to convert a <strong>PNG image to JPG</strong>? Our free <strong>PNG to JPG Converter</strong> reduces file
+        size by converting your lossless PNG images to compressed JPG format — right in your browser. Adjust quality,
+        preview the result, and download instantly. No upload, no sign-up, no watermark.</p>
+
+    <!-- Tool Container -->
+    <div class="ptj-container">
+        <h2>🔄 PNG to JPG Converter</h2>
+
+        <!-- Drop Zone -->
+        <div class="ptj-drop-zone" id="ptjDropZone">
+            <span class="ptj-drop-icon">📁</span>
+            <span class="ptj-drop-text">Drag &amp; drop your PNG image here<br>or <strong>click to
+                    browse</strong></span>
+            <input type="file" id="ptjFileInput" accept="image/png" onchange="ptjFileSelected()">
+        </div>
+
+        <!-- File Info -->
+        <div class="ptj-file-info" id="ptjFileInfo"></div>
+
+        <!-- Quality Slider -->
+        <div class="ptj-quality-row">
+            <label>Quality:</label>
+            <input type="range" id="ptjQuality" min="10" max="100" value="90"
+                oninput="document.getElementById('ptjQualityVal').textContent = this.value + '%'">
+            <span class="ptj-quality-val" id="ptjQualityVal">90%</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="ptj-btn-row">
+            <button class="ptj-btn ptj-btn-convert" id="ptjConvertBtn" onclick="ptjConvert()" disabled>🔄 Convert to
+                JPG</button>
+            <button class="ptj-btn ptj-btn-clear" onclick="ptjClear()">🗑️ Clear</button>
+        </div>
+
+        <!-- Result Area -->
+        <div class="ptj-result" id="ptjResult"></div>
+    </div>
+
+    <!-- Transparency Note -->
+    <div class="ptj-note-box">
+        <strong>💡 Note:</strong> JPG does not support transparency. Any transparent areas in your PNG image will be
+        filled with a <strong>white background</strong> during conversion.
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Convert PNG to JPG</h2>
+    <ol>
+        <li><strong>Select a PNG Image</strong> — Click the upload area or drag and drop your PNG file into the tool.
+        </li>
+        <li><strong>Adjust Quality (Optional)</strong> — Use the quality slider to set JPG output quality between 10%
+            and 100%. Default is 90% for optimal size-quality balance.</li>
+        <li><strong>Click "Convert to JPG"</strong> — The tool processes the image locally in your browser.</li>
+        <li><strong>Preview &amp; Download</strong> — View the converted JPG with size comparison and click the download
+            button to save it.</li>
+    </ol>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="ptj-features-grid">
+        <div class="ptj-feature-card">
+            <span class="icon">⚡</span>
+            <strong>Instant Conversion</strong>
+            <p>Convert PNG to JPG in seconds — no waiting.</p>
+        </div>
+        <div class="ptj-feature-card">
+            <span class="icon">🎚️</span>
+            <strong>Adjustable Quality</strong>
+            <p>Control output quality from 10% to 100%.</p>
+        </div>
+        <div class="ptj-feature-card">
+            <span class="icon">📉</span>
+            <strong>Smaller File Size</strong>
+            <p>JPG compression significantly reduces file size.</p>
+        </div>
+        <div class="ptj-feature-card">
+            <span class="icon">🔒</span>
+            <strong>100% Private</strong>
+            <p>No uploads. Everything runs in your browser.</p>
+        </div>
+    </div>
+
+    <!-- Why Convert -->
+    <h2>🤔 Why Convert PNG to JPG?</h2>
+    <ul>
+        <li><strong>Smaller File Size</strong> — JPG files are significantly smaller than PNG, making them easier to
+            upload, share, and store.</li>
+        <li><strong>Faster Web Loading</strong> — JPG images load faster on websites, improving page speed and user
+            experience.</li>
+        <li><strong>Email &amp; Uploads</strong> — Many platforms have file size limits. Converting to JPG helps you
+            stay within those limits.</li>
+        <li><strong>Storage Savings</strong> — Save disk space on your device by converting large PNG screenshots and
+            images to JPG.</li>
+        <li><strong>Universal Compatibility</strong> — JPG is the most widely supported image format across all devices,
+            apps, and platforms.</li>
+    </ul>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="ptj-faq-item">
+        <h3>How to convert PNG to JPG?</h3>
+        <p>Upload your PNG image using the file picker or drag-and-drop. Adjust quality if needed, then click "Convert
+            to JPG". Your converted image will be ready to preview and download instantly.</p>
+    </div>
+
+    <div class="ptj-faq-item">
+        <h3>Is this PNG to JPG converter free?</h3>
+        <p>Yes, this tool is completely free. No sign-up, no watermark, and no file size limits.</p>
+    </div>
+
+    <div class="ptj-faq-item">
+        <h3>Is my image uploaded to any server?</h3>
+        <p>No. The entire conversion happens locally in your browser using JavaScript and HTML5 Canvas. Your images are
+            never uploaded or stored on any server.</p>
+    </div>
+
+    <div class="ptj-faq-item">
+        <h3>What happens to transparent areas?</h3>
+        <p>Since JPG does not support transparency, all transparent areas in your PNG image will be filled with a white
+            background during conversion.</p>
+    </div>
+
+    <div class="ptj-faq-item">
+        <h3>Will converting PNG to JPG reduce file size?</h3>
+        <p>Yes! JPG uses lossy compression, so the converted file is typically much smaller than the original PNG. You
+            can control the trade-off between quality and file size using the quality slider.</p>
+    </div>
+
+</div>
+
+<script>
+    // --- Drag & Drop ---
+    var ptjDropZone = document.getElementById('ptjDropZone');
+
+    ptjDropZone.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        ptjDropZone.classList.add('dragover');
+    });
+
+    ptjDropZone.addEventListener('dragleave', function () {
+        ptjDropZone.classList.remove('dragover');
+    });
+
+    ptjDropZone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        ptjDropZone.classList.remove('dragover');
+        var files = e.dataTransfer.files;
+        if (files.length > 0 && files[0].type === 'image/png') {
+            document.getElementById('ptjFileInput').files = files;
+            ptjFileSelected();
+        }
+    });
+
+    // --- File Selected ---
+    function ptjFileSelected() {
+        var file = document.getElementById('ptjFileInput').files[0];
+        if (!file) return;
+
+        var fileInfo = document.getElementById('ptjFileInfo');
+        var sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        var sizeKB = (file.size / 1024).toFixed(1);
+        var displaySize = file.size >= 1048576 ? sizeMB + ' MB' : sizeKB + ' KB';
+
+        fileInfo.style.display = 'block';
+        fileInfo.innerHTML = '✅ <strong>File:</strong> ' + file.name + ' &nbsp;|&nbsp; <strong>Size:</strong> ' + displaySize;
+
+        document.getElementById('ptjConvertBtn').disabled = false;
+        document.getElementById('ptjResult').style.display = 'none';
+    }
+
+    // --- Convert ---
+    function ptjConvert() {
+        var file = document.getElementById('ptjFileInput').files[0];
+        if (!file) {
+            alert('Please select a PNG file first.');
+            return;
+        }
+
+        var quality = parseInt(document.getElementById('ptjQuality').value) / 100;
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = function (e) {
+            var img = new Image();
+            img.src = e.target.result;
+
+            img.onload = function () {
+                var canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                var ctx = canvas.getContext('2d');
+                // Fill white background (JPG has no transparency)
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, img.width, img.height);
+
+                canvas.toBlob(function (blob) {
+                    var jpgURL = URL.createObjectURL(blob);
+                    var resultDiv = document.getElementById('ptjResult');
+
+                    var origSizeKB = (file.size / 1024).toFixed(1);
+                    var newSizeKB = (blob.size / 1024).toFixed(1);
+                    var savings = Math.round((1 - blob.size / file.size) * 100);
+                    var origName = file.name.replace(/\.png$/i, '');
+
+                    resultDiv.style.display = 'block';
+                    resultDiv.innerHTML =
+                        '<img src="' + jpgURL + '" alt="Converted JPG">' +
+                        '<div class="ptj-result-stats">' +
+                        '<span>📐 ' + img.width + ' × ' + img.height + ' px</span>' +
+                        '<span>📦 Original PNG: ' + origSizeKB + ' KB</span>' +
+                        '<span>📦 Converted JPG: ' + newSizeKB + ' KB</span>' +
+                        (savings > 0 ? '<span class="ptj-savings">✅ ' + savings + '% smaller</span>' : '') +
+                        '</div>' +
+                        '<a class="ptj-download-btn" href="' + jpgURL + '" download="' + origName + '.jpg">⬇️ Download JPG</a>';
+                }, 'image/jpeg', quality);
+            };
+        };
+    }
+
+    // --- Clear ---
+    function ptjClear() {
+        document.getElementById('ptjFileInput').value = '';
+        document.getElementById('ptjFileInfo').style.display = 'none';
+        document.getElementById('ptjResult').style.display = 'none';
+        document.getElementById('ptjConvertBtn').disabled = true;
+    }
+</script>
