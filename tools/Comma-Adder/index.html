@@ -1,0 +1,753 @@
+<!-- AIOCrafters - Comma Adder Tool - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Comma Adder - Number Formatter",
+  "description": "Free online Comma Adder tool. Instantly format numbers with commas in Indian (lakhs/crores) or International (millions/billions) style. Supports multiple numbers, decimal numbers, and copy to clipboard.",
+  "url": "https://www.aiocrafters.com/p/comma-adder.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I add commas to a number?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Simply enter your number in the text box and click 'Format'. The tool instantly adds commas in the correct positions. You can choose between Indian numbering (12,34,567) or International numbering (1,234,567)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between Indian and International comma format?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Indian format groups the first three digits from the right, then groups every two digits (e.g., 1,23,45,678). International format groups every three digits from the right (e.g., 123,456,78). Indian format is used in India, Nepal, Bangladesh, and Sri Lanka."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I format multiple numbers at once?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! Enter each number on a separate line in the text box. The tool will format all numbers at once."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work with decimal numbers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, the tool correctly handles decimal numbers. Commas are only added to the integer part before the decimal point."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .cat-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .cat-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .cat-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+    .cat-container .cat-subtitle {
+        font-size: 14px;
+        color: #888;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Format Toggle */
+    .cat-format-toggle {
+        display: flex;
+        justify-content: center;
+        gap: 0;
+        margin-bottom: 20px;
+    }
+
+    .cat-format-toggle button {
+        padding: 10px 24px;
+        border: 2px solid #e0e0e0;
+        background: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #777;
+    }
+
+    .cat-format-toggle button:first-child {
+        border-radius: 8px 0 0 8px;
+    }
+
+    .cat-format-toggle button:last-child {
+        border-radius: 0 8px 8px 0;
+        border-left: none;
+    }
+
+    .cat-format-toggle button.active {
+        background: #ad1457;
+        color: #fff;
+        border-color: #ad1457;
+    }
+
+    /* Input / Output */
+    .cat-io-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+
+    .cat-io-box {
+        position: relative;
+    }
+
+    .cat-io-box label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .cat-io-box textarea {
+        width: 100%;
+        height: 140px;
+        padding: 12px 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 16px;
+        font-family: 'Courier New', monospace;
+        outline: none;
+        transition: border-color 0.3s;
+        resize: vertical;
+        box-sizing: border-box;
+    }
+
+    .cat-io-box textarea:focus {
+        border-color: #ad1457;
+        box-shadow: 0 0 0 3px rgba(173, 20, 87, 0.12);
+    }
+
+    .cat-io-box textarea::placeholder {
+        color: #bbb;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .cat-output-area {
+        width: 100%;
+        height: 140px;
+        padding: 12px 14px;
+        border: 2px solid #e8f5e9;
+        border-radius: 8px;
+        font-size: 16px;
+        font-family: 'Courier New', monospace;
+        background: #f9fdf9;
+        color: #2e7d32;
+        overflow-y: auto;
+        box-sizing: border-box;
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+
+    /* Buttons */
+    .cat-btn-row {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 16px;
+        flex-wrap: wrap;
+    }
+
+    .cat-btn {
+        padding: 12px 28px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .cat-btn-format {
+        background: linear-gradient(135deg, #f06292, #ad1457);
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(173, 20, 87, 0.3);
+    }
+
+    .cat-btn-format:hover {
+        box-shadow: 0 5px 16px rgba(173, 20, 87, 0.45);
+        transform: translateY(-1px);
+    }
+
+    .cat-btn-copy {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #a5d6a7;
+    }
+
+    .cat-btn-copy:hover {
+        background: #c8e6c9;
+    }
+
+    .cat-btn-clear {
+        background: #f1f3f5;
+        color: #555;
+        border: 1px solid #ddd;
+    }
+
+    .cat-btn-clear:hover {
+        background: #e9ecef;
+    }
+
+    .cat-btn-swap {
+        background: #fff3e0;
+        color: #e65100;
+        border: 1px solid #ffe0b2;
+    }
+
+    .cat-btn-swap:hover {
+        background: #ffe0b2;
+    }
+
+    /* Live Preview */
+    .cat-live-preview {
+        margin-top: 16px;
+        padding: 14px 18px;
+        background: #fce4ec;
+        border: 1px solid #f8bbd0;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 14px;
+        display: none;
+    }
+
+    .cat-live-preview .cat-preview-number {
+        font-size: 28px;
+        font-weight: 700;
+        color: #ad1457;
+        font-family: 'Courier New', monospace;
+        display: block;
+        margin-top: 6px;
+        word-break: break-all;
+    }
+
+    /* --- Content Sections --- */
+    .cat-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .cat-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .cat-wrapper ul,
+    .cat-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .cat-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .cat-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .cat-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .cat-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .cat-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .cat-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .cat-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    /* Comparison Table */
+    .cat-compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .cat-compare-table th {
+        background: #ad1457;
+        color: #fff;
+        padding: 10px 14px;
+        text-align: left;
+    }
+
+    .cat-compare-table td {
+        border: 1px solid #e0e0e0;
+        padding: 10px 14px;
+        font-family: 'Courier New', monospace;
+    }
+
+    .cat-compare-table tr:nth-child(even) {
+        background: #fce4ec;
+    }
+
+    .cat-highlight-box {
+        background: #fce4ec;
+        border: 1px solid #f8bbd0;
+        border-left: 5px solid #ad1457;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .cat-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .cat-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .cat-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        .cat-container {
+            padding: 20px 16px;
+        }
+
+        .cat-io-row {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="cat-wrapper">
+
+    <!-- Intro Content -->
+    <h2>🔢 Comma Adder — Free Number Formatter Tool</h2>
+    <p>Need to format large numbers with commas? Our free <strong>Comma Adder</strong> instantly formats numbers in both
+        <strong>Indian (lakhs/crores)</strong> and <strong>International (millions/billions)</strong> styles. Supports
+        multiple numbers, decimals, and negative numbers. Perfect for financial documents, spreadsheets, and reports.
+    </p>
+
+    <!-- Tool Container -->
+    <div class="cat-container">
+        <h2>🔢 Comma Adder</h2>
+        <p class="cat-subtitle">Format numbers with commas — Indian or International style</p>
+
+        <!-- Format Toggle -->
+        <div class="cat-format-toggle">
+            <button class="active" id="catBtnIndian" onclick="catToggleFormat('indian')">🇮🇳 Indian</button>
+            <button id="catBtnIntl" onclick="catToggleFormat('international')">🌍 International</button>
+        </div>
+
+        <!-- Input / Output -->
+        <div class="cat-io-row">
+            <div class="cat-io-box">
+                <label>Input (raw numbers)</label>
+                <textarea id="catInput"
+                    placeholder="Enter numbers here...&#10;One per line or separated by spaces&#10;&#10;Example:&#10;1234567&#10;9876543210&#10;45600.75"
+                    oninput="catLivePreview()"></textarea>
+            </div>
+            <div class="cat-io-box">
+                <label>Output (formatted)</label>
+                <div class="cat-output-area" id="catOutput">Formatted numbers will appear here...</div>
+            </div>
+        </div>
+
+        <!-- Live Preview -->
+        <div class="cat-live-preview" id="catLivePreview">
+            <span>Live Preview:</span>
+            <span class="cat-preview-number" id="catPreviewNumber"></span>
+        </div>
+
+        <!-- Buttons -->
+        <div class="cat-btn-row">
+            <button class="cat-btn cat-btn-format" onclick="catFormat()">✨ Format</button>
+            <button class="cat-btn cat-btn-copy" onclick="catCopyOutput()">📋 Copy</button>
+            <button class="cat-btn cat-btn-swap" onclick="catRemoveCommas()">🔄 Remove Commas</button>
+            <button class="cat-btn cat-btn-clear" onclick="catClearAll()">🗑️ Clear</button>
+        </div>
+    </div>
+
+    <!-- Highlight -->
+    <div class="cat-highlight-box">
+        <strong>💡 Indian vs International:</strong> In the Indian numbering system, commas are placed after the first 3
+        digits from the right, then every 2 digits (e.g., <strong>1,23,45,678</strong>). In the International system,
+        commas are placed every 3 digits (e.g., <strong>12,345,678</strong>).
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Use the Comma Adder</h2>
+    <ol>
+        <li><strong>Choose Format</strong> — Select Indian (lakhs/crores) or International (millions/billions) style.
+        </li>
+        <li><strong>Enter Numbers</strong> — Type or paste one or more numbers in the input box. Use separate lines for
+            multiple numbers.</li>
+        <li><strong>Click "Format"</strong> — The tool adds commas in the correct positions instantly.</li>
+        <li><strong>Copy Output</strong> — Click "Copy" to copy the formatted numbers to your clipboard.</li>
+        <li><strong>Remove Commas</strong> — Click "Remove Commas" to strip commas from the output (reverse operation).
+        </li>
+    </ol>
+
+    <!-- Comparison Table -->
+    <h2>📊 Indian vs International Number Format</h2>
+    <table class="cat-compare-table">
+        <tr>
+            <th>Number</th>
+            <th>Indian Format</th>
+            <th>International Format</th>
+        </tr>
+        <tr>
+            <td>1000</td>
+            <td>1,000</td>
+            <td>1,000</td>
+        </tr>
+        <tr>
+            <td>100000</td>
+            <td>1,00,000</td>
+            <td>100,000</td>
+        </tr>
+        <tr>
+            <td>1234567</td>
+            <td>12,34,567</td>
+            <td>1,234,567</td>
+        </tr>
+        <tr>
+            <td>9876543210</td>
+            <td>9,87,65,43,210</td>
+            <td>9,876,543,210</td>
+        </tr>
+        <tr>
+            <td>45600.75</td>
+            <td>45,600.75</td>
+            <td>45,600.75</td>
+        </tr>
+    </table>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="cat-features-grid">
+        <div class="cat-feature-card">
+            <span class="icon">🇮🇳</span>
+            <strong>Indian Format</strong>
+            <p>Lakhs and crores style comma placement.</p>
+        </div>
+        <div class="cat-feature-card">
+            <span class="icon">🌍</span>
+            <strong>International Format</strong>
+            <p>Millions and billions style grouping.</p>
+        </div>
+        <div class="cat-feature-card">
+            <span class="icon">📝</span>
+            <strong>Multiple Numbers</strong>
+            <p>Format many numbers at once, one per line.</p>
+        </div>
+        <div class="cat-feature-card">
+            <span class="icon">📋</span>
+            <strong>Copy & Reverse</strong>
+            <p>Copy output or remove commas with one click.</p>
+        </div>
+    </div>
+
+    <!-- Use Cases -->
+    <h2>🤔 When Do You Need a Comma Adder?</h2>
+    <ul>
+        <li><strong>Financial Documents</strong> — Format amounts in invoices, bills, and balance sheets.</li>
+        <li><strong>Spreadsheet Data</strong> — Quickly format numbers before pasting into Excel or Google Sheets.</li>
+        <li><strong>Reports & Presentations</strong> — Make large numbers readable in PowerPoint or Word documents.</li>
+        <li><strong>Banking & Accounting</strong> — Ensure correct Indian or International number formatting.</li>
+        <li><strong>Social Media Posts</strong> — Format statistics and data for blog posts or social media.</li>
+        <li><strong>Student Homework</strong> — Verify comma placement in large numbers for school assignments.</li>
+    </ul>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="cat-faq-item">
+        <h3>How do I add commas to a number?</h3>
+        <p>Enter your number in the input box and click "Format". The tool adds commas in the correct positions based on
+            your selected format (Indian or International).</p>
+    </div>
+
+    <div class="cat-faq-item">
+        <h3>What is the difference between Indian and International format?</h3>
+        <p>Indian format: 12,34,567 (groups of 2 after the first 3 digits). International format: 1,234,567 (groups of 3
+            throughout). Both are correct in their respective regions.</p>
+    </div>
+
+    <div class="cat-faq-item">
+        <h3>Can I format multiple numbers at once?</h3>
+        <p>Yes! Enter each number on a separate line. The tool formats all numbers simultaneously.</p>
+    </div>
+
+    <div class="cat-faq-item">
+        <h3>Does it work with decimal numbers?</h3>
+        <p>Yes, commas are only added to the integer part before the decimal point. The decimal part is left unchanged.
+        </p>
+    </div>
+
+    <div class="cat-faq-item">
+        <h3>Can I also remove commas?</h3>
+        <p>Yes! Click the "Remove Commas" button to strip commas from any formatted number — useful for pasting into
+            calculators or code.</p>
+    </div>
+
+    <div class="cat-faq-item">
+        <h3>Is this tool free?</h3>
+        <p>Yes, completely free. No sign-up needed. Everything runs locally in your browser — no data is stored or sent
+            anywhere.</p>
+    </div>
+
+</div>
+
+<script>
+    var catFormatMode = 'indian';
+
+    function catToggleFormat(mode) {
+        catFormatMode = mode;
+        document.getElementById('catBtnIndian').classList.toggle('active', mode === 'indian');
+        document.getElementById('catBtnIntl').classList.toggle('active', mode === 'international');
+        catLivePreview();
+    }
+
+    function catFormatIndian(numStr) {
+        var parts = numStr.split('.');
+        var intPart = parts[0];
+        var decPart = parts.length > 1 ? '.' + parts[1] : '';
+        var isNeg = false;
+
+        if (intPart.charAt(0) === '-') {
+            isNeg = true;
+            intPart = intPart.substring(1);
+        }
+
+        // Indian: last 3 digits, then groups of 2
+        if (intPart.length <= 3) return (isNeg ? '-' : '') + intPart + decPart;
+
+        var last3 = intPart.slice(-3);
+        var remaining = intPart.slice(0, -3);
+        var formatted = remaining.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+        return (isNeg ? '-' : '') + formatted + ',' + last3 + decPart;
+    }
+
+    function catFormatInternational(numStr) {
+        var parts = numStr.split('.');
+        var intPart = parts[0];
+        var decPart = parts.length > 1 ? '.' + parts[1] : '';
+        var isNeg = false;
+
+        if (intPart.charAt(0) === '-') {
+            isNeg = true;
+            intPart = intPart.substring(1);
+        }
+
+        var formatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return (isNeg ? '-' : '') + formatted + decPart;
+    }
+
+    function catFormatNumber(numStr) {
+        // Clean up — remove existing commas and spaces
+        var cleaned = numStr.replace(/,/g, '').replace(/\s/g, '');
+        if (cleaned === '' || isNaN(cleaned)) return numStr.trim();
+
+        if (catFormatMode === 'indian') {
+            return catFormatIndian(cleaned);
+        } else {
+            return catFormatInternational(cleaned);
+        }
+    }
+
+    function catFormat() {
+        var input = document.getElementById('catInput').value.trim();
+        if (!input) {
+            alert('Please enter at least one number.');
+            return;
+        }
+
+        // Split by newlines, process each
+        var lines = input.split('\n');
+        var results = [];
+
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].trim();
+            if (line === '') {
+                results.push('');
+                continue;
+            }
+            // Handle multiple numbers on same line (space-separated)
+            var nums = line.split(/\s+/);
+            var formatted = [];
+            for (var j = 0; j < nums.length; j++) {
+                formatted.push(catFormatNumber(nums[j]));
+            }
+            results.push(formatted.join('  '));
+        }
+
+        document.getElementById('catOutput').textContent = results.join('\n');
+    }
+
+    function catRemoveCommas() {
+        var input = document.getElementById('catInput').value;
+        if (!input) {
+            // Try from output
+            var output = document.getElementById('catOutput').textContent;
+            if (output && output !== 'Formatted numbers will appear here...') {
+                document.getElementById('catOutput').textContent = output.replace(/,/g, '');
+                return;
+            }
+            alert('Please enter numbers first.');
+            return;
+        }
+        document.getElementById('catOutput').textContent = input.replace(/,/g, '');
+    }
+
+    function catCopyOutput() {
+        var output = document.getElementById('catOutput').textContent;
+        if (!output || output === 'Formatted numbers will appear here...') {
+            alert('Nothing to copy. Format some numbers first.');
+            return;
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(output).then(function () {
+                catShowCopied();
+            });
+        } else {
+            var t = document.createElement('textarea');
+            t.value = output;
+            document.body.appendChild(t);
+            t.select();
+            document.execCommand('copy');
+            document.body.removeChild(t);
+            catShowCopied();
+        }
+    }
+
+    function catShowCopied() {
+        var btns = document.querySelectorAll('.cat-btn-copy');
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].textContent = '\u2705 Copied!';
+        }
+        setTimeout(function () {
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].textContent = '\uD83D\uDCCB Copy';
+            }
+        }, 2000);
+    }
+
+    function catClearAll() {
+        document.getElementById('catInput').value = '';
+        document.getElementById('catOutput').textContent = 'Formatted numbers will appear here...';
+        document.getElementById('catLivePreview').style.display = 'none';
+    }
+
+    function catLivePreview() {
+        var input = document.getElementById('catInput').value.trim();
+        var previewEl = document.getElementById('catLivePreview');
+        var previewNum = document.getElementById('catPreviewNumber');
+
+        if (!input) {
+            previewEl.style.display = 'none';
+            return;
+        }
+
+        // Take the first number for preview
+        var firstLine = input.split('\n')[0].trim();
+        var firstNum = firstLine.split(/\s+/)[0];
+        var cleaned = firstNum.replace(/,/g, '').replace(/\s/g, '');
+
+        if (cleaned && !isNaN(cleaned)) {
+            previewEl.style.display = 'block';
+            previewNum.textContent = catFormatNumber(firstNum);
+        } else {
+            previewEl.style.display = 'none';
+        }
+    }
+</script>

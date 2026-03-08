@@ -1,0 +1,846 @@
+<!-- AIOCrafters - Unzip File Tool - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Unzip File Online",
+  "description": "Free online ZIP file extractor. Open and extract files from ZIP archives directly in your browser. Preview file contents, download individual files or all at once. No upload to server — 100% private.",
+  "url": "https://www.aiocrafters.com/p/unzip-file.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I unzip a file online?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Simply drag and drop your ZIP file onto the tool or click to browse and select it. The tool will extract all files and display them in a list. You can download individual files or all files at once."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it safe to unzip files online?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! Our tool processes everything locally in your browser using JavaScript. Your ZIP file is never uploaded to any server. Everything stays on your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the maximum ZIP file size supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Since the tool runs in your browser, the limit depends on your device's available memory. ZIP files up to 500 MB work smoothly on most devices. For very large archives, use a desktop application."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I download individual files from the ZIP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! After extracting, each file is listed individually with a download button. You can download specific files or click 'Download All' to save everything."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .uzf-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .uzf-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .uzf-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+    .uzf-container .uzf-subtitle {
+        font-size: 14px;
+        color: #888;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Drop Zone */
+    .uzf-dropzone {
+        border: 3px dashed #e0e0e0;
+        border-radius: 12px;
+        padding: 40px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: #fafbfc;
+        margin-bottom: 16px;
+    }
+
+    .uzf-dropzone:hover {
+        border-color: #283593;
+        background: #f5f5ff;
+    }
+
+    .uzf-dropzone.uzf-dragover {
+        border-color: #283593;
+        background: #e8eaf6;
+        transform: scale(1.01);
+    }
+
+    .uzf-dropzone .uzf-drop-icon {
+        font-size: 48px;
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    .uzf-dropzone .uzf-drop-text {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 6px;
+    }
+
+    .uzf-dropzone .uzf-drop-hint {
+        font-size: 13px;
+        color: #aaa;
+    }
+
+    .uzf-dropzone .uzf-browse-link {
+        color: #283593;
+        font-weight: 600;
+        text-decoration: underline;
+    }
+
+    .uzf-hidden-input {
+        display: none;
+    }
+
+    /* ZIP Info */
+    .uzf-zip-info {
+        display: none;
+        background: #e8eaf6;
+        border: 1px solid #c5cae9;
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+
+    .uzf-zip-info .uzf-zip-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: #283593;
+        display: block;
+        margin-bottom: 4px;
+        word-break: break-all;
+    }
+
+    .uzf-zip-info .uzf-zip-meta {
+        font-size: 13px;
+        color: #666;
+    }
+
+    /* Search / Filter */
+    .uzf-search-row {
+        display: none;
+        margin-bottom: 12px;
+    }
+
+    .uzf-search-row input {
+        width: 100%;
+        padding: 10px 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+    }
+
+    .uzf-search-row input:focus {
+        border-color: #283593;
+        box-shadow: 0 0 0 3px rgba(40, 53, 147, 0.12);
+    }
+
+    /* File List */
+    .uzf-file-list {
+        display: none;
+        margin-bottom: 16px;
+    }
+
+    .uzf-file-list-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .uzf-file-list-header strong {
+        font-size: 14px;
+        color: #555;
+    }
+
+    .uzf-file-count {
+        font-size: 13px;
+        color: #888;
+    }
+
+    .uzf-files-scroll {
+        max-height: 350px;
+        overflow-y: auto;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+    }
+
+    .uzf-file-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 14px;
+        transition: background 0.2s;
+    }
+
+    .uzf-file-item:last-child {
+        border-bottom: none;
+    }
+
+    .uzf-file-item:hover {
+        background: #f5f5ff;
+    }
+
+    .uzf-file-item.uzf-folder-item {
+        background: #fafbfc;
+        font-weight: 600;
+        color: #999;
+    }
+
+    .uzf-file-icon {
+        font-size: 18px;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+
+    .uzf-file-name {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #333;
+    }
+
+    .uzf-file-size {
+        font-size: 12px;
+        color: #999;
+        margin: 0 12px;
+        white-space: nowrap;
+    }
+
+    .uzf-file-dl {
+        padding: 4px 12px;
+        background: #e8eaf6;
+        border: 1px solid #c5cae9;
+        border-radius: 5px;
+        color: #283593;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .uzf-file-dl:hover {
+        background: #c5cae9;
+    }
+
+    /* Buttons */
+    .uzf-btn-row {
+        display: none;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 16px;
+    }
+
+    .uzf-btn {
+        padding: 12px 28px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .uzf-btn-download-all {
+        background: linear-gradient(135deg, #5c6bc0, #283593);
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(40, 53, 147, 0.3);
+    }
+
+    .uzf-btn-download-all:hover {
+        box-shadow: 0 5px 16px rgba(40, 53, 147, 0.45);
+        transform: translateY(-1px);
+    }
+
+    .uzf-btn-clear {
+        background: #f1f3f5;
+        color: #555;
+        border: 1px solid #ddd;
+    }
+
+    .uzf-btn-clear:hover {
+        background: #e9ecef;
+    }
+
+    /* Progress */
+    .uzf-progress {
+        display: none;
+        margin-top: 16px;
+    }
+
+    .uzf-progress-bar-bg {
+        width: 100%;
+        height: 8px;
+        background: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: 8px;
+    }
+
+    .uzf-progress-bar {
+        height: 100%;
+        background: linear-gradient(135deg, #5c6bc0, #283593);
+        border-radius: 4px;
+        transition: width 0.3s;
+        width: 0%;
+    }
+
+    .uzf-progress-text {
+        font-size: 13px;
+        color: #888;
+        text-align: center;
+    }
+
+    /* Privacy Note */
+    .uzf-privacy {
+        background: #e8f5e9;
+        border: 1px solid #c8e6c9;
+        border-left: 4px solid #2e7d32;
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-top: 20px;
+        font-size: 13px;
+        color: #2e7d32;
+        text-align: center;
+    }
+
+    /* --- Content Sections --- */
+    .uzf-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .uzf-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .uzf-wrapper ul,
+    .uzf-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .uzf-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .uzf-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .uzf-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .uzf-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .uzf-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .uzf-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .uzf-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    .uzf-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .uzf-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .uzf-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        .uzf-container {
+            padding: 20px 16px;
+        }
+    }
+</style>
+
+<div class="uzf-wrapper">
+
+    <!-- Intro Content -->
+    <h2>📂 Unzip File Online — Free ZIP Extractor</h2>
+    <p>Need to open and extract files from a ZIP archive? Our free <strong>Unzip File</strong> tool lets you drag and
+        drop a ZIP file, preview its contents, and download individual files or everything at once — all
+        <strong>directly in your browser</strong>. No uploads, no server processing, <strong>100% private</strong>.</p>
+
+    <!-- Tool Container -->
+    <div class="uzf-container">
+        <h2>📂 Unzip File</h2>
+        <p class="uzf-subtitle">Drag & drop a ZIP file or click to browse — extract files instantly</p>
+
+        <!-- Drop Zone -->
+        <div class="uzf-dropzone" id="uzfDropzone" onclick="document.getElementById('uzfFileInput').click();">
+            <span class="uzf-drop-icon">📦</span>
+            <div class="uzf-drop-text">Drag & drop a ZIP file here</div>
+            <div class="uzf-drop-hint">or <span class="uzf-browse-link">click to browse</span> — .zip files only</div>
+        </div>
+        <input type="file" id="uzfFileInput" class="uzf-hidden-input" accept=".zip"
+            onchange="uzfHandleFile(this.files[0])">
+
+        <!-- Progress -->
+        <div class="uzf-progress" id="uzfProgress">
+            <div class="uzf-progress-bar-bg">
+                <div class="uzf-progress-bar" id="uzfProgressBar"></div>
+            </div>
+            <div class="uzf-progress-text" id="uzfProgressText">Extracting...</div>
+        </div>
+
+        <!-- ZIP Info -->
+        <div class="uzf-zip-info" id="uzfZipInfo">
+            <span class="uzf-zip-name" id="uzfZipName"></span>
+            <span class="uzf-zip-meta" id="uzfZipMeta"></span>
+        </div>
+
+        <!-- Search -->
+        <div class="uzf-search-row" id="uzfSearchRow">
+            <input type="text" id="uzfSearch" placeholder="Search files..." oninput="uzfFilterFiles()">
+        </div>
+
+        <!-- File List -->
+        <div class="uzf-file-list" id="uzfFileList">
+            <div class="uzf-file-list-header">
+                <strong>Extracted Files</strong>
+                <span class="uzf-file-count" id="uzfFileCount"></span>
+            </div>
+            <div class="uzf-files-scroll" id="uzfFilesScroll"></div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="uzf-btn-row" id="uzfBtnRow">
+            <button class="uzf-btn uzf-btn-download-all" onclick="uzfDownloadAll()">⬇️ Download All Files</button>
+            <button class="uzf-btn uzf-btn-clear" onclick="uzfClearAll()">🗑️ Clear</button>
+        </div>
+
+        <!-- Privacy Note -->
+        <div class="uzf-privacy">
+            🔒 <strong>100% Private:</strong> Your ZIP file is processed locally in your browser. Nothing is uploaded to
+            any server.
+        </div>
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Extract a ZIP File</h2>
+    <ol>
+        <li><strong>Select ZIP File</strong> — Drag and drop a .zip file onto the tool, or click to browse and select
+            one.</li>
+        <li><strong>Wait for Extraction</strong> — The tool reads and extracts all files from the archive.</li>
+        <li><strong>Browse Files</strong> — See all extracted files with names, sizes, and type icons. Use the search
+            box to filter.</li>
+        <li><strong>Download</strong> — Click the download button next to any file, or click "Download All Files" to
+            save everything.</li>
+    </ol>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="uzf-features-grid">
+        <div class="uzf-feature-card">
+            <span class="icon">📦</span>
+            <strong>Drag & Drop</strong>
+            <p>Simply drag your ZIP file onto the tool.</p>
+        </div>
+        <div class="uzf-feature-card">
+            <span class="icon">📋</span>
+            <strong>File List Preview</strong>
+            <p>Browse all files with names, sizes, and icons.</p>
+        </div>
+        <div class="uzf-feature-card">
+            <span class="icon">⬇️</span>
+            <strong>Individual Downloads</strong>
+            <p>Download specific files or all files at once.</p>
+        </div>
+        <div class="uzf-feature-card">
+            <span class="icon">🔍</span>
+            <strong>Search & Filter</strong>
+            <p>Quickly find files within large archives.</p>
+        </div>
+    </div>
+
+    <!-- Use Cases -->
+    <h2>🤔 When Do You Need to Unzip Files?</h2>
+    <ul>
+        <li><strong>Downloaded Software</strong> — Many programs and tools are distributed as ZIP archives.</li>
+        <li><strong>Email Attachments</strong> — Extract files from compressed email attachments.</li>
+        <li><strong>Web Downloads</strong> — Unzip templates, themes, fonts, and resource packs.</li>
+        <li><strong>Document Bundles</strong> — Extract multiple documents from a single archive.</li>
+        <li><strong>On Mobile Devices</strong> — Unzip files on phones and tablets without installing apps.</li>
+        <li><strong>Quick Preview</strong> — Check what's inside a ZIP before extracting on your desktop.</li>
+    </ul>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="uzf-faq-item">
+        <h3>How do I unzip a file online?</h3>
+        <p>Drag and drop your ZIP file onto the tool or click to browse. The tool extracts all files and displays them
+            in a list. Download individual files or click "Download All".</p>
+    </div>
+
+    <div class="uzf-faq-item">
+        <h3>Is it safe to unzip files online?</h3>
+        <p>Yes! Everything is processed locally in your browser. Your files are never uploaded to any server.</p>
+    </div>
+
+    <div class="uzf-faq-item">
+        <h3>What's the maximum file size?</h3>
+        <p>The tool runs in your browser, so the limit depends on your device's memory. ZIP files up to 500 MB work
+            smoothly on most devices.</p>
+    </div>
+
+    <div class="uzf-faq-item">
+        <h3>Can I download individual files?</h3>
+        <p>Yes! Each extracted file has its own download button. You can also download all files at once.</p>
+    </div>
+
+    <div class="uzf-faq-item">
+        <h3>Does it support password-protected ZIPs?</h3>
+        <p>Currently, this tool does not support password-protected ZIP archives. For those, use a desktop application
+            like 7-Zip or WinRAR.</p>
+    </div>
+
+    <div class="uzf-faq-item">
+        <h3>Is this tool free?</h3>
+        <p>Yes, completely free. No sign-up, no limits. Everything runs locally in your browser.</p>
+    </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+    var uzfExtractedFiles = [];
+
+    // Drag & Drop
+    (function () {
+        var dz = document.getElementById('uzfDropzone');
+
+        dz.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            dz.classList.add('uzf-dragover');
+        });
+
+        dz.addEventListener('dragleave', function (e) {
+            e.preventDefault();
+            dz.classList.remove('uzf-dragover');
+        });
+
+        dz.addEventListener('drop', function (e) {
+            e.preventDefault();
+            dz.classList.remove('uzf-dragover');
+            if (e.dataTransfer.files.length > 0) {
+                var f = e.dataTransfer.files[0];
+                if (f.name.toLowerCase().endsWith('.zip')) {
+                    uzfHandleFile(f);
+                } else {
+                    alert('Please drop a .zip file.');
+                }
+            }
+        });
+    })();
+
+    function uzfFormatSize(bytes) {
+        if (bytes === 0) return '0 B';
+        var k = 1024;
+        var sizes = ['B', 'KB', 'MB', 'GB'];
+        var i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    function uzfGetFileIcon(name) {
+        var ext = name.split('.').pop().toLowerCase();
+        var icons = {
+            'jpg': '\uD83D\uDDBC\uFE0F', 'jpeg': '\uD83D\uDDBC\uFE0F', 'png': '\uD83D\uDDBC\uFE0F',
+            'gif': '\uD83D\uDDBC\uFE0F', 'webp': '\uD83D\uDDBC\uFE0F', 'svg': '\uD83D\uDDBC\uFE0F', 'bmp': '\uD83D\uDDBC\uFE0F',
+            'mp4': '\uD83C\uDFA5', 'mkv': '\uD83C\uDFA5', 'avi': '\uD83C\uDFA5', 'mov': '\uD83C\uDFA5', 'webm': '\uD83C\uDFA5',
+            'mp3': '\uD83C\uDFB5', 'wav': '\uD83C\uDFB5', 'flac': '\uD83C\uDFB5', 'ogg': '\uD83C\uDFB5', 'aac': '\uD83C\uDFB5',
+            'pdf': '\uD83D\uDCC4', 'doc': '\uD83D\uDCC3', 'docx': '\uD83D\uDCC3',
+            'xls': '\uD83D\uDCCA', 'xlsx': '\uD83D\uDCCA', 'csv': '\uD83D\uDCCA',
+            'ppt': '\uD83D\uDCCA', 'pptx': '\uD83D\uDCCA',
+            'zip': '\uD83D\uDCE6', 'rar': '\uD83D\uDCE6', '7z': '\uD83D\uDCE6', 'tar': '\uD83D\uDCE6', 'gz': '\uD83D\uDCE6',
+            'html': '\uD83C\uDF10', 'css': '\uD83C\uDFA8', 'js': '\u26A1',
+            'json': '\uD83D\uDCCB', 'xml': '\uD83D\uDCCB', 'txt': '\uD83D\uDCDD',
+            'py': '\uD83D\uDC0D', 'java': '\u2615', 'cpp': '\u2699\uFE0F', 'c': '\u2699\uFE0F',
+            'exe': '\u2699\uFE0F', 'apk': '\uD83D\uDCF1'
+        };
+        return icons[ext] || '\uD83D\uDCC4';
+    }
+
+    function uzfEscape(str) {
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function uzfHandleFile(file) {
+        if (!file) return;
+
+        var progressEl = document.getElementById('uzfProgress');
+        var progressBar = document.getElementById('uzfProgressBar');
+        var progressText = document.getElementById('uzfProgressText');
+
+        progressEl.style.display = 'block';
+        progressBar.style.width = '10%';
+        progressText.textContent = 'Reading ZIP file...';
+
+        var reader = new FileReader();
+        reader.readAsArrayBuffer(file);
+
+        reader.onload = function (e) {
+            progressBar.style.width = '30%';
+            progressText.textContent = 'Extracting files...';
+
+            var zip = new JSZip();
+            zip.loadAsync(e.target.result).then(function (unzipped) {
+                uzfExtractedFiles = [];
+                var entries = Object.keys(unzipped.files);
+                var fileEntries = [];
+
+                // Separate files from folders
+                for (var i = 0; i < entries.length; i++) {
+                    if (!unzipped.files[entries[i]].dir) {
+                        fileEntries.push(entries[i]);
+                    }
+                }
+
+                var totalFiles = fileEntries.length;
+                var processed = 0;
+
+                if (totalFiles === 0) {
+                    progressEl.style.display = 'none';
+                    alert('The ZIP file is empty.');
+                    return;
+                }
+
+                var promises = [];
+                for (var j = 0; j < fileEntries.length; j++) {
+                    (function (fname) {
+                        var p = unzipped.files[fname].async('blob').then(function (blob) {
+                            processed++;
+                            progressBar.style.width = (30 + (processed / totalFiles) * 70) + '%';
+                            progressText.textContent = 'Extracting... ' + processed + '/' + totalFiles;
+
+                            uzfExtractedFiles.push({
+                                name: fname,
+                                blob: blob,
+                                size: blob.size,
+                                url: URL.createObjectURL(blob)
+                            });
+                        });
+                        promises.push(p);
+                    })(fileEntries[j]);
+                }
+
+                Promise.all(promises).then(function () {
+                    progressBar.style.width = '100%';
+                    progressText.textContent = 'Done!';
+
+                    // Sort by name
+                    uzfExtractedFiles.sort(function (a, b) {
+                        return a.name.localeCompare(b.name);
+                    });
+
+                    // Show ZIP info
+                    var zipInfoEl = document.getElementById('uzfZipInfo');
+                    document.getElementById('uzfZipName').textContent = file.name;
+
+                    var totalSize = 0;
+                    for (var k = 0; k < uzfExtractedFiles.length; k++) {
+                        totalSize += uzfExtractedFiles[k].size;
+                    }
+                    document.getElementById('uzfZipMeta').textContent = totalFiles + ' file' + (totalFiles > 1 ? 's' : '') + ' \u2022 ZIP size: ' + uzfFormatSize(file.size) + ' \u2022 Extracted: ' + uzfFormatSize(totalSize);
+                    zipInfoEl.style.display = 'block';
+
+                    // Show search, file list, buttons
+                    document.getElementById('uzfSearchRow').style.display = 'block';
+                    document.getElementById('uzfFileList').style.display = 'block';
+                    document.getElementById('uzfBtnRow').style.display = 'flex';
+
+                    uzfRenderFiles(uzfExtractedFiles);
+
+                    setTimeout(function () {
+                        progressEl.style.display = 'none';
+                    }, 1000);
+                });
+            }).catch(function (err) {
+                progressEl.style.display = 'none';
+                alert('Error reading ZIP file: ' + err.message);
+            });
+        };
+
+        reader.onerror = function () {
+            progressEl.style.display = 'none';
+            alert('Error reading file.');
+        };
+    }
+
+    function uzfRenderFiles(files) {
+        var scrollEl = document.getElementById('uzfFilesScroll');
+        var countEl = document.getElementById('uzfFileCount');
+
+        countEl.textContent = files.length + ' file' + (files.length > 1 ? 's' : '');
+
+        var html = '';
+        for (var i = 0; i < files.length; i++) {
+            var f = files[i];
+            var icon = uzfGetFileIcon(f.name);
+            var displayName = f.name;
+
+            html += '<div class="uzf-file-item">';
+            html += '<span class="uzf-file-icon">' + icon + '</span>';
+            html += '<span class="uzf-file-name" title="' + uzfEscape(f.name) + '">' + uzfEscape(displayName) + '</span>';
+            html += '<span class="uzf-file-size">' + uzfFormatSize(f.size) + '</span>';
+            html += '<a class="uzf-file-dl" href="' + f.url + '" download="' + uzfEscape(f.name.split('/').pop()) + '">\u2B07 Download</a>';
+            html += '</div>';
+        }
+
+        scrollEl.innerHTML = html;
+    }
+
+    function uzfFilterFiles() {
+        var query = document.getElementById('uzfSearch').value.trim().toLowerCase();
+        if (!query) {
+            uzfRenderFiles(uzfExtractedFiles);
+            return;
+        }
+
+        var filtered = [];
+        for (var i = 0; i < uzfExtractedFiles.length; i++) {
+            if (uzfExtractedFiles[i].name.toLowerCase().indexOf(query) !== -1) {
+                filtered.push(uzfExtractedFiles[i]);
+            }
+        }
+        uzfRenderFiles(filtered);
+    }
+
+    function uzfDownloadAll() {
+        for (var i = 0; i < uzfExtractedFiles.length; i++) {
+            var a = document.createElement('a');
+            a.href = uzfExtractedFiles[i].url;
+            a.download = uzfExtractedFiles[i].name.split('/').pop();
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    }
+
+    function uzfClearAll() {
+        // Revoke URLs
+        for (var i = 0; i < uzfExtractedFiles.length; i++) {
+            URL.revokeObjectURL(uzfExtractedFiles[i].url);
+        }
+        uzfExtractedFiles = [];
+
+        document.getElementById('uzfZipInfo').style.display = 'none';
+        document.getElementById('uzfSearchRow').style.display = 'none';
+        document.getElementById('uzfFileList').style.display = 'none';
+        document.getElementById('uzfBtnRow').style.display = 'none';
+        document.getElementById('uzfProgress').style.display = 'none';
+        document.getElementById('uzfSearch').value = '';
+        document.getElementById('uzfFileInput').value = '';
+    }
+</script>

@@ -1,0 +1,743 @@
+<!-- AIOCrafters - IFSC Code Finder Tool - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "IFSC Code Finder",
+  "description": "Free online IFSC Code Finder tool. Instantly find bank name, branch, address, city, state, MICR code, and contact details using any valid IFSC code. Powered by Razorpay IFSC API.",
+  "url": "https://www.aiocrafters.com/p/ifsc-finder.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is an IFSC code?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "IFSC (Indian Financial System Code) is an 11-character alphanumeric code assigned by the Reserve Bank of India to every bank branch in India. It is used to uniquely identify a bank branch for electronic fund transfers like NEFT, RTGS, and IMPS."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I find my bank's IFSC code?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can find your IFSC code on your bank cheque book, passbook, bank statement, or by using our IFSC Code Finder tool. You can also find it on the RBI website."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this IFSC Code Finder tool free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, this tool is completely free. No sign-up or registration required. Just enter an IFSC code and get instant results."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the format of an IFSC code?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An IFSC code is 11 characters long. The first 4 characters represent the bank name, the 5th character is always 0 (reserved for future use), and the last 6 characters identify the specific branch."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .ifsc-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .ifsc-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .ifsc-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+    .ifsc-container .ifsc-subtitle {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 24px;
+    }
+
+    /* Search Area */
+    .ifsc-search-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .ifsc-search-row input {
+        flex: 1;
+        padding: 14px 16px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 16px;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        outline: none;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+    }
+
+    .ifsc-search-row input:focus {
+        border-color: #00897b;
+        box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.12);
+    }
+
+    .ifsc-search-row input::placeholder {
+        color: #bbb;
+        text-transform: none;
+        letter-spacing: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .ifsc-search-btn {
+        padding: 14px 24px;
+        background: linear-gradient(135deg, #4db6ac, #00897b);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 3px 10px rgba(0, 137, 123, 0.3);
+        white-space: nowrap;
+    }
+
+    .ifsc-search-btn:hover {
+        box-shadow: 0 5px 16px rgba(0, 137, 123, 0.45);
+        transform: translateY(-1px);
+    }
+
+    .ifsc-search-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    /* Format Hint */
+    .ifsc-format-hint {
+        font-size: 13px;
+        color: #999;
+        margin-bottom: 16px;
+        text-align: left;
+    }
+
+    .ifsc-format-hint code {
+        background: #e0f2f1;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 13px;
+        color: #00695c;
+    }
+
+    /* Example Chips */
+    .ifsc-examples {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .ifsc-example-chip {
+        padding: 6px 14px;
+        background: #e0f2f1;
+        border: 1px solid #b2dfdb;
+        border-radius: 20px;
+        font-size: 13px;
+        font-family: 'Courier New', monospace;
+        color: #00695c;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .ifsc-example-chip:hover {
+        background: #b2dfdb;
+        transform: translateY(-1px);
+    }
+
+    /* Result Area */
+    .ifsc-result {
+        display: none;
+        margin-top: 20px;
+        text-align: left;
+    }
+
+    .ifsc-result-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #e0f2f1;
+    }
+
+    .ifsc-bank-name {
+        font-size: 20px;
+        font-weight: 700;
+        color: #00695c;
+    }
+
+    .ifsc-branch-name {
+        font-size: 14px;
+        color: #777;
+    }
+
+    /* Detail Rows */
+    .ifsc-details-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .ifsc-detail-card {
+        background: #fafbfc;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 14px 16px;
+        transition: transform 0.2s;
+    }
+
+    .ifsc-detail-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .ifsc-detail-card.ifsc-full-width {
+        grid-column: 1 / -1;
+    }
+
+    .ifsc-detail-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #999;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .ifsc-detail-value {
+        font-size: 15px;
+        font-weight: 600;
+        color: #333;
+        word-break: break-word;
+    }
+
+    /* Copy Row */
+    .ifsc-copy-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .ifsc-copy-btn {
+        padding: 8px 18px;
+        background: #e0f2f1;
+        border: 1px solid #b2dfdb;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #00695c;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .ifsc-copy-btn:hover {
+        background: #b2dfdb;
+    }
+
+    /* Status Messages */
+    .ifsc-status {
+        display: inline-block;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-top: 12px;
+    }
+
+    .ifsc-status-error {
+        background: #ffebee;
+        color: #c62828;
+        border: 1px solid #ef9a9a;
+    }
+
+    .ifsc-status-loading {
+        background: #e0f2f1;
+        color: #00695c;
+        border: 1px solid #b2dfdb;
+    }
+
+    /* Clear Button */
+    .ifsc-btn-clear {
+        padding: 14px 20px;
+        background: #f1f3f5;
+        color: #555;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .ifsc-btn-clear:hover {
+        background: #e9ecef;
+    }
+
+    /* --- Content Sections --- */
+    .ifsc-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .ifsc-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .ifsc-wrapper ul,
+    .ifsc-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .ifsc-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .ifsc-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .ifsc-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .ifsc-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .ifsc-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .ifsc-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .ifsc-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    .ifsc-format-box {
+        background: #e0f2f1;
+        border: 1px solid #b2dfdb;
+        border-left: 5px solid #00897b;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .ifsc-format-box code {
+        background: #b2dfdb;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        color: #004d40;
+    }
+
+    .ifsc-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .ifsc-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .ifsc-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        .ifsc-container {
+            padding: 20px 16px;
+        }
+
+        .ifsc-search-row {
+            flex-direction: column;
+        }
+
+        .ifsc-details-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="ifsc-wrapper">
+
+    <!-- Intro Content -->
+    <h2>🏦 IFSC Code Finder — Free Online Tool</h2>
+    <p>Need to find bank branch details using an <strong>IFSC code</strong>? Our free <strong>IFSC Code Finder</strong>
+        instantly fetches the <strong>bank name, branch, address, city, state, MICR code, and contact number</strong>
+        for any valid IFSC code. Essential for NEFT, RTGS, and IMPS transactions.</p>
+
+    <!-- Tool Container -->
+    <div class="ifsc-container">
+        <h2>🏦 IFSC Code Finder</h2>
+        <p class="ifsc-subtitle">Enter an IFSC code to get full branch details</p>
+
+        <!-- Search -->
+        <div class="ifsc-search-row">
+            <input type="text" id="ifscInput" placeholder="e.g. SBIN0001234" maxlength="11"
+                onkeydown="if(event.key==='Enter')ifscSearch();">
+            <button class="ifsc-search-btn" id="ifscSearchBtn" onclick="ifscSearch()">🔍 Find</button>
+            <button class="ifsc-btn-clear" onclick="ifscClear()">🗑️</button>
+        </div>
+
+        <!-- Format Hint -->
+        <div class="ifsc-format-hint">
+            Format: <code>XXXX0YYYYYY</code> — First 4 letters = bank, 5th = 0, last 6 = branch
+        </div>
+
+        <!-- Example Chips -->
+        <div class="ifsc-examples">
+            <span class="ifsc-example-chip" onclick="ifscTryExample('SBIN0001234')">SBIN0001234</span>
+            <span class="ifsc-example-chip" onclick="ifscTryExample('HDFC0000001')">HDFC0000001</span>
+            <span class="ifsc-example-chip" onclick="ifscTryExample('ICIC0000001')">ICIC0000001</span>
+            <span class="ifsc-example-chip" onclick="ifscTryExample('PUNB0150200')">PUNB0150200</span>
+        </div>
+
+        <!-- Status -->
+        <div id="ifscStatus"></div>
+
+        <!-- Result Area -->
+        <div class="ifsc-result" id="ifscResult">
+            <div class="ifsc-result-header">
+                <div>
+                    <div class="ifsc-bank-name" id="ifscBankName"></div>
+                    <div class="ifsc-branch-name" id="ifscBranchName"></div>
+                </div>
+            </div>
+
+            <div class="ifsc-details-grid" id="ifscDetailsGrid"></div>
+
+            <div class="ifsc-copy-row">
+                <button class="ifsc-copy-btn" onclick="ifscCopyAll()">📋 Copy All Details</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- IFSC Format Explanation -->
+    <div class="ifsc-format-box">
+        <strong>📐 IFSC Code Format:</strong><br><br>
+        <code>SBIN0001234</code><br><br>
+        <strong>SBIN</strong> — Bank code (4 characters, e.g., SBIN = State Bank of India)<br>
+        <strong>0</strong> — Reserved character (always zero)<br>
+        <strong>001234</strong> — Branch code (6 characters, unique for each branch)
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Use the IFSC Code Finder</h2>
+    <ol>
+        <li><strong>Enter the IFSC Code</strong> — Type or paste the 11-character IFSC code in the input box.</li>
+        <li><strong>Click "Find"</strong> — The tool fetches branch details from Razorpay's IFSC API.</li>
+        <li><strong>View Details</strong> — See bank name, branch, address, city, state, MICR code, and more.</li>
+        <li><strong>Copy Details</strong> — Click "Copy All Details" to copy everything to your clipboard.</li>
+    </ol>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="ifsc-features-grid">
+        <div class="ifsc-feature-card">
+            <span class="icon">⚡</span>
+            <strong>Instant Lookup</strong>
+            <p>Fetch branch details in under a second.</p>
+        </div>
+        <div class="ifsc-feature-card">
+            <span class="icon">📋</span>
+            <strong>Copy to Clipboard</strong>
+            <p>One-click copy of all branch details.</p>
+        </div>
+        <div class="ifsc-feature-card">
+            <span class="icon">🏦</span>
+            <strong>All Banks Covered</strong>
+            <p>Supports SBI, HDFC, ICICI, PNB, and all Indian banks.</p>
+        </div>
+        <div class="ifsc-feature-card">
+            <span class="icon">📱</span>
+            <strong>Mobile Friendly</strong>
+            <p>Works perfectly on phones and tablets.</p>
+        </div>
+    </div>
+
+    <!-- Where to Find IFSC -->
+    <h2>🔍 Where to Find Your IFSC Code</h2>
+    <ul>
+        <li><strong>Cheque Book</strong> — Printed on the top of every cheque leaf alongside the MICR code.</li>
+        <li><strong>Bank Passbook</strong> — Usually printed on the first page or account details page.</li>
+        <li><strong>Bank Statement</strong> — Available on printed or digital bank statements.</li>
+        <li><strong>Net Banking / Mobile App</strong> — Check under account details or branch information.</li>
+        <li><strong>RBI Website</strong> — Official list of all IFSC codes at <em>rbi.org.in</em>.</li>
+        <li><strong>This Tool</strong> — Enter the IFSC code here if you need to verify or find branch details!</li>
+    </ul>
+
+    <!-- When You Need IFSC -->
+    <h2>🤔 When Do You Need an IFSC Code?</h2>
+    <ul>
+        <li><strong>NEFT Transfer</strong> — Required for National Electronic Funds Transfer.</li>
+        <li><strong>RTGS Transfer</strong> — Required for Real Time Gross Settlement (large amounts).</li>
+        <li><strong>IMPS Transfer</strong> — Used for Immediate Payment Service transfers.</li>
+        <li><strong>UPI Setup</strong> — Some UPI apps may ask for your IFSC during setup.</li>
+        <li><strong>Salary Account</strong> — Employers need your IFSC to credit your salary.</li>
+        <li><strong>Tax Refunds</strong> — Income Tax Department requires IFSC for direct refund credits.</li>
+    </ul>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="ifsc-faq-item">
+        <h3>What is an IFSC code?</h3>
+        <p>IFSC (Indian Financial System Code) is an 11-character alphanumeric code assigned by the RBI to every bank
+            branch in India. It uniquely identifies a branch for electronic fund transfers like NEFT, RTGS, and IMPS.
+        </p>
+    </div>
+
+    <div class="ifsc-faq-item">
+        <h3>What is the format of an IFSC code?</h3>
+        <p>An IFSC code is 11 characters long: first 4 characters = bank name, 5th character is always 0, and the last 6
+            characters identify the specific branch.</p>
+    </div>
+
+    <div class="ifsc-faq-item">
+        <h3>How do I find my IFSC code?</h3>
+        <p>You can find it on your cheque book, passbook, bank statement, net banking portal, or by using our IFSC Code
+            Finder tool above.</p>
+    </div>
+
+    <div class="ifsc-faq-item">
+        <h3>Is this IFSC Code Finder free?</h3>
+        <p>Yes, completely free. No sign-up needed — just enter an IFSC code and get instant results.</p>
+    </div>
+
+    <div class="ifsc-faq-item">
+        <h3>Where does the data come from?</h3>
+        <p>We use Razorpay's open-source IFSC API, which maintains an updated database of all Indian bank branches and
+            their IFSC codes.</p>
+    </div>
+
+    <div class="ifsc-faq-item">
+        <h3>What if my IFSC code is not found?</h3>
+        <p>If you get an error, double-check the code. Some branches may have been merged or their IFSC codes changed.
+            Contact your bank for the latest IFSC code.</p>
+    </div>
+
+</div>
+
+<script>
+    var ifscLastData = null;
+
+    function ifscSearch() {
+        var code = document.getElementById('ifscInput').value.trim().toUpperCase();
+        var statusEl = document.getElementById('ifscStatus');
+        var resultEl = document.getElementById('ifscResult');
+
+        if (!code) {
+            alert('Please enter an IFSC code.');
+            return;
+        }
+
+        // Basic validation
+        if (code.length !== 11) {
+            statusEl.innerHTML = '<span class="ifsc-status ifsc-status-error">\u274C IFSC code must be exactly 11 characters</span>';
+            resultEl.style.display = 'none';
+            return;
+        }
+
+        if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(code)) {
+            statusEl.innerHTML = '<span class="ifsc-status ifsc-status-error">\u274C Invalid format. Expected: XXXX0YYYYYY</span>';
+            resultEl.style.display = 'none';
+            return;
+        }
+
+        statusEl.innerHTML = '<span class="ifsc-status ifsc-status-loading">\u23F3 Fetching details...</span>';
+        resultEl.style.display = 'none';
+        document.getElementById('ifscSearchBtn').disabled = true;
+
+        fetch('https://ifsc.razorpay.com/' + code)
+            .then(function (response) {
+                if (!response.ok) throw new Error('Not found');
+                return response.json();
+            })
+            .then(function (data) {
+                ifscLastData = data;
+                document.getElementById('ifscSearchBtn').disabled = false;
+                statusEl.innerHTML = '';
+
+                if (data.BRANCH) {
+                    document.getElementById('ifscBankName').textContent = data.BANK || '—';
+                    document.getElementById('ifscBranchName').textContent = data.BRANCH || '—';
+
+                    var details = [
+                        { label: 'IFSC Code', value: data.IFSC || code, full: false },
+                        { label: 'MICR Code', value: data.MICR || 'N/A', full: false },
+                        { label: 'Branch', value: data.BRANCH || '—', full: false },
+                        { label: 'City', value: data.CITY || '—', full: false },
+                        { label: 'District', value: data.DISTRICT || '—', full: false },
+                        { label: 'State', value: data.STATE || '—', full: false },
+                        { label: 'Address', value: data.ADDRESS || '—', full: true },
+                        { label: 'Contact', value: data.CONTACT || 'N/A', full: false },
+                        { label: 'UPI', value: data.UPI === true ? '\u2705 Supported' : '\u274C Not Supported', full: false },
+                        { label: 'NEFT', value: data.NEFT === true ? '\u2705 Supported' : '\u274C Not Supported', full: false },
+                        { label: 'RTGS', value: data.RTGS === true ? '\u2705 Supported' : '\u274C Not Supported', full: false },
+                        { label: 'IMPS', value: data.IMPS === true ? '\u2705 Supported' : '\u274C Not Supported', full: false }
+                    ];
+
+                    var gridHTML = '';
+                    for (var i = 0; i < details.length; i++) {
+                        var d = details[i];
+                        gridHTML += '<div class="ifsc-detail-card' + (d.full ? ' ifsc-full-width' : '') + '">';
+                        gridHTML += '<div class="ifsc-detail-label">' + d.label + '</div>';
+                        gridHTML += '<div class="ifsc-detail-value">' + d.value + '</div>';
+                        gridHTML += '</div>';
+                    }
+
+                    document.getElementById('ifscDetailsGrid').innerHTML = gridHTML;
+                    resultEl.style.display = 'block';
+                } else {
+                    statusEl.innerHTML = '<span class="ifsc-status ifsc-status-error">\u274C Invalid IFSC code. No branch found.</span>';
+                }
+            })
+            .catch(function () {
+                document.getElementById('ifscSearchBtn').disabled = false;
+                statusEl.innerHTML = '<span class="ifsc-status ifsc-status-error">\u274C Invalid IFSC code or network error. Please check and try again.</span>';
+            });
+    }
+
+    function ifscTryExample(code) {
+        document.getElementById('ifscInput').value = code;
+        ifscSearch();
+    }
+
+    function ifscClear() {
+        document.getElementById('ifscInput').value = '';
+        document.getElementById('ifscResult').style.display = 'none';
+        document.getElementById('ifscStatus').innerHTML = '';
+        ifscLastData = null;
+    }
+
+    function ifscCopyAll() {
+        if (!ifscLastData) return;
+        var d = ifscLastData;
+        var text = 'Bank: ' + (d.BANK || '') + '\n' +
+            'Branch: ' + (d.BRANCH || '') + '\n' +
+            'IFSC: ' + (d.IFSC || '') + '\n' +
+            'MICR: ' + (d.MICR || '') + '\n' +
+            'Address: ' + (d.ADDRESS || '') + '\n' +
+            'City: ' + (d.CITY || '') + '\n' +
+            'District: ' + (d.DISTRICT || '') + '\n' +
+            'State: ' + (d.STATE || '') + '\n' +
+            'Contact: ' + (d.CONTACT || 'N/A');
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () {
+                ifscShowCopied();
+            });
+        } else {
+            var t = document.createElement('textarea');
+            t.value = text;
+            document.body.appendChild(t);
+            t.select();
+            document.execCommand('copy');
+            document.body.removeChild(t);
+            ifscShowCopied();
+        }
+    }
+
+    function ifscShowCopied() {
+        var btns = document.querySelectorAll('.ifsc-copy-btn');
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].textContent = '\u2705 Copied!';
+        }
+        setTimeout(function () {
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].textContent = '\uD83D\uDCCB Copy All Details';
+            }
+        }, 2000);
+    }
+</script>

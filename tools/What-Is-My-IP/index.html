@@ -1,0 +1,691 @@
+<!-- AIOCrafters - What Is My IP Tool - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "What Is My IP Address",
+  "description": "Free online IP address lookup tool. Instantly find your public IP address along with location, ISP, timezone, and connection details. No sign-up required.",
+  "url": "https://www.aiocrafters.com/p/what-is-my-ip.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is an IP address?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An IP (Internet Protocol) address is a unique numerical label assigned to every device connected to the internet. It serves as your device's identity on the network, allowing websites and services to send data to and from your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between IPv4 and IPv6?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "IPv4 uses 32-bit addresses (e.g., 192.168.1.1) and supports about 4.3 billion addresses. IPv6 uses 128-bit addresses (e.g., 2001:0db8:85a3::8a2e:0370:7334) and supports virtually unlimited addresses. IPv6 was created because the world is running out of IPv4 addresses."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can someone track me using my IP address?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An IP address can reveal your approximate location (city/region) and ISP, but it cannot pinpoint your exact physical address. For precise tracking, additional information would be needed. Using a VPN can mask your real IP address for added privacy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I hide my IP address?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can hide your IP address by using a VPN (Virtual Private Network), a proxy server, or the Tor browser. A VPN is the most popular and reliable method, as it encrypts your traffic and assigns you a different IP address."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .wmip-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .wmip-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .wmip-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+    .wmip-container .wmip-subtitle {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 24px;
+    }
+
+    /* IP Display */
+    .wmip-ip-box {
+        background: linear-gradient(135deg, #fff8e1, #ffecb3);
+        border: 2px solid #ffca28;
+        border-radius: 12px;
+        padding: 24px 20px;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .wmip-ip-label {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #f57f17;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .wmip-ip-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: #e65100;
+        font-family: 'Courier New', monospace;
+        word-break: break-all;
+        letter-spacing: 1px;
+    }
+
+    .wmip-ip-loading {
+        color: #999;
+        font-size: 16px;
+        font-style: italic;
+        font-family: inherit;
+    }
+
+    .wmip-copy-btn {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 8px 20px;
+        background: linear-gradient(135deg, #ffb300, #e65100);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .wmip-copy-btn:hover {
+        box-shadow: 0 3px 10px rgba(230, 81, 0, 0.3);
+        transform: translateY(-1px);
+    }
+
+    /* Details Grid */
+    .wmip-details-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-top: 20px;
+        text-align: left;
+    }
+
+    .wmip-detail-card {
+        background: #fafbfc;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 14px 16px;
+        transition: transform 0.2s;
+    }
+
+    .wmip-detail-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .wmip-detail-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #999;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .wmip-detail-value {
+        font-size: 15px;
+        font-weight: 600;
+        color: #333;
+        word-break: break-all;
+    }
+
+    .wmip-detail-value.wmip-loading {
+        color: #ccc;
+        font-style: italic;
+        font-weight: 400;
+    }
+
+    /* Refresh Button */
+    .wmip-btn-row {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .wmip-btn {
+        padding: 12px 28px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .wmip-btn-refresh {
+        background: linear-gradient(135deg, #ffb300, #e65100);
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(230, 81, 0, 0.3);
+    }
+
+    .wmip-btn-refresh:hover {
+        box-shadow: 0 5px 16px rgba(230, 81, 0, 0.45);
+        transform: translateY(-1px);
+    }
+
+    /* Status badge */
+    .wmip-status {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-top: 12px;
+    }
+
+    .wmip-status-success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #a5d6a7;
+    }
+
+    .wmip-status-error {
+        background: #ffebee;
+        color: #c62828;
+        border: 1px solid #ef9a9a;
+    }
+
+    /* --- Content Sections --- */
+    .wmip-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .wmip-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .wmip-wrapper ul,
+    .wmip-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .wmip-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .wmip-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .wmip-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .wmip-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .wmip-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .wmip-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .wmip-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    /* IPv4 vs IPv6 Table */
+    .wmip-compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .wmip-compare-table th {
+        background: #e65100;
+        color: #fff;
+        padding: 10px 14px;
+        text-align: left;
+    }
+
+    .wmip-compare-table td {
+        border: 1px solid #e0e0e0;
+        padding: 10px 14px;
+    }
+
+    .wmip-compare-table tr:nth-child(even) {
+        background: #fff8e1;
+    }
+
+    .wmip-highlight-box {
+        background: #fff8e1;
+        border: 1px solid #ffecb3;
+        border-left: 5px solid #e65100;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .wmip-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .wmip-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .wmip-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        .wmip-container {
+            padding: 20px 16px;
+        }
+
+        .wmip-details-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .wmip-ip-value {
+            font-size: 24px;
+        }
+    }
+</style>
+
+<div class="wmip-wrapper">
+
+    <!-- Intro Content -->
+    <h2>🌐 What Is My IP Address — Free Online Tool</h2>
+    <p>Instantly find your <strong>public IP address</strong> along with your <strong>location, ISP, timezone, and
+            connection details</strong>. Our tool detects your IP automatically as soon as the page loads — no clicks
+        needed. Useful for troubleshooting, security audits, VPN verification, and network diagnostics.</p>
+
+    <!-- Tool Container -->
+    <div class="wmip-container">
+        <h2>🌐 What Is My IP Address?</h2>
+        <p class="wmip-subtitle">Your public IP is detected automatically</p>
+
+        <!-- IP Display -->
+        <div class="wmip-ip-box">
+            <div class="wmip-ip-label">Your Public IP Address</div>
+            <div class="wmip-ip-value" id="wmipIpValue"><span class="wmip-ip-loading">Detecting...</span></div>
+            <button class="wmip-copy-btn" id="wmipCopyBtn" onclick="wmipCopyIP()" style="display:none;">📋 Copy
+                IP</button>
+        </div>
+
+        <!-- Details Grid -->
+        <div class="wmip-details-grid" id="wmipDetailsGrid">
+            <div class="wmip-detail-card">
+                <div class="wmip-detail-label">IP Version</div>
+                <div class="wmip-detail-value wmip-loading" id="wmipVersion">Loading...</div>
+            </div>
+            <div class="wmip-detail-card">
+                <div class="wmip-detail-label">Location</div>
+                <div class="wmip-detail-value wmip-loading" id="wmipLocation">Loading...</div>
+            </div>
+            <div class="wmip-detail-card">
+                <div class="wmip-detail-label">ISP / Organization</div>
+                <div class="wmip-detail-value wmip-loading" id="wmipISP">Loading...</div>
+            </div>
+            <div class="wmip-detail-card">
+                <div class="wmip-detail-label">Country</div>
+                <div class="wmip-detail-value wmip-loading" id="wmipCountry">Loading...</div>
+            </div>
+            <div class="wmip-detail-card">
+                <div class="wmip-detail-label">Region</div>
+                <div class="wmip-detail-value wmip-loading" id="wmipRegion">Loading...</div>
+            </div>
+            <div class="wmip-detail-card">
+                <div class="wmip-detail-label">Timezone</div>
+                <div class="wmip-detail-value wmip-loading" id="wmipTimezone">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Status -->
+        <div id="wmipStatus"></div>
+
+        <!-- Refresh -->
+        <div class="wmip-btn-row">
+            <button class="wmip-btn wmip-btn-refresh" onclick="wmipFetchIP()">🔄 Refresh IP</button>
+        </div>
+    </div>
+
+    <!-- Highlight -->
+    <div class="wmip-highlight-box">
+        <strong>🔒 Privacy Note:</strong> This tool only reads your public IP address — the one visible to every website
+        you visit. We do <strong>not</strong> log, store, or track your IP. All data is fetched via a public API and
+        displayed directly in your browser.
+    </div>
+
+    <!-- What is an IP -->
+    <h2>📖 What Is an IP Address?</h2>
+    <p>An <strong>IP (Internet Protocol) address</strong> is a unique numerical label assigned to every device connected
+        to the internet. Think of it as your device's "home address" on the web — it tells websites and online services
+        where to send the data you requested.</p>
+    <p>There are two types of IP addresses:</p>
+    <ul>
+        <li><strong>Public IP</strong> — Assigned by your ISP, visible to the internet. This is what our tool shows.
+        </li>
+        <li><strong>Private IP</strong> — Used within your local network (e.g., 192.168.x.x). Not visible to external
+            websites.</li>
+    </ul>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="wmip-features-grid">
+        <div class="wmip-feature-card">
+            <span class="icon">⚡</span>
+            <strong>Auto-Detect</strong>
+            <p>IP is detected instantly when the page loads.</p>
+        </div>
+        <div class="wmip-feature-card">
+            <span class="icon">📍</span>
+            <strong>Location Details</strong>
+            <p>Shows city, region, country, and timezone.</p>
+        </div>
+        <div class="wmip-feature-card">
+            <span class="icon">🏢</span>
+            <strong>ISP Info</strong>
+            <p>Displays your Internet Service Provider name.</p>
+        </div>
+        <div class="wmip-feature-card">
+            <span class="icon">📋</span>
+            <strong>Copy to Clipboard</strong>
+            <p>One-click copy for easy sharing.</p>
+        </div>
+    </div>
+
+    <!-- IPv4 vs IPv6 -->
+    <h2>📊 IPv4 vs IPv6 — What's the Difference?</h2>
+    <table class="wmip-compare-table">
+        <tr>
+            <th>Feature</th>
+            <th>IPv4</th>
+            <th>IPv6</th>
+        </tr>
+        <tr>
+            <td>Format</td>
+            <td>192.168.1.1</td>
+            <td>2001:0db8:85a3::7334</td>
+        </tr>
+        <tr>
+            <td>Address Length</td>
+            <td>32-bit</td>
+            <td>128-bit</td>
+        </tr>
+        <tr>
+            <td>Total Addresses</td>
+            <td>~4.3 billion</td>
+            <td>~340 undecillion</td>
+        </tr>
+        <tr>
+            <td>Security</td>
+            <td>Optional (IPSec)</td>
+            <td>Built-in (IPSec mandatory)</td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>Running out</td>
+            <td>Future standard</td>
+        </tr>
+    </table>
+
+    <!-- Use Cases -->
+    <h2>🤔 Why Would You Need to Know Your IP?</h2>
+    <ul>
+        <li><strong>VPN Verification</strong> — Confirm that your VPN is working by checking if your IP has changed to a
+            different location.</li>
+        <li><strong>Troubleshooting</strong> — Network issues often require knowing your public IP for diagnostics.</li>
+        <li><strong>Remote Access</strong> — Setting up remote desktop, servers, or CCTV often requires your public IP.
+        </li>
+        <li><strong>Security Checks</strong> — Verify if your IP has been exposed or blacklisted.</li>
+        <li><strong>Gaming</strong> — Some multiplayer games or servers require your IP for direct connections.</li>
+        <li><strong>Web Development</strong> — Developers often need to whitelist IPs for API access or testing.</li>
+    </ul>
+
+    <!-- How to Hide IP -->
+    <h2>🛡️ How to Hide Your IP Address</h2>
+    <ol>
+        <li><strong>Use a VPN</strong> — The most popular method. A VPN encrypts your traffic and assigns you a
+            different IP from another location.</li>
+        <li><strong>Use a Proxy Server</strong> — Routes your traffic through an intermediary server, but doesn't
+            encrypt it.</li>
+        <li><strong>Use Tor Browser</strong> — Routes traffic through multiple nodes for maximum anonymity, but is
+            slower.</li>
+        <li><strong>Use Mobile Data</strong> — Switching from Wi-Fi to mobile data gives you a different IP address.
+        </li>
+    </ol>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="wmip-faq-item">
+        <h3>What is an IP address?</h3>
+        <p>An IP address is a unique numerical label assigned to every device connected to the internet. It serves as
+            your device's identity, allowing websites and services to send data to and from your device.</p>
+    </div>
+
+    <div class="wmip-faq-item">
+        <h3>What is the difference between IPv4 and IPv6?</h3>
+        <p>IPv4 uses 32-bit addresses (e.g., 192.168.1.1) with about 4.3 billion possible addresses. IPv6 uses 128-bit
+            addresses with virtually unlimited addresses. IPv6 was created as the world runs out of IPv4 addresses.</p>
+    </div>
+
+    <div class="wmip-faq-item">
+        <h3>Can someone track me using my IP address?</h3>
+        <p>An IP address can reveal your approximate location (city/region) and ISP, but it cannot pinpoint your exact
+            physical address. Using a VPN can mask your real IP for added privacy.</p>
+    </div>
+
+    <div class="wmip-faq-item">
+        <h3>How do I hide my IP address?</h3>
+        <p>You can use a VPN (Virtual Private Network), a proxy server, or the Tor browser. A VPN is the most popular
+            and reliable method.</p>
+    </div>
+
+    <div class="wmip-faq-item">
+        <h3>Does my IP address change?</h3>
+        <p>If your ISP assigns you a dynamic IP (most common), your IP may change periodically when you restart your
+            router or periodically. A static IP stays the same and is usually used for servers or businesses.</p>
+    </div>
+
+    <div class="wmip-faq-item">
+        <h3>Is this tool free and safe?</h3>
+        <p>Yes, completely free. We do not log, store, or track your IP address. The data is fetched from a public API
+            and displayed directly in your browser.</p>
+    </div>
+
+</div>
+
+<script>
+    var wmipCurrentIP = '';
+
+    function wmipFetchIP() {
+        var ipEl = document.getElementById('wmipIpValue');
+        var copyBtn = document.getElementById('wmipCopyBtn');
+        var statusEl = document.getElementById('wmipStatus');
+
+        ipEl.innerHTML = '<span class="wmip-ip-loading">Detecting...</span>';
+        copyBtn.style.display = 'none';
+        statusEl.innerHTML = '';
+
+        // Reset detail cards
+        var detailIds = ['wmipVersion', 'wmipLocation', 'wmipISP', 'wmipCountry', 'wmipRegion', 'wmipTimezone'];
+        for (var i = 0; i < detailIds.length; i++) {
+            var el = document.getElementById(detailIds[i]);
+            el.textContent = 'Loading...';
+            el.className = 'wmip-detail-value wmip-loading';
+        }
+
+        // Fetch IP + geo info from ip-api.com (free, no API key needed)
+        fetch('https://api64.ipify.org?format=json')
+            .then(function (r) { return r.json(); })
+            .then(function (ipData) {
+                wmipCurrentIP = ipData.ip;
+                ipEl.textContent = ipData.ip;
+                copyBtn.style.display = 'inline-block';
+
+                // Detect IP version
+                var isIPv6 = ipData.ip.indexOf(':') !== -1;
+                document.getElementById('wmipVersion').textContent = isIPv6 ? 'IPv6' : 'IPv4';
+                document.getElementById('wmipVersion').className = 'wmip-detail-value';
+
+                statusEl.innerHTML = '<span class="wmip-status wmip-status-success">\u2705 Detected successfully</span>';
+
+                // Fetch geo details
+                return fetch('https://ipapi.co/' + ipData.ip + '/json/');
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (geo) {
+                if (geo && !geo.error) {
+                    wmipSetDetail('wmipLocation', (geo.city || '—') + ', ' + (geo.region || ''));
+                    wmipSetDetail('wmipISP', geo.org || geo.asn || '—');
+                    wmipSetDetail('wmipCountry', (geo.country_name || '—') + ' ' + (geo.country_code_iso3 ? '(' + geo.country_code_iso3 + ')' : ''));
+                    wmipSetDetail('wmipRegion', geo.region || '—');
+                    wmipSetDetail('wmipTimezone', geo.timezone || '—');
+                } else {
+                    wmipSetAllDetails('Unavailable');
+                }
+            })
+            .catch(function () {
+                // Geo lookup failed but IP was found
+                wmipSetAllDetails('Unavailable');
+            })
+            .catch(function () {
+                ipEl.textContent = 'Could not detect IP';
+                statusEl.innerHTML = '<span class="wmip-status wmip-status-error">\u274C Detection failed</span>';
+                wmipSetAllDetails('—');
+            });
+    }
+
+    function wmipSetDetail(id, value) {
+        var el = document.getElementById(id);
+        el.textContent = value;
+        el.className = 'wmip-detail-value';
+    }
+
+    function wmipSetAllDetails(value) {
+        var ids = ['wmipLocation', 'wmipISP', 'wmipCountry', 'wmipRegion', 'wmipTimezone'];
+        for (var i = 0; i < ids.length; i++) {
+            wmipSetDetail(ids[i], value);
+        }
+    }
+
+    function wmipCopyIP() {
+        if (!wmipCurrentIP) return;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(wmipCurrentIP).then(function () {
+                var btn = document.getElementById('wmipCopyBtn');
+                btn.textContent = '\u2705 Copied!';
+                setTimeout(function () { btn.textContent = '\uD83D\uDCCB Copy IP'; }, 2000);
+            });
+        } else {
+            // Fallback
+            var t = document.createElement('textarea');
+            t.value = wmipCurrentIP;
+            document.body.appendChild(t);
+            t.select();
+            document.execCommand('copy');
+            document.body.removeChild(t);
+            var btn = document.getElementById('wmipCopyBtn');
+            btn.textContent = '\u2705 Copied!';
+            setTimeout(function () { btn.textContent = '\uD83D\uDCCB Copy IP'; }, 2000);
+        }
+    }
+
+    // Auto-detect on page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', wmipFetchIP);
+    } else {
+        wmipFetchIP();
+    }
+</script>

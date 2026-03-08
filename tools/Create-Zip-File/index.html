@@ -1,0 +1,849 @@
+<!-- AIOCrafters - Create ZIP File Tool - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Create ZIP File Online",
+  "description": "Free online ZIP file creator. Drag and drop or select multiple files to compress them into a ZIP archive instantly. No upload to server — everything runs locally in your browser.",
+  "url": "https://www.aiocrafters.com/p/create-zip-file.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I create a ZIP file online?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Simply drag and drop your files onto the tool or click to browse and select files. Then click 'Create ZIP' to generate a compressed archive. The download starts automatically."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it safe to create ZIP files online?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! Our tool processes everything locally in your browser using JavaScript. Your files are never uploaded to any server. Everything stays on your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a file size limit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Since the tool runs in your browser, the limit depends on your device's available memory. For most devices, files up to 500 MB total work smoothly. For very large files, use a desktop application."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What file types can I add to the ZIP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can add any file type — images, documents, videos, audio, PDFs, code files, and more. There are no restrictions on file types."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .czf-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .czf-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .czf-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+    .czf-container .czf-subtitle {
+        font-size: 14px;
+        color: #888;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Drop Zone */
+    .czf-dropzone {
+        border: 3px dashed #e0e0e0;
+        border-radius: 12px;
+        padding: 40px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: #fafbfc;
+        margin-bottom: 16px;
+    }
+
+    .czf-dropzone:hover {
+        border-color: #c62828;
+        background: #fff5f5;
+    }
+
+    .czf-dropzone.czf-dragover {
+        border-color: #c62828;
+        background: #ffebee;
+        transform: scale(1.01);
+    }
+
+    .czf-dropzone .czf-drop-icon {
+        font-size: 48px;
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    .czf-dropzone .czf-drop-text {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 6px;
+    }
+
+    .czf-dropzone .czf-drop-hint {
+        font-size: 13px;
+        color: #aaa;
+    }
+
+    .czf-dropzone .czf-browse-link {
+        color: #c62828;
+        font-weight: 600;
+        text-decoration: underline;
+    }
+
+    .czf-hidden-input {
+        display: none;
+    }
+
+    /* ZIP Name Input */
+    .czf-name-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+    .czf-name-row label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        white-space: nowrap;
+    }
+
+    .czf-name-row input {
+        flex: 1;
+        padding: 10px 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+    }
+
+    .czf-name-row input:focus {
+        border-color: #c62828;
+        box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.12);
+    }
+
+    .czf-name-row .czf-ext {
+        font-size: 15px;
+        font-weight: 600;
+        color: #999;
+    }
+
+    /* File List */
+    .czf-file-list {
+        display: none;
+        margin-bottom: 16px;
+    }
+
+    .czf-file-list-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .czf-file-list-header strong {
+        font-size: 14px;
+        color: #555;
+    }
+
+    .czf-file-count {
+        font-size: 13px;
+        color: #888;
+    }
+
+    .czf-files-scroll {
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+    }
+
+    .czf-file-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 14px;
+        transition: background 0.2s;
+    }
+
+    .czf-file-item:last-child {
+        border-bottom: none;
+    }
+
+    .czf-file-item:hover {
+        background: #fff5f5;
+    }
+
+    .czf-file-name {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #333;
+    }
+
+    .czf-file-size {
+        font-size: 12px;
+        color: #999;
+        margin: 0 12px;
+        white-space: nowrap;
+    }
+
+    .czf-file-remove {
+        width: 24px;
+        height: 24px;
+        border: none;
+        background: #ffebee;
+        color: #c62828;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 14px;
+        line-height: 24px;
+        text-align: center;
+        transition: all 0.2s;
+        padding: 0;
+    }
+
+    .czf-file-remove:hover {
+        background: #ef9a9a;
+        color: #fff;
+    }
+
+    /* Total Size */
+    .czf-total-bar {
+        display: none;
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 8px;
+        padding: 10px 16px;
+        margin-bottom: 16px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .czf-total-size {
+        font-weight: 700;
+        color: #c62828;
+    }
+
+    /* Buttons */
+    .czf-btn-row {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .czf-btn {
+        padding: 12px 28px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .czf-btn-create {
+        background: linear-gradient(135deg, #ef5350, #c62828);
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(198, 40, 40, 0.3);
+        flex: 1;
+    }
+
+    .czf-btn-create:hover {
+        box-shadow: 0 5px 16px rgba(198, 40, 40, 0.45);
+        transform: translateY(-1px);
+    }
+
+    .czf-btn-create:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .czf-btn-clear {
+        background: #f1f3f5;
+        color: #555;
+        border: 1px solid #ddd;
+    }
+
+    .czf-btn-clear:hover {
+        background: #e9ecef;
+    }
+
+    /* Progress */
+    .czf-progress {
+        display: none;
+        margin-top: 16px;
+    }
+
+    .czf-progress-bar-bg {
+        width: 100%;
+        height: 8px;
+        background: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: 8px;
+    }
+
+    .czf-progress-bar {
+        height: 100%;
+        background: linear-gradient(135deg, #ef5350, #c62828);
+        border-radius: 4px;
+        transition: width 0.3s;
+        width: 0%;
+    }
+
+    .czf-progress-text {
+        font-size: 13px;
+        color: #888;
+        text-align: center;
+    }
+
+    /* Result */
+    .czf-result {
+        display: none;
+        margin-top: 20px;
+        text-align: center;
+        padding: 20px;
+        background: #e8f5e9;
+        border: 1px solid #a5d6a7;
+        border-radius: 10px;
+    }
+
+    .czf-result .czf-success-icon {
+        font-size: 48px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .czf-result .czf-success-text {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2e7d32;
+        margin-bottom: 12px;
+    }
+
+    .czf-download-btn {
+        display: inline-block;
+        padding: 12px 32px;
+        background: linear-gradient(135deg, #66bb6a, #2e7d32);
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.2s;
+        box-shadow: 0 3px 10px rgba(46, 125, 50, 0.3);
+    }
+
+    .czf-download-btn:hover {
+        box-shadow: 0 5px 16px rgba(46, 125, 50, 0.45);
+        transform: translateY(-1px);
+        color: #fff;
+    }
+
+    .czf-zip-info {
+        font-size: 13px;
+        color: #777;
+        margin-top: 10px;
+    }
+
+    /* Privacy Note */
+    .czf-privacy {
+        background: #e8f5e9;
+        border: 1px solid #c8e6c9;
+        border-left: 4px solid #2e7d32;
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-top: 20px;
+        font-size: 13px;
+        color: #2e7d32;
+        text-align: center;
+    }
+
+    /* --- Content Sections --- */
+    .czf-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .czf-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .czf-wrapper ul,
+    .czf-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .czf-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .czf-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .czf-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .czf-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .czf-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .czf-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .czf-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    .czf-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .czf-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .czf-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        .czf-container {
+            padding: 20px 16px;
+        }
+
+        .czf-name-row {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+</style>
+
+<div class="czf-wrapper">
+
+    <!-- Intro Content -->
+    <h2>📦 Create ZIP File Online — Free Tool</h2>
+    <p>Need to compress multiple files into a single ZIP archive? Our free <strong>ZIP File Creator</strong> lets you
+        drag and drop files, preview them, and create a downloadable ZIP — all <strong>directly in your
+            browser</strong>. No file uploads, no server processing, <strong>100% private and offline</strong>.</p>
+
+    <!-- Tool Container -->
+    <div class="czf-container">
+        <h2>📦 Create ZIP File</h2>
+        <p class="czf-subtitle">Drag & drop files or click to browse — everything stays on your device</p>
+
+        <!-- Drop Zone -->
+        <div class="czf-dropzone" id="czfDropzone" onclick="document.getElementById('czfFileInput').click();">
+            <span class="czf-drop-icon">📁</span>
+            <div class="czf-drop-text">Drag & drop files here</div>
+            <div class="czf-drop-hint">or <span class="czf-browse-link">click to browse</span> — any file type</div>
+        </div>
+        <input type="file" id="czfFileInput" class="czf-hidden-input" multiple onchange="czfHandleFiles(this.files)">
+
+        <!-- ZIP Name -->
+        <div class="czf-name-row">
+            <label>ZIP Name:</label>
+            <input type="text" id="czfZipName" value="my-files" placeholder="Enter ZIP file name">
+            <span class="czf-ext">.zip</span>
+        </div>
+
+        <!-- File List -->
+        <div class="czf-file-list" id="czfFileList">
+            <div class="czf-file-list-header">
+                <strong>Selected Files</strong>
+                <span class="czf-file-count" id="czfFileCount"></span>
+            </div>
+            <div class="czf-files-scroll" id="czfFilesScroll"></div>
+        </div>
+
+        <!-- Total Size -->
+        <div class="czf-total-bar" id="czfTotalBar">
+            Total size: <span class="czf-total-size" id="czfTotalSize">0 KB</span>
+        </div>
+
+        <!-- Buttons -->
+        <div class="czf-btn-row">
+            <button class="czf-btn czf-btn-create" id="czfCreateBtn" onclick="czfCreateZip()" disabled>📦 Create
+                ZIP</button>
+            <button class="czf-btn czf-btn-clear" onclick="czfClearAll()">🗑️ Clear All</button>
+        </div>
+
+        <!-- Progress -->
+        <div class="czf-progress" id="czfProgress">
+            <div class="czf-progress-bar-bg">
+                <div class="czf-progress-bar" id="czfProgressBar"></div>
+            </div>
+            <div class="czf-progress-text" id="czfProgressText">Creating ZIP...</div>
+        </div>
+
+        <!-- Result -->
+        <div class="czf-result" id="czfResult"></div>
+
+        <!-- Privacy Note -->
+        <div class="czf-privacy">
+            🔒 <strong>100% Private:</strong> Your files never leave your device. Everything is processed locally in
+            your browser using JavaScript.
+        </div>
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Create a ZIP File</h2>
+    <ol>
+        <li><strong>Add Files</strong> — Drag and drop files onto the tool, or click to browse and select files from
+            your device.</li>
+        <li><strong>Review Files</strong> — See all selected files with their sizes. Remove any files you don't want.
+        </li>
+        <li><strong>Name Your ZIP</strong> — Optionally change the output file name (default: "my-files.zip").</li>
+        <li><strong>Click "Create ZIP"</strong> — The tool compresses your files into a ZIP archive.</li>
+        <li><strong>Download</strong> — Click the download button to save your ZIP file.</li>
+    </ol>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="czf-features-grid">
+        <div class="czf-feature-card">
+            <span class="icon">📁</span>
+            <strong>Drag & Drop</strong>
+            <p>Simply drag files onto the tool to add them.</p>
+        </div>
+        <div class="czf-feature-card">
+            <span class="icon">📋</span>
+            <strong>File Preview List</strong>
+            <p>See all files with sizes before creating ZIP.</p>
+        </div>
+        <div class="czf-feature-card">
+            <span class="icon">✏️</span>
+            <strong>Custom ZIP Name</strong>
+            <p>Name your ZIP file whatever you want.</p>
+        </div>
+        <div class="czf-feature-card">
+            <span class="icon">🔒</span>
+            <strong>100% Private</strong>
+            <p>Files never leave your device. No server upload.</p>
+        </div>
+    </div>
+
+    <!-- Use Cases -->
+    <h2>🤔 When Do You Need to Create a ZIP?</h2>
+    <ul>
+        <li><strong>Email Attachments</strong> — Compress multiple files into one ZIP for easy emailing.</li>
+        <li><strong>File Organization</strong> — Bundle related documents, images, or code files together.</li>
+        <li><strong>Saving Storage</strong> — ZIP compression reduces file sizes, saving disk space.</li>
+        <li><strong>Sharing Online</strong> — Upload a single ZIP instead of multiple individual files.</li>
+        <li><strong>Backup</strong> — Create quick backups of important files in a compressed format.</li>
+        <li><strong>Web Development</strong> — Package project files for deployment or sharing with teams.</li>
+    </ul>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="czf-faq-item">
+        <h3>How do I create a ZIP file online?</h3>
+        <p>Drag and drop files onto the tool or click to browse. Select your files, optionally name your ZIP, and click
+            "Create ZIP". The download starts automatically.</p>
+    </div>
+
+    <div class="czf-faq-item">
+        <h3>Is it safe to create ZIP files online?</h3>
+        <p>Yes! Our tool processes everything locally in your browser using JavaScript. Your files are never uploaded to
+            any server.</p>
+    </div>
+
+    <div class="czf-faq-item">
+        <h3>Is there a file size limit?</h3>
+        <p>Since the tool runs in your browser, the limit depends on your device's memory. Files up to 500 MB total work
+            smoothly on most devices.</p>
+    </div>
+
+    <div class="czf-faq-item">
+        <h3>What file types can I add?</h3>
+        <p>Any file type — images, documents, videos, audio, PDFs, code files, and more. There are no restrictions.</p>
+    </div>
+
+    <div class="czf-faq-item">
+        <h3>Can I remove files before creating the ZIP?</h3>
+        <p>Yes! Each file in the list has a remove button (X). Click it to remove individual files before creating the
+            archive.</p>
+    </div>
+
+    <div class="czf-faq-item">
+        <h3>Is this tool free?</h3>
+        <p>Yes, completely free. No sign-up, no limits. Everything runs locally in your browser.</p>
+    </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+    var czfFiles = [];
+
+    // Drag & Drop
+    (function () {
+        var dz = document.getElementById('czfDropzone');
+
+        dz.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            dz.classList.add('czf-dragover');
+        });
+
+        dz.addEventListener('dragleave', function (e) {
+            e.preventDefault();
+            dz.classList.remove('czf-dragover');
+        });
+
+        dz.addEventListener('drop', function (e) {
+            e.preventDefault();
+            dz.classList.remove('czf-dragover');
+            if (e.dataTransfer.files.length > 0) {
+                czfHandleFiles(e.dataTransfer.files);
+            }
+        });
+    })();
+
+    function czfHandleFiles(fileList) {
+        for (var i = 0; i < fileList.length; i++) {
+            // Avoid duplicates
+            var dup = false;
+            for (var j = 0; j < czfFiles.length; j++) {
+                if (czfFiles[j].name === fileList[i].name && czfFiles[j].size === fileList[i].size) {
+                    dup = true;
+                    break;
+                }
+            }
+            if (!dup) czfFiles.push(fileList[i]);
+        }
+        czfRenderFileList();
+    }
+
+    function czfFormatSize(bytes) {
+        if (bytes === 0) return '0 B';
+        var k = 1024;
+        var sizes = ['B', 'KB', 'MB', 'GB'];
+        var i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    function czfRenderFileList() {
+        var listEl = document.getElementById('czfFileList');
+        var scrollEl = document.getElementById('czfFilesScroll');
+        var countEl = document.getElementById('czfFileCount');
+        var totalEl = document.getElementById('czfTotalBar');
+        var totalSizeEl = document.getElementById('czfTotalSize');
+        var createBtn = document.getElementById('czfCreateBtn');
+
+        if (czfFiles.length === 0) {
+            listEl.style.display = 'none';
+            totalEl.style.display = 'none';
+            createBtn.disabled = true;
+            return;
+        }
+
+        listEl.style.display = 'block';
+        totalEl.style.display = 'block';
+        createBtn.disabled = false;
+
+        countEl.textContent = czfFiles.length + ' file' + (czfFiles.length > 1 ? 's' : '');
+
+        var html = '';
+        var totalBytes = 0;
+
+        for (var i = 0; i < czfFiles.length; i++) {
+            totalBytes += czfFiles[i].size;
+            // File icon based on type
+            var icon = '\uD83D\uDCC4'; // default document
+            var type = czfFiles[i].type || '';
+            if (type.indexOf('image') === 0) icon = '\uD83D\uDDBC\uFE0F';
+            else if (type.indexOf('video') === 0) icon = '\uD83C\uDFA5';
+            else if (type.indexOf('audio') === 0) icon = '\uD83C\uDFB5';
+            else if (type.indexOf('pdf') !== -1) icon = '\uD83D\uDCC4';
+            else if (type.indexOf('zip') !== -1 || type.indexOf('rar') !== -1) icon = '\uD83D\uDCE6';
+
+            html += '<div class="czf-file-item">';
+            html += '<span class="czf-file-name">' + icon + ' ' + czfEscape(czfFiles[i].name) + '</span>';
+            html += '<span class="czf-file-size">' + czfFormatSize(czfFiles[i].size) + '</span>';
+            html += '<button class="czf-file-remove" onclick="czfRemoveFile(' + i + ')" title="Remove">\u00D7</button>';
+            html += '</div>';
+        }
+
+        scrollEl.innerHTML = html;
+        totalSizeEl.textContent = czfFormatSize(totalBytes);
+    }
+
+    function czfEscape(str) {
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function czfRemoveFile(index) {
+        czfFiles.splice(index, 1);
+        czfRenderFileList();
+    }
+
+    function czfClearAll() {
+        czfFiles = [];
+        czfRenderFileList();
+        document.getElementById('czfResult').style.display = 'none';
+        document.getElementById('czfProgress').style.display = 'none';
+        document.getElementById('czfFileInput').value = '';
+    }
+
+    function czfCreateZip() {
+        if (czfFiles.length === 0) {
+            alert('Please add files first.');
+            return;
+        }
+
+        var zipName = document.getElementById('czfZipName').value.trim() || 'my-files';
+        zipName = zipName.replace(/\.zip$/i, '');
+
+        var createBtn = document.getElementById('czfCreateBtn');
+        var progressEl = document.getElementById('czfProgress');
+        var progressBar = document.getElementById('czfProgressBar');
+        var progressText = document.getElementById('czfProgressText');
+        var resultEl = document.getElementById('czfResult');
+
+        createBtn.disabled = true;
+        resultEl.style.display = 'none';
+        progressEl.style.display = 'block';
+        progressBar.style.width = '0%';
+        progressText.textContent = 'Adding files...';
+
+        var zip = new JSZip();
+
+        for (var i = 0; i < czfFiles.length; i++) {
+            zip.file(czfFiles[i].name, czfFiles[i]);
+        }
+
+        progressBar.style.width = '30%';
+        progressText.textContent = 'Compressing...';
+
+        zip.generateAsync({ type: 'blob' }, function (metadata) {
+            progressBar.style.width = (30 + metadata.percent * 0.7) + '%';
+            progressText.textContent = 'Compressing... ' + Math.round(metadata.percent) + '%';
+        }).then(function (content) {
+            progressBar.style.width = '100%';
+            progressText.textContent = 'Done!';
+
+            var zipURL = URL.createObjectURL(content);
+
+            resultEl.style.display = 'block';
+            resultEl.innerHTML = '<span class="czf-success-icon">\u2705</span>' +
+                '<div class="czf-success-text">ZIP file created successfully!</div>' +
+                '<a class="czf-download-btn" href="' + zipURL + '" download="' + czfEscape(zipName) + '.zip">\u2B07\uFE0F Download ' + czfEscape(zipName) + '.zip</a>' +
+                '<div class="czf-zip-info">' + czfFiles.length + ' file' + (czfFiles.length > 1 ? 's' : '') + ' \u2022 ZIP size: ' + czfFormatSize(content.size) + '</div>';
+
+            createBtn.disabled = false;
+
+            setTimeout(function () {
+                progressEl.style.display = 'none';
+            }, 1500);
+        }).catch(function (err) {
+            progressEl.style.display = 'none';
+            createBtn.disabled = false;
+            alert('Error creating ZIP: ' + err.message);
+        });
+    }
+</script>
