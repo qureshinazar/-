@@ -1,0 +1,1045 @@
+<!-- AIOCrafters - Passport / Form Photo Tool - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Passport Size Photo Tool",
+  "description": "Free online Passport / Form Photo Tool. Crop, resize, and auto-compress photos to 20KB-50KB for government forms, job applications, and exam registrations. Supports preset sizes for Indian Passport, Aadhaar, PAN, SSC, and more.",
+  "url": "https://www.aiocrafters.com/p/passport-size-photo.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What size photo is needed for Indian Passport?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Indian Passport requires a photo of 3.5 cm x 4.5 cm (350 x 450 pixels at 300 DPI). The photo should have a plain white or light-colored background."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I compress a photo to 20KB-50KB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Upload your photo, crop it to the required size, and click 'Crop & Compress'. The tool automatically adjusts quality and dimensions to bring the file size between 20KB and 50KB."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What photo size is needed for government forms?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most Indian government forms (SSC, UPSC, Railway, Bank exams) require photos between 20KB to 50KB in JPEG format. Common dimensions are 3.5 x 4.5 cm or 2 x 2 inches."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this tool free and safe?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, completely free. All processing happens locally in your browser — your photo is never uploaded to any server."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Cropper.js CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet" />
+
+<style>
+    .psp-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .psp-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .psp-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+    .psp-container .psp-subtitle {
+        font-size: 14px;
+        color: #888;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Drop Zone */
+    .psp-dropzone {
+        border: 3px dashed #e0e0e0;
+        border-radius: 12px;
+        padding: 40px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: #fafbfc;
+        margin-bottom: 16px;
+    }
+
+    .psp-dropzone:hover {
+        border-color: #00695c;
+        background: #e0f2f1;
+    }
+
+    .psp-dropzone.psp-dragover {
+        border-color: #00695c;
+        background: #b2dfdb;
+        transform: scale(1.01);
+    }
+
+    .psp-dropzone .psp-drop-icon {
+        font-size: 48px;
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    .psp-dropzone .psp-drop-text {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 6px;
+    }
+
+    .psp-dropzone .psp-drop-hint {
+        font-size: 13px;
+        color: #aaa;
+    }
+
+    .psp-dropzone .psp-browse-link {
+        color: #00695c;
+        font-weight: 600;
+        text-decoration: underline;
+    }
+
+    .psp-hidden-input {
+        display: none;
+    }
+
+    /* Preset Sizes */
+    .psp-presets {
+        display: none;
+        margin-bottom: 16px;
+    }
+
+    .psp-presets-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .psp-presets-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .psp-preset-chip {
+        padding: 6px 14px;
+        background: #e0f2f1;
+        border: 1px solid #b2dfdb;
+        border-radius: 20px;
+        font-size: 13px;
+        color: #00695c;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .psp-preset-chip:hover {
+        background: #b2dfdb;
+        transform: translateY(-1px);
+    }
+
+    .psp-preset-chip.active {
+        background: #00695c;
+        color: #fff;
+        border-color: #00695c;
+    }
+
+    /* Crop Area */
+    .psp-crop-area {
+        display: none;
+        margin-bottom: 16px;
+        max-height: 400px;
+        overflow: hidden;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+    }
+
+    .psp-crop-area img {
+        max-width: 100%;
+        display: block;
+    }
+
+    /* Readings */
+    .psp-readings {
+        display: none;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .psp-reading-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 8px;
+        padding: 10px 14px;
+        text-align: center;
+    }
+
+    .psp-reading-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #999;
+        font-weight: 600;
+        margin-bottom: 2px;
+    }
+
+    .psp-reading-value {
+        font-size: 15px;
+        font-weight: 600;
+        color: #333;
+        font-family: 'Courier New', monospace;
+    }
+
+    /* Quality Slider */
+    .psp-slider-group {
+        display: none;
+        margin-bottom: 16px;
+    }
+
+    .psp-slider-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 6px;
+    }
+
+    .psp-slider-label span {
+        color: #00695c;
+        font-weight: 700;
+    }
+
+    .psp-slider-group input[type="range"] {
+        width: 100%;
+        -webkit-appearance: none;
+        height: 6px;
+        border-radius: 3px;
+        background: #e0e0e0;
+        outline: none;
+    }
+
+    .psp-slider-group input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #00695c;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(0, 105, 92, 0.3);
+    }
+
+    .psp-slider-group input[type="range"]::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #00695c;
+        cursor: pointer;
+        border: none;
+    }
+
+    /* Target Size */
+    .psp-target-row {
+        display: none;
+        gap: 12px;
+        margin-bottom: 16px;
+        align-items: center;
+    }
+
+    .psp-target-row label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+        white-space: nowrap;
+    }
+
+    .psp-target-row input {
+        width: 70px;
+        padding: 8px 10px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 14px;
+        text-align: center;
+        outline: none;
+        box-sizing: border-box;
+    }
+
+    .psp-target-row input:focus {
+        border-color: #00695c;
+    }
+
+    .psp-target-row span {
+        font-size: 13px;
+        color: #888;
+    }
+
+    /* Buttons */
+    .psp-btn-row {
+        display: none;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+
+    .psp-btn {
+        padding: 12px 28px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex: 1;
+    }
+
+    .psp-btn-crop {
+        background: linear-gradient(135deg, #4db6ac, #00695c);
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(0, 105, 92, 0.3);
+    }
+
+    .psp-btn-crop:hover {
+        box-shadow: 0 5px 16px rgba(0, 105, 92, 0.45);
+        transform: translateY(-1px);
+    }
+
+    .psp-btn-crop:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .psp-btn-clear {
+        background: #f1f3f5;
+        color: #555;
+        border: 1px solid #ddd;
+        flex: 0.4;
+    }
+
+    .psp-btn-clear:hover {
+        background: #e9ecef;
+    }
+
+    /* Status */
+    .psp-status {
+        display: none;
+        padding: 12px 16px;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+
+    .psp-status-waiting {
+        background: #f3f4f6;
+        color: #888;
+    }
+
+    .psp-status-processing {
+        background: #fff8e1;
+        color: #f57f17;
+        border: 1px solid #ffecb3;
+    }
+
+    .psp-status-success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #a5d6a7;
+    }
+
+    .psp-status-error {
+        background: #ffebee;
+        color: #c62828;
+        border: 1px solid #ef9a9a;
+    }
+
+    /* Preview & Download */
+    .psp-preview {
+        display: none;
+        text-align: center;
+        margin-bottom: 16px;
+    }
+
+    .psp-preview img {
+        max-width: 200px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        margin-bottom: 12px;
+    }
+
+    .psp-preview-info {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 12px;
+    }
+
+    .psp-download-btn {
+        display: inline-block;
+        padding: 12px 32px;
+        background: linear-gradient(135deg, #66bb6a, #2e7d32);
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.2s;
+        box-shadow: 0 3px 10px rgba(46, 125, 50, 0.3);
+        border: none;
+        cursor: pointer;
+    }
+
+    .psp-download-btn:hover {
+        box-shadow: 0 5px 16px rgba(46, 125, 50, 0.45);
+        transform: translateY(-1px);
+        color: #fff;
+    }
+
+    .psp-download-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    /* Privacy Note */
+    .psp-privacy {
+        background: #e8f5e9;
+        border: 1px solid #c8e6c9;
+        border-left: 4px solid #2e7d32;
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-top: 16px;
+        font-size: 13px;
+        color: #2e7d32;
+        text-align: center;
+    }
+
+    /* --- Content Sections --- */
+    .psp-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .psp-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .psp-wrapper ul,
+    .psp-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .psp-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .psp-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .psp-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .psp-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .psp-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .psp-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .psp-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    /* Size Table */
+    .psp-size-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 14px;
+    }
+
+    .psp-size-table th {
+        background: #00695c;
+        color: #fff;
+        padding: 10px 12px;
+        text-align: left;
+    }
+
+    .psp-size-table td {
+        border: 1px solid #e0e0e0;
+        padding: 8px 12px;
+    }
+
+    .psp-size-table tr:nth-child(even) {
+        background: #e0f2f1;
+    }
+
+    .psp-highlight-box {
+        background: #e0f2f1;
+        border: 1px solid #b2dfdb;
+        border-left: 5px solid #00695c;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .psp-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .psp-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .psp-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        .psp-container {
+            padding: 20px 16px;
+        }
+
+        .psp-readings {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="psp-wrapper">
+
+    <!-- Intro Content -->
+    <h2>📸 Passport / Form Photo Tool — Crop, Resize & Compress</h2>
+    <p>Need a passport-size photo for a government form, exam application, or online registration? Our free
+        <strong>Passport Size Photo Tool</strong> lets you upload, crop, and <strong>auto-compress your photo to
+            20KB–50KB</strong> in JPEG format. Choose from preset sizes for Indian Passport, Aadhaar, PAN Card, SSC,
+        UPSC, and more — all directly in your browser.</p>
+
+    <!-- Tool Container -->
+    <div class="psp-container">
+        <h2>📸 Passport / Form Photo Tool</h2>
+        <p class="psp-subtitle">Upload, crop to preset sizes, and auto-compress to 20KB–50KB</p>
+
+        <!-- Drop Zone -->
+        <div class="psp-dropzone" id="pspDropzone" onclick="document.getElementById('pspFileInput').click();">
+            <span class="psp-drop-icon">📷</span>
+            <div class="psp-drop-text">Drag & drop your photo here</div>
+            <div class="psp-drop-hint">or <span class="psp-browse-link">click to browse</span> — JPG, PNG, WEBP</div>
+        </div>
+        <input type="file" id="pspFileInput" class="psp-hidden-input" accept="image/*"
+            onchange="pspLoadImage(this.files[0])">
+
+        <!-- Preset Sizes -->
+        <div class="psp-presets" id="pspPresets">
+            <span class="psp-presets-label">Choose Photo Size</span>
+            <div class="psp-presets-row">
+                <span class="psp-preset-chip" onclick="pspSetPreset(3.5, 4.5, this)">Passport (3.5x4.5 cm)</span>
+                <span class="psp-preset-chip" onclick="pspSetPreset(2.5, 2.5, this)">PAN Card (2.5x2.5 cm)</span>
+                <span class="psp-preset-chip" onclick="pspSetPreset(3.5, 3.5, this)">Aadhaar (3.5x3.5 cm)</span>
+                <span class="psp-preset-chip" onclick="pspSetPreset(5.08, 5.08, this)">US Visa (2x2 inch)</span>
+                <span class="psp-preset-chip" onclick="pspSetPreset(3.5, 4.5, this)">SSC / UPSC</span>
+                <span class="psp-preset-chip active" onclick="pspSetPreset(0, 0, this)">Free Crop</span>
+            </div>
+        </div>
+
+        <!-- Crop Area -->
+        <div class="psp-crop-area" id="pspCropArea">
+            <img id="pspImage" alt="Passport photo crop preview">
+        </div>
+
+        <!-- Readings -->
+        <div class="psp-readings" id="pspReadings">
+            <div class="psp-reading-card">
+                <div class="psp-reading-label">Width</div>
+                <div class="psp-reading-value" id="pspWidth">— px</div>
+            </div>
+            <div class="psp-reading-card">
+                <div class="psp-reading-label">Height</div>
+                <div class="psp-reading-value" id="pspHeight">— px</div>
+            </div>
+        </div>
+
+        <!-- Quality Slider -->
+        <div class="psp-slider-group" id="pspSliderGroup">
+            <div class="psp-slider-label">
+                <span>Quality</span>
+                <span id="pspQValue">90%</span>
+            </div>
+            <input type="range" id="pspQuality" min="10" max="100" value="90"
+                oninput="document.getElementById('pspQValue').textContent = this.value + '%'">
+        </div>
+
+        <!-- Target Size -->
+        <div class="psp-target-row" id="pspTargetRow">
+            <label>Target Size:</label>
+            <input type="number" id="pspMinKB" value="20"> <span>KB to</span>
+            <input type="number" id="pspMaxKB" value="50"> <span>KB</span>
+        </div>
+
+        <!-- Buttons -->
+        <div class="psp-btn-row" id="pspBtnRow">
+            <button class="psp-btn psp-btn-crop" id="pspCropBtn" onclick="pspCropAndCompress()">✂️ Crop &
+                Compress</button>
+            <button class="psp-btn psp-btn-clear" onclick="pspClear()">🗑️ Clear</button>
+        </div>
+
+        <!-- Status -->
+        <div class="psp-status" id="pspStatus"></div>
+
+        <!-- Preview & Download -->
+        <div class="psp-preview" id="pspPreview">
+            <img id="pspPreviewImg" alt="Compressed passport photo preview">
+            <div class="psp-preview-info" id="pspPreviewInfo"></div>
+            <button class="psp-download-btn" id="pspDownloadBtn" onclick="pspDownload()">⬇️ Download Photo</button>
+        </div>
+
+        <!-- Privacy Note -->
+        <div class="psp-privacy">
+            🔒 <strong>100% Private:</strong> Your photo is processed entirely in your browser. Nothing is uploaded to
+            any server.
+        </div>
+    </div>
+
+    <!-- Highlight -->
+    <div class="psp-highlight-box">
+        <strong>💡 Auto-Compression:</strong> The tool automatically adjusts quality and dimensions to bring your photo
+        between your target file size (default 20KB–50KB). No manual tweaking needed — just crop and click!
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Use the Passport Photo Tool</h2>
+    <ol>
+        <li><strong>Upload Photo</strong> — Drag and drop or click to browse. Any image format works.</li>
+        <li><strong>Choose Preset</strong> — Select a standard size (Passport, PAN, Aadhaar, etc.) or use Free Crop.
+        </li>
+        <li><strong>Adjust Crop</strong> — Drag, zoom, and position the crop area on your photo.</li>
+        <li><strong>Set Target Size</strong> — Default is 20KB–50KB (most government forms). Adjust if needed.</li>
+        <li><strong>Click "Crop & Compress"</strong> — The tool auto-adjusts quality and size to hit the target.</li>
+        <li><strong>Download</strong> — Preview and download your compressed passport photo.</li>
+    </ol>
+
+    <!-- Common Photo Sizes -->
+    <h2>📏 Common Photo Size Requirements</h2>
+    <table class="psp-size-table">
+        <tr>
+            <th>Document / Form</th>
+            <th>Size (cm)</th>
+            <th>Size (pixels @ 300 DPI)</th>
+            <th>File Size</th>
+        </tr>
+        <tr>
+            <td>Indian Passport</td>
+            <td>3.5 x 4.5 cm</td>
+            <td>413 x 531 px</td>
+            <td>20–50 KB</td>
+        </tr>
+        <tr>
+            <td>PAN Card</td>
+            <td>2.5 x 2.5 cm</td>
+            <td>295 x 295 px</td>
+            <td>20–50 KB</td>
+        </tr>
+        <tr>
+            <td>Aadhaar Card</td>
+            <td>3.5 x 3.5 cm</td>
+            <td>413 x 413 px</td>
+            <td>20–50 KB</td>
+        </tr>
+        <tr>
+            <td>US Visa (2x2 inch)</td>
+            <td>5.08 x 5.08 cm</td>
+            <td>600 x 600 px</td>
+            <td>Varies</td>
+        </tr>
+        <tr>
+            <td>SSC / UPSC / Railway</td>
+            <td>3.5 x 4.5 cm</td>
+            <td>413 x 531 px</td>
+            <td>20–50 KB</td>
+        </tr>
+        <tr>
+            <td>Bank / Job Application</td>
+            <td>3.5 x 4.5 cm</td>
+            <td>413 x 531 px</td>
+            <td>20–100 KB</td>
+        </tr>
+    </table>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="psp-features-grid">
+        <div class="psp-feature-card">
+            <span class="icon">✂️</span>
+            <strong>Smart Crop</strong>
+            <p>Drag, zoom, and resize the crop area freely.</p>
+        </div>
+        <div class="psp-feature-card">
+            <span class="icon">📏</span>
+            <strong>Preset Sizes</strong>
+            <p>Passport, PAN, Aadhaar, US Visa, SSC, and more.</p>
+        </div>
+        <div class="psp-feature-card">
+            <span class="icon">🗜️</span>
+            <strong>Auto-Compress</strong>
+            <p>Automatically hits 20–50 KB target size.</p>
+        </div>
+        <div class="psp-feature-card">
+            <span class="icon">🔒</span>
+            <strong>100% Private</strong>
+            <p>Everything runs locally. No upload to server.</p>
+        </div>
+    </div>
+
+    <!-- Tips -->
+    <h2>💡 Tips for a Perfect Passport Photo</h2>
+    <ul>
+        <li><strong>Use a Plain Background</strong> — White or light-colored backgrounds work best for government forms.
+        </li>
+        <li><strong>Good Lighting</strong> — Ensure even, natural lighting on your face. Avoid harsh shadows.</li>
+        <li><strong>Face the Camera</strong> — Look directly at the camera with a neutral expression.</li>
+        <li><strong>No Accessories</strong> — Remove sunglasses, hats, and heavy jewelry (except religious headwear).
+        </li>
+        <li><strong>High Resolution</strong> — Upload the highest quality photo possible for best results after
+            compression.</li>
+        <li><strong>Crop Carefully</strong> — Make sure your face is centered and occupies 70–80% of the frame.</li>
+    </ul>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="psp-faq-item">
+        <h3>What size photo is needed for Indian Passport?</h3>
+        <p>Indian Passport requires 3.5 x 4.5 cm (413 x 531 pixels at 300 DPI) with a plain white or light background.
+            File size: 20–50 KB in JPEG.</p>
+    </div>
+
+    <div class="psp-faq-item">
+        <h3>How does auto-compression work?</h3>
+        <p>The tool starts at your selected quality and tries to create the JPEG. If the file is too large, it reduces
+            quality; if still too large, it scales down dimensions. If too small, it increases quality. This loops until
+            the file is within the target range.</p>
+    </div>
+
+    <div class="psp-faq-item">
+        <h3>Can I change the target file size?</h3>
+        <p>Yes! The default target is 20–50 KB (most government forms), but you can change the min and max values to any
+            range you need.</p>
+    </div>
+
+    <div class="psp-faq-item">
+        <h3>What image formats are supported?</h3>
+        <p>You can upload JPG, PNG, WEBP, BMP, or any browser-supported image format. The output is always JPEG.</p>
+    </div>
+
+    <div class="psp-faq-item">
+        <h3>Is my photo safe?</h3>
+        <p>Yes! All processing happens locally in your browser. Your photo is never uploaded to any server or stored
+            anywhere.</p>
+    </div>
+
+    <div class="psp-faq-item">
+        <h3>Is this tool free?</h3>
+        <p>Yes, completely free. No sign-up, no watermarks, no limits.</p>
+    </div>
+
+</div>
+
+<!-- Cropper.js Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+<script>
+    var pspCropper = null;
+    var pspBlobURL = null;
+
+    // Drag & Drop
+    (function () {
+        var dz = document.getElementById('pspDropzone');
+
+        dz.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            dz.classList.add('psp-dragover');
+        });
+
+        dz.addEventListener('dragleave', function (e) {
+            e.preventDefault();
+            dz.classList.remove('psp-dragover');
+        });
+
+        dz.addEventListener('drop', function (e) {
+            e.preventDefault();
+            dz.classList.remove('psp-dragover');
+            if (e.dataTransfer.files.length > 0) {
+                pspLoadImage(e.dataTransfer.files[0]);
+            }
+        });
+    })();
+
+    function pspPxToCm(px) {
+        return ((px / 300) * 2.54).toFixed(2);
+    }
+
+    function pspLoadImage(file) {
+        if (!file) return;
+        if (file.type.indexOf('image') === -1) {
+            alert('Please upload an image file.');
+            return;
+        }
+
+        var url = URL.createObjectURL(file);
+        var img = document.getElementById('pspImage');
+        img.src = url;
+
+        // Show all controls
+        document.getElementById('pspPresets').style.display = 'block';
+        document.getElementById('pspCropArea').style.display = 'block';
+        document.getElementById('pspReadings').style.display = 'grid';
+        document.getElementById('pspSliderGroup').style.display = 'block';
+        document.getElementById('pspTargetRow').style.display = 'flex';
+        document.getElementById('pspBtnRow').style.display = 'flex';
+        document.getElementById('pspPreview').style.display = 'none';
+
+        pspSetStatus('Image uploaded. Choose a preset, adjust crop, then click Crop & Compress.', 'waiting');
+
+        if (pspCropper) pspCropper.destroy();
+
+        pspCropper = new Cropper(img, {
+            viewMode: 1,
+            movable: true,
+            zoomable: true,
+            scalable: true,
+            crop: function (event) {
+                var w = Math.round(event.detail.width);
+                var h = Math.round(event.detail.height);
+                document.getElementById('pspWidth').textContent = w + ' px (' + pspPxToCm(w) + ' cm)';
+                document.getElementById('pspHeight').textContent = h + ' px (' + pspPxToCm(h) + ' cm)';
+            }
+        });
+    }
+
+    function pspSetPreset(widthCm, heightCm, chipEl) {
+        // Update active chip
+        var chips = document.querySelectorAll('.psp-preset-chip');
+        for (var i = 0; i < chips.length; i++) {
+            chips[i].classList.remove('active');
+        }
+        chipEl.classList.add('active');
+
+        if (!pspCropper) return;
+
+        if (widthCm === 0 && heightCm === 0) {
+            // Free crop
+            pspCropper.setAspectRatio(NaN);
+        } else {
+            pspCropper.setAspectRatio(widthCm / heightCm);
+        }
+    }
+
+    function pspSetStatus(text, type) {
+        var el = document.getElementById('pspStatus');
+        el.style.display = 'block';
+        el.textContent = text;
+        el.className = 'psp-status psp-status-' + type;
+    }
+
+    function pspCropAndCompress() {
+        if (!pspCropper) {
+            pspSetStatus('Please upload an image first.', 'error');
+            return;
+        }
+
+        var minKB = parseInt(document.getElementById('pspMinKB').value) || 20;
+        var maxKB = parseInt(document.getElementById('pspMaxKB').value) || 50;
+
+        var cropData = pspCropper.getData();
+        var width = Math.round(cropData.width);
+        var height = Math.round(cropData.height);
+        var quality = parseInt(document.getElementById('pspQuality').value) / 100;
+
+        var attempts = 0;
+        var maxAttempts = 50;
+
+        pspSetStatus('Compressing...', 'processing');
+        document.getElementById('pspCropBtn').disabled = true;
+
+        function compress() {
+            attempts++;
+            if (attempts > maxAttempts) {
+                pspSetStatus('Could not reach target size after ' + maxAttempts + ' attempts. Try a smaller crop or lower quality.', 'error');
+                document.getElementById('pspCropBtn').disabled = false;
+                return;
+            }
+
+            var canvas = pspCropper.getCroppedCanvas({
+                width: Math.round(width),
+                height: Math.round(height)
+            });
+
+            canvas.toBlob(function (blob) {
+                var kb = blob.size / 1024;
+
+                if (kb > maxKB) {
+                    pspSetStatus('Attempt ' + attempts + ': ' + kb.toFixed(1) + ' KB (too large, adjusting...)', 'processing');
+                    if (quality > 0.15) {
+                        quality -= 0.03;
+                    } else {
+                        width *= 0.92;
+                        height *= 0.92;
+                    }
+                    compress();
+                } else if (kb < minKB) {
+                    pspSetStatus('Attempt ' + attempts + ': ' + kb.toFixed(1) + ' KB (too small, adjusting...)', 'processing');
+                    if (quality < 0.95) {
+                        quality += 0.03;
+                    } else {
+                        pspSetStatus('\u2705 Final size: ' + kb.toFixed(1) + ' KB (below ' + minKB + ' KB minimum — photo may be too small to compress further)', 'success');
+                        pspShowResult(blob, Math.round(width), Math.round(height), kb);
+                        return;
+                    }
+                    compress();
+                } else {
+                    pspSetStatus('\u2705 Perfect! Final size: ' + kb.toFixed(1) + ' KB (' + Math.round(width) + 'x' + Math.round(height) + ' px, quality: ' + Math.round(quality * 100) + '%)', 'success');
+                    pspShowResult(blob, Math.round(width), Math.round(height), kb);
+                }
+            }, 'image/jpeg', quality);
+        }
+
+        compress();
+    }
+
+    function pspShowResult(blob, w, h, kb) {
+        document.getElementById('pspCropBtn').disabled = false;
+
+        if (pspBlobURL) URL.revokeObjectURL(pspBlobURL);
+        pspBlobURL = URL.createObjectURL(blob);
+
+        var previewEl = document.getElementById('pspPreview');
+        document.getElementById('pspPreviewImg').src = pspBlobURL;
+        document.getElementById('pspPreviewInfo').textContent = w + ' x ' + h + ' px \u2022 ' + kb.toFixed(1) + ' KB \u2022 JPEG';
+
+        previewEl.style.display = 'block';
+    }
+
+    function pspDownload() {
+        if (!pspBlobURL) return;
+        var a = document.createElement('a');
+        a.href = pspBlobURL;
+        a.download = 'passport-photo.jpg';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    function pspClear() {
+        if (pspCropper) {
+            pspCropper.destroy();
+            pspCropper = null;
+        }
+        if (pspBlobURL) {
+            URL.revokeObjectURL(pspBlobURL);
+            pspBlobURL = null;
+        }
+
+        document.getElementById('pspImage').src = '';
+        document.getElementById('pspFileInput').value = '';
+        document.getElementById('pspPresets').style.display = 'none';
+        document.getElementById('pspCropArea').style.display = 'none';
+        document.getElementById('pspReadings').style.display = 'none';
+        document.getElementById('pspSliderGroup').style.display = 'none';
+        document.getElementById('pspTargetRow').style.display = 'none';
+        document.getElementById('pspBtnRow').style.display = 'none';
+        document.getElementById('pspStatus').style.display = 'none';
+        document.getElementById('pspPreview').style.display = 'none';
+    }
+</script>
