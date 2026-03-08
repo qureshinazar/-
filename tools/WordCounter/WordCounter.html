@@ -1,0 +1,466 @@
+<!-- AIOCrafters - Word & Character Counter Tool - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Word & Character Counter",
+  "description": "Free online Word and Character Counter tool. Instantly count words, characters, sentences, paragraphs, and reading time in real-time. Perfect for writers, students, bloggers, and SEO professionals.",
+  "url": "https://www.aiocrafters.com/p/word-counter.html",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does the Word Counter tool work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Simply type or paste your text into the text box. The tool instantly counts words, characters (with and without spaces), sentences, paragraphs, and estimated reading time in real-time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this Word Counter free to use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, this Word & Character Counter is completely free to use. No sign-up, no downloads — just paste your text and get instant results."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my text stored or shared?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All processing happens locally in your browser. Your text is never uploaded, stored, or shared with any server."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .wc-tool-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .wc-tool-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .wc-tool-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    .wc-tool-container textarea {
+        width: 100%;
+        height: 180px;
+        padding: 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        resize: vertical;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+        outline: none;
+    }
+
+    .wc-tool-container textarea:focus {
+        border-color: #4361ee;
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+    }
+
+    .wc-tool-container textarea::placeholder {
+        color: #aaa;
+    }
+
+    /* --- Stats Grid --- */
+    .wc-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-top: 20px;
+    }
+
+    .wc-stat-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 12px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .wc-stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .wc-stat-card .wc-stat-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: #4361ee;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .wc-stat-card .wc-stat-label {
+        font-size: 13px;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* --- Action Buttons --- */
+    .wc-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 18px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .wc-btn {
+        padding: 10px 22px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .wc-btn-primary {
+        background: #4361ee;
+        color: #fff;
+    }
+
+    .wc-btn-primary:hover {
+        background: #3a56d4;
+    }
+
+    .wc-btn-secondary {
+        background: #f1f3f5;
+        color: #555;
+        border: 1px solid #ddd;
+    }
+
+    .wc-btn-secondary:hover {
+        background: #e9ecef;
+    }
+
+    .wc-btn-danger {
+        background: #fff5f5;
+        color: #e53e3e;
+        border: 1px solid #fed7d7;
+    }
+
+    .wc-btn-danger:hover {
+        background: #fee;
+    }
+
+    /* --- Content Sections --- */
+    .wc-tool-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .wc-tool-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .wc-tool-wrapper ul,
+    .wc-tool-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .wc-tool-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .wc-tool-wrapper .wc-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .wc-tool-wrapper .wc-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .wc-tool-wrapper .wc-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .wc-tool-wrapper .wc-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .wc-tool-wrapper .wc-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .wc-tool-wrapper .wc-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    .wc-tool-wrapper .wc-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .wc-tool-wrapper .wc-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .wc-tool-wrapper .wc-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 500px) {
+        .wc-stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style>
+
+<div class="wc-tool-wrapper">
+
+    <!-- Intro Content Before Tool -->
+    <h2>📝 Word &amp; Character Counter Tool</h2>
+    <p>Need to quickly check the <strong>word count</strong> or <strong>character count</strong> of your text? Our free
+        online <strong>Word &amp; Character Counter</strong> instantly analyzes your text and shows detailed stats
+        including words, characters, sentences, paragraphs, and estimated reading time — all in real-time.</p>
+
+    <!-- Tool Container -->
+    <div class="wc-tool-container">
+        <h2>✍️ Word &amp; Character Counter</h2>
+        <textarea id="wcTextInput" oninput="wcCountAll()" placeholder="Type or paste your text here..."></textarea>
+
+        <div class="wc-stats-grid">
+            <div class="wc-stat-card">
+                <span class="wc-stat-value" id="wcWords">0</span>
+                <span class="wc-stat-label">Words</span>
+            </div>
+            <div class="wc-stat-card">
+                <span class="wc-stat-value" id="wcChars">0</span>
+                <span class="wc-stat-label">Characters</span>
+            </div>
+            <div class="wc-stat-card">
+                <span class="wc-stat-value" id="wcCharsNoSpace">0</span>
+                <span class="wc-stat-label">Chars (No Spaces)</span>
+            </div>
+            <div class="wc-stat-card">
+                <span class="wc-stat-value" id="wcSentences">0</span>
+                <span class="wc-stat-label">Sentences</span>
+            </div>
+            <div class="wc-stat-card">
+                <span class="wc-stat-value" id="wcParagraphs">0</span>
+                <span class="wc-stat-label">Paragraphs</span>
+            </div>
+            <div class="wc-stat-card">
+                <span class="wc-stat-value" id="wcReadTime">0 min</span>
+                <span class="wc-stat-label">Reading Time</span>
+            </div>
+        </div>
+
+        <div class="wc-actions">
+            <button class="wc-btn wc-btn-primary" onclick="wcCopyText()">📋 Copy Text</button>
+            <button class="wc-btn wc-btn-secondary" onclick="wcPasteText()">📥 Paste</button>
+            <button class="wc-btn wc-btn-danger" onclick="wcClearText()">🗑️ Clear</button>
+        </div>
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Use the Word &amp; Character Counter</h2>
+    <p>Using this tool is simple and straightforward:</p>
+    <ol>
+        <li><strong>Type or Paste</strong> your text into the text box above.</li>
+        <li>The tool <strong>instantly calculates</strong> and displays all stats in real-time — no need to click any
+            button.</li>
+        <li>View your <strong>word count, character count</strong> (with and without spaces), <strong>sentences,
+                paragraphs</strong>, and <strong>estimated reading time</strong>.</li>
+        <li>Use the <strong>Copy</strong> button to copy your text, <strong>Paste</strong> to quickly paste from
+            clipboard, or <strong>Clear</strong> to reset.</li>
+    </ol>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="wc-features-grid">
+        <div class="wc-feature-card">
+            <span class="icon">⚡</span>
+            <strong>Real-Time Counting</strong>
+            <p>Stats update instantly as you type or paste.</p>
+        </div>
+        <div class="wc-feature-card">
+            <span class="icon">📊</span>
+            <strong>Detailed Statistics</strong>
+            <p>Words, characters, sentences, paragraphs &amp; reading time.</p>
+        </div>
+        <div class="wc-feature-card">
+            <span class="icon">🔒</span>
+            <strong>100% Private</strong>
+            <p>All processing is done locally. No data is uploaded.</p>
+        </div>
+        <div class="wc-feature-card">
+            <span class="icon">📱</span>
+            <strong>Works Everywhere</strong>
+            <p>Fully responsive — works on mobile, tablet &amp; desktop.</p>
+        </div>
+    </div>
+
+    <!-- Who Is This For -->
+    <h2>🎯 Who Is This Tool For?</h2>
+    <ul>
+        <li><strong>Writers &amp; Authors</strong> — Track word count for articles, essays, or books.</li>
+        <li><strong>Students</strong> — Ensure assignments meet word or character limits.</li>
+        <li><strong>Bloggers &amp; Content Creators</strong> — Optimize content length for SEO.</li>
+        <li><strong>Social Media Managers</strong> — Stay within character limits for tweets, captions, and bios.</li>
+        <li><strong>SEO Professionals</strong> — Check meta description and title tag character counts.</li>
+    </ul>
+
+    <!-- FAQ Section -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="wc-faq-item">
+        <h3>How does the Word Counter tool work?</h3>
+        <p>Simply type or paste your text into the text box. The tool instantly counts words, characters (with and
+            without spaces), sentences, paragraphs, and estimated reading time in real-time.</p>
+    </div>
+
+    <div class="wc-faq-item">
+        <h3>Is this Word Counter free to use?</h3>
+        <p>Yes, this Word &amp; Character Counter is completely free to use. No sign-up, no downloads — just paste your
+            text and get instant results.</p>
+    </div>
+
+    <div class="wc-faq-item">
+        <h3>Is my text stored or shared?</h3>
+        <p>No. All processing happens locally in your browser. Your text is never uploaded, stored, or shared with any
+            server.</p>
+    </div>
+
+    <div class="wc-faq-item">
+        <h3>How is reading time calculated?</h3>
+        <p>Reading time is estimated based on an average reading speed of 200 words per minute (WPM), which is the
+            commonly accepted standard for adult readers.</p>
+    </div>
+
+</div>
+
+<script>
+    function wcCountAll() {
+        var text = document.getElementById('wcTextInput').value;
+
+        // Words
+        var words = text.trim().match(/\b\S+\b/g);
+        var wordCount = words ? words.length : 0;
+
+        // Characters
+        var charCount = text.length;
+
+        // Characters without spaces
+        var charsNoSpace = text.replace(/\s/g, '').length;
+
+        // Sentences
+        var sentences = text.split(/[.!?]+/).filter(function (s) { return s.trim().length > 0; });
+        var sentenceCount = sentences.length;
+        if (text.trim() === '') sentenceCount = 0;
+
+        // Paragraphs
+        var paragraphs = text.split(/\n+/).filter(function (p) { return p.trim().length > 0; });
+        var paraCount = paragraphs.length;
+        if (text.trim() === '') paraCount = 0;
+
+        // Reading Time (200 WPM average)
+        var readMinutes = Math.ceil(wordCount / 200);
+        var readTimeStr = readMinutes < 1 ? '0 min' : readMinutes + ' min';
+
+        document.getElementById('wcWords').textContent = wordCount;
+        document.getElementById('wcChars').textContent = charCount;
+        document.getElementById('wcCharsNoSpace').textContent = charsNoSpace;
+        document.getElementById('wcSentences').textContent = sentenceCount;
+        document.getElementById('wcParagraphs').textContent = paraCount;
+        document.getElementById('wcReadTime').textContent = readTimeStr;
+    }
+
+    function wcCopyText() {
+        var textarea = document.getElementById('wcTextInput');
+        if (textarea.value.trim() === '') return;
+        textarea.select();
+        textarea.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(textarea.value);
+    }
+
+    function wcPasteText() {
+        navigator.clipboard.readText().then(function (clipText) {
+            document.getElementById('wcTextInput').value = clipText;
+            wcCountAll();
+        });
+    }
+
+    function wcClearText() {
+        document.getElementById('wcTextInput').value = '';
+        wcCountAll();
+    }
+</script>
