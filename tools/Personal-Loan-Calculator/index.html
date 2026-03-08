@@ -1,0 +1,760 @@
+<!-- AIOCrafters - Personal Loan EMI Calculator Tool - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Personal Loan EMI Calculator",
+  "description": "Free online Personal Loan EMI Calculator. Calculate your monthly EMI, total interest, and total payment for personal loans instantly. Includes visual breakdown and month-wise amortization schedule.",
+  "url": "https://www.aiocrafters.com/p/personal-loan-calculator.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is Personal Loan EMI calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Personal Loan EMI is calculated using the formula: EMI = [P × R × (1+R)^N] / [(1+R)^N – 1], where P is the loan amount, R is the monthly interest rate, and N is the total number of monthly installments."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the typical interest rate for personal loans in India?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Personal loan interest rates in India typically range from 10% to 24% per annum, depending on the bank, your credit score, income, and other factors."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the maximum tenure for a personal loan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most banks offer personal loans with a tenure of 12 to 60 months (1 to 5 years). Some lenders may offer up to 72 months (6 years) depending on the loan amount and borrower profile."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this Personal Loan Calculator free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, this Personal Loan EMI Calculator is completely free. No sign-up, no downloads — just enter your loan details and get instant results."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .plc-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .plc-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .plc-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 22px;
+    }
+
+    /* Input Groups */
+    .plc-input-group {
+        margin-bottom: 16px;
+    }
+
+    .plc-input-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 6px;
+    }
+
+    .plc-input-group input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 16px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+    }
+
+    .plc-input-group input:focus {
+        border-color: #e65100;
+        box-shadow: 0 0 0 3px rgba(230, 81, 0, 0.12);
+    }
+
+    .plc-input-group input::placeholder {
+        color: #bbb;
+    }
+
+    /* Tenure Toggle */
+    .plc-tenure-row {
+        display: flex;
+        gap: 10px;
+        align-items: flex-end;
+    }
+
+    .plc-tenure-row .plc-input-group {
+        flex: 1;
+    }
+
+    .plc-tenure-toggle {
+        display: flex;
+        gap: 0;
+        margin-bottom: 16px;
+    }
+
+    .plc-tenure-toggle button {
+        padding: 12px 18px;
+        border: 2px solid #e0e0e0;
+        background: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #777;
+    }
+
+    .plc-tenure-toggle button:first-child {
+        border-radius: 8px 0 0 8px;
+    }
+
+    .plc-tenure-toggle button:last-child {
+        border-radius: 0 8px 8px 0;
+        border-left: none;
+    }
+
+    .plc-tenure-toggle button.active {
+        background: #e65100;
+        color: #fff;
+        border-color: #e65100;
+    }
+
+    /* Buttons */
+    .plc-btn-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .plc-btn {
+        padding: 12px 28px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex: 1;
+    }
+
+    .plc-btn-calc {
+        background: linear-gradient(135deg, #ff8a65, #e65100);
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(230, 81, 0, 0.3);
+    }
+
+    .plc-btn-calc:hover {
+        box-shadow: 0 5px 16px rgba(230, 81, 0, 0.45);
+        transform: translateY(-1px);
+    }
+
+    .plc-btn-reset {
+        background: #f1f3f5;
+        color: #555;
+        border: 1px solid #ddd;
+        flex: 0.4;
+    }
+
+    .plc-btn-reset:hover {
+        background: #e9ecef;
+    }
+
+    /* Result Area */
+    .plc-result {
+        display: none;
+        margin-top: 24px;
+    }
+
+    .plc-result h3 {
+        font-size: 18px;
+        color: #1a1a2e;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+
+    /* Stats Grid */
+    .plc-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .plc-stat-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 10px;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+
+    .plc-stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .plc-stat-card .plc-stat-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #e65100;
+        display: block;
+        margin-bottom: 4px;
+        word-break: break-all;
+    }
+
+    .plc-stat-card .plc-stat-label {
+        font-size: 12px;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .plc-stat-card.plc-emi-highlight {
+        background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+        border-color: #ffcc80;
+    }
+
+    .plc-stat-card.plc-emi-highlight .plc-stat-value {
+        font-size: 24px;
+        color: #bf360c;
+    }
+
+    /* Visual Breakdown Bar */
+    .plc-breakdown-bar {
+        display: flex;
+        height: 28px;
+        border-radius: 14px;
+        overflow: hidden;
+        margin: 16px 0;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .plc-bar-principal {
+        background: #e65100;
+        transition: width 0.5s;
+    }
+
+    .plc-bar-interest {
+        background: #ef5350;
+        transition: width 0.5s;
+    }
+
+    .plc-breakdown-legend {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-bottom: 16px;
+        font-size: 14px;
+    }
+
+    .plc-breakdown-legend span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .plc-legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    /* Amortization Table */
+    .plc-table-wrapper {
+        max-height: 320px;
+        overflow-y: auto;
+        margin-top: 16px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+    }
+
+    .plc-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+    .plc-table th {
+        background: #e65100;
+        color: #fff;
+        padding: 10px 8px;
+        text-align: right;
+        position: sticky;
+        top: 0;
+    }
+
+    .plc-table th:first-child {
+        text-align: center;
+    }
+
+    .plc-table td {
+        padding: 7px 8px;
+        border-bottom: 1px solid #eee;
+        text-align: right;
+    }
+
+    .plc-table td:first-child {
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .plc-table tr:nth-child(even) {
+        background: #fff8f0;
+    }
+
+    .plc-table tr:last-child td {
+        font-weight: 700;
+        background: #fff3e0;
+    }
+
+    /* Disclaimer */
+    .plc-disclaimer {
+        background: #fff3e0;
+        border: 1px solid #ffe0b2;
+        border-left: 4px solid #ff9800;
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-top: 20px;
+        font-size: 13px;
+        color: #e65100;
+    }
+
+    /* --- Content Sections --- */
+    .plc-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .plc-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .plc-wrapper ul,
+    .plc-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .plc-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .plc-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .plc-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .plc-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .plc-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .plc-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .plc-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    .plc-formula-box {
+        background: #fff8f0;
+        border: 1px solid #ffe0b2;
+        border-left: 5px solid #e65100;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .plc-formula-box code {
+        background: #fff3e0;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+    }
+
+    .plc-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .plc-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .plc-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        .plc-container {
+            padding: 20px 16px;
+        }
+
+        .plc-stats-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="plc-wrapper">
+
+    <!-- Intro Content -->
+    <h2>💰 Personal Loan EMI Calculator — Free Online Tool</h2>
+    <p>Need a personal loan for an emergency, wedding, travel, or any other expense? Our free <strong>Personal Loan EMI
+            Calculator</strong> helps you instantly calculate your <strong>monthly EMI, total interest payable, and
+            total repayment amount</strong>. Plan your finances wisely before borrowing — know exactly what you'll pay
+        every month.</p>
+
+    <!-- Tool Container -->
+    <div class="plc-container">
+        <h2>💰 Personal Loan EMI Calculator</h2>
+
+        <div class="plc-input-group">
+            <label>Loan Amount (₹)</label>
+            <input type="number" id="plcLoanAmount" placeholder="e.g. 500000">
+        </div>
+
+        <div class="plc-input-group">
+            <label>Annual Interest Rate (%)</label>
+            <input type="number" id="plcInterestRate" step="0.1" placeholder="e.g. 12">
+        </div>
+
+        <div class="plc-input-group">
+            <label id="plcTenureLabel">Loan Tenure (Months)</label>
+            <div style="display:flex; gap:10px;">
+                <input type="number" id="plcTenure" placeholder="e.g. 36" style="flex:1;">
+                <div class="plc-tenure-toggle">
+                    <button class="active" id="plcBtnMonths" onclick="plcToggleTenure('months')">Months</button>
+                    <button id="plcBtnYears" onclick="plcToggleTenure('years')">Years</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="plc-btn-row">
+            <button class="plc-btn plc-btn-calc" onclick="plcCalculate()">📊 Calculate EMI</button>
+            <button class="plc-btn plc-btn-reset" onclick="plcReset()">🗑️ Reset</button>
+        </div>
+
+        <!-- Result Area -->
+        <div class="plc-result" id="plcResult">
+            <h3>📋 EMI Breakdown</h3>
+
+            <div class="plc-stats-grid">
+                <div class="plc-stat-card plc-emi-highlight">
+                    <span class="plc-stat-value" id="plcEmi">—</span>
+                    <span class="plc-stat-label">Monthly EMI</span>
+                </div>
+                <div class="plc-stat-card">
+                    <span class="plc-stat-value" id="plcTotalInterest">—</span>
+                    <span class="plc-stat-label">Total Interest</span>
+                </div>
+                <div class="plc-stat-card">
+                    <span class="plc-stat-value" id="plcTotalPayment">—</span>
+                    <span class="plc-stat-label">Total Payment</span>
+                </div>
+            </div>
+
+            <!-- Visual Breakdown -->
+            <div class="plc-breakdown-bar">
+                <div class="plc-bar-principal" id="plcBarPrincipal"></div>
+                <div class="plc-bar-interest" id="plcBarInterest"></div>
+            </div>
+            <div class="plc-breakdown-legend">
+                <span><span class="plc-legend-dot" style="background:#e65100;"></span> Principal</span>
+                <span><span class="plc-legend-dot" style="background:#ef5350;"></span> Interest</span>
+            </div>
+
+            <!-- Amortization Table -->
+            <div class="plc-table-wrapper" id="plcTableWrapper"></div>
+        </div>
+
+        <div class="plc-disclaimer">
+            <strong>⚠️ Disclaimer:</strong> This calculator provides approximate estimates for informational purposes
+            only. Actual EMI may vary based on the lender's terms, processing fees, and other charges. Please consult
+            your bank or financial advisor for exact figures.
+        </div>
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Use the Personal Loan EMI Calculator</h2>
+    <ol>
+        <li><strong>Enter Loan Amount</strong> — Type the personal loan amount you wish to borrow (in ₹).</li>
+        <li><strong>Enter Interest Rate</strong> — Provide the annual interest rate offered by your bank or NBFC (e.g.,
+            12%).</li>
+        <li><strong>Enter Loan Tenure</strong> — Specify the repayment period in months or years using the toggle
+            button.</li>
+        <li><strong>Click "Calculate EMI"</strong> — Instantly see your monthly EMI, total interest, total payment, a
+            visual breakdown, and a month-wise amortization schedule.</li>
+    </ol>
+
+    <!-- EMI Formula -->
+    <div class="plc-formula-box">
+        <strong>📐 EMI Formula:</strong><br>
+        <code>EMI = [P × R × (1+R)^N] / [(1+R)^N – 1]</code><br><br>
+        Where:<br>
+        <strong>P</strong> = Principal Loan Amount<br>
+        <strong>R</strong> = Monthly Interest Rate (Annual Rate ÷ 12 ÷ 100)<br>
+        <strong>N</strong> = Total Number of Monthly Installments
+    </div>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="plc-features-grid">
+        <div class="plc-feature-card">
+            <span class="icon">⚡</span>
+            <strong>Instant Results</strong>
+            <p>Get EMI, interest, and total payment in one click.</p>
+        </div>
+        <div class="plc-feature-card">
+            <span class="icon">📊</span>
+            <strong>Visual Breakdown</strong>
+            <p>See principal vs interest ratio at a glance.</p>
+        </div>
+        <div class="plc-feature-card">
+            <span class="icon">📅</span>
+            <strong>Amortization Table</strong>
+            <p>Month-wise schedule of principal and interest.</p>
+        </div>
+        <div class="plc-feature-card">
+            <span class="icon">🔄</span>
+            <strong>Months or Years</strong>
+            <p>Toggle tenure input between months and years.</p>
+        </div>
+    </div>
+
+    <!-- Personal Loan vs Home Loan -->
+    <h2>🏠 vs 💰 Personal Loan vs Home Loan</h2>
+    <ul>
+        <li><strong>Interest Rate</strong> — Personal loans have higher interest rates (10–24%) compared to home loans
+            (7–10%).</li>
+        <li><strong>Tenure</strong> — Personal loans are shorter (1–5 years) while home loans can go up to 30 years.
+        </li>
+        <li><strong>Collateral</strong> — Personal loans are unsecured (no collateral needed), whereas home loans are
+            secured against the property.</li>
+        <li><strong>Loan Amount</strong> — Personal loan amounts are generally lower (up to ₹40 lakhs) compared to home
+            loans.</li>
+        <li><strong>Processing Time</strong> — Personal loans are approved faster, often within 24–48 hours.</li>
+    </ul>
+
+    <!-- Tips -->
+    <h2>💡 Tips Before Taking a Personal Loan</h2>
+    <ul>
+        <li><strong>Compare Rates</strong> — Always compare interest rates from multiple banks and NBFCs before choosing
+            a lender.</li>
+        <li><strong>Check Your Credit Score</strong> — A CIBIL score of 750+ helps you get better interest rates and
+            faster approvals.</li>
+        <li><strong>Borrow Only What You Need</strong> — Avoid over-borrowing as it increases your EMI burden and total
+            interest cost.</li>
+        <li><strong>Choose the Right Tenure</strong> — A shorter tenure means higher EMI but less total interest. A
+            longer tenure reduces EMI but increases overall cost.</li>
+        <li><strong>Read the Fine Print</strong> — Check for processing fees, prepayment penalties, and hidden charges
+            before signing.</li>
+        <li><strong>Plan for Prepayment</strong> — If possible, make prepayments to reduce the outstanding principal and
+            save on interest.</li>
+    </ul>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="plc-faq-item">
+        <h3>How is Personal Loan EMI calculated?</h3>
+        <p>EMI is calculated using the reducing balance formula: EMI = [P × R × (1+R)^N] / [(1+R)^N – 1], where P is the
+            loan amount, R is the monthly interest rate, and N is the total number of monthly installments.</p>
+    </div>
+
+    <div class="plc-faq-item">
+        <h3>What is the typical interest rate for personal loans?</h3>
+        <p>Personal loan interest rates in India typically range from 10% to 24% per annum, depending on the bank, your
+            credit score, income, employment type, and loan amount.</p>
+    </div>
+
+    <div class="plc-faq-item">
+        <h3>What is the maximum tenure for a personal loan?</h3>
+        <p>Most banks offer personal loans with a tenure of 12 to 60 months (1 to 5 years). Some lenders may offer up to
+            72 months depending on the borrower's profile.</p>
+    </div>
+
+    <div class="plc-faq-item">
+        <h3>Is this Personal Loan Calculator free?</h3>
+        <p>Yes, completely free. No sign-up or downloads needed — enter your details and get instant results.</p>
+    </div>
+
+    <div class="plc-faq-item">
+        <h3>Is my data safe?</h3>
+        <p>Yes! All calculations happen locally in your browser. No data is uploaded or stored on any server.</p>
+    </div>
+
+    <div class="plc-faq-item">
+        <h3>Can I prepay my personal loan?</h3>
+        <p>Most banks allow prepayment of personal loans, though some may charge a prepayment penalty (typically 2–5% of
+            the outstanding amount). Check with your lender for specific terms.</p>
+    </div>
+
+</div>
+
+<script>
+    var plcTenureMode = 'months';
+
+    function plcToggleTenure(mode) {
+        plcTenureMode = mode;
+        document.getElementById('plcBtnMonths').classList.toggle('active', mode === 'months');
+        document.getElementById('plcBtnYears').classList.toggle('active', mode === 'years');
+        document.getElementById('plcTenureLabel').textContent = mode === 'months' ? 'Loan Tenure (Months)' : 'Loan Tenure (Years)';
+        document.getElementById('plcTenure').placeholder = mode === 'months' ? 'e.g. 36' : 'e.g. 3';
+    }
+
+    function plcFormatCurrency(num) {
+        return '\u20B9' + num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function plcCalculate() {
+        var loanAmount = parseFloat(document.getElementById('plcLoanAmount').value);
+        var annualRate = parseFloat(document.getElementById('plcInterestRate').value);
+        var tenureInput = parseInt(document.getElementById('plcTenure').value);
+
+        if (isNaN(loanAmount) || isNaN(annualRate) || isNaN(tenureInput) || loanAmount <= 0 || annualRate <= 0 || tenureInput <= 0) {
+            alert('Please enter valid values for all fields.');
+            return;
+        }
+
+        var totalMonths = plcTenureMode === 'years' ? tenureInput * 12 : tenureInput;
+        var monthlyRate = annualRate / 100 / 12;
+
+        // EMI Calculation
+        var emi = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) / (Math.pow(1 + monthlyRate, totalMonths) - 1);
+        var totalPayment = emi * totalMonths;
+        var totalInterest = totalPayment - loanAmount;
+
+        // Display Stats
+        document.getElementById('plcEmi').innerHTML = plcFormatCurrency(emi);
+        document.getElementById('plcTotalInterest').innerHTML = plcFormatCurrency(totalInterest);
+        document.getElementById('plcTotalPayment').innerHTML = plcFormatCurrency(totalPayment);
+
+        // Visual Breakdown Bar
+        var principalPercent = (loanAmount / totalPayment) * 100;
+        var interestPercent = (totalInterest / totalPayment) * 100;
+        document.getElementById('plcBarPrincipal').style.width = principalPercent + '%';
+        document.getElementById('plcBarInterest').style.width = interestPercent + '%';
+
+        // Month-wise Amortization Table
+        var tableHTML = '<table class="plc-table"><tr><th>Month</th><th>EMI (₹)</th><th>Principal (₹)</th><th>Interest (₹)</th><th>Balance (₹)</th></tr>';
+
+        var balance = loanAmount;
+        var totalPrincipalPaid = 0;
+        var totalInterestPaid = 0;
+
+        for (var m = 1; m <= totalMonths; m++) {
+            var interestPart = balance * monthlyRate;
+            var principalPart = emi - interestPart;
+            if (principalPart > balance) principalPart = balance;
+            balance -= principalPart;
+            totalPrincipalPaid += principalPart;
+            totalInterestPaid += interestPart;
+
+            tableHTML += '<tr><td>' + m + '</td><td>' + plcFormatCurrency(emi).replace('₹', '') + '</td><td>' + plcFormatCurrency(principalPart).replace('₹', '') + '</td><td>' + plcFormatCurrency(interestPart).replace('₹', '') + '</td><td>' + plcFormatCurrency(Math.max(balance, 0)).replace('₹', '') + '</td></tr>';
+        }
+
+        // Total Row
+        tableHTML += '<tr><td>Total</td><td>' + plcFormatCurrency(emi * totalMonths).replace('₹', '') + '</td><td>' + plcFormatCurrency(totalPrincipalPaid).replace('₹', '') + '</td><td>' + plcFormatCurrency(totalInterestPaid).replace('₹', '') + '</td><td>0</td></tr>';
+        tableHTML += '</table>';
+
+        document.getElementById('plcTableWrapper').innerHTML = tableHTML;
+        document.getElementById('plcResult').style.display = 'block';
+    }
+
+    function plcReset() {
+        document.getElementById('plcLoanAmount').value = '';
+        document.getElementById('plcInterestRate').value = '';
+        document.getElementById('plcTenure').value = '';
+        document.getElementById('plcResult').style.display = 'none';
+    }
+</script>

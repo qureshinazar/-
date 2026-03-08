@@ -1,0 +1,681 @@
+<!-- AIOCrafters - Home Loan EMI Calculator Tool - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Home Loan EMI Calculator",
+  "description": "Free online Home Loan EMI Calculator. Calculate your monthly EMI, total interest, and total payment for home loans instantly. Includes amortization breakdown and visual charts.",
+  "url": "https://www.aiocrafters.com/p/home-loan-calculator.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is Home Loan EMI calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Home Loan EMI is calculated using the formula: EMI = [P × R × (1+R)^N] / [(1+R)^N – 1], where P is the loan amount, R is the monthly interest rate, and N is the total number of monthly installments."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What factors affect Home Loan EMI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Three main factors affect your EMI: (1) Loan Amount — higher amount means higher EMI, (2) Interest Rate — higher rate increases EMI and total interest, (3) Loan Tenure — longer tenure reduces EMI but increases total interest paid."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this Home Loan Calculator free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, this Home Loan EMI Calculator is completely free. No sign-up, no downloads — just enter your loan details and get instant results."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .hlc-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .hlc-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .hlc-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 22px;
+    }
+
+    /* Input Groups */
+    .hlc-input-group {
+        margin-bottom: 16px;
+    }
+
+    .hlc-input-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 6px;
+    }
+
+    .hlc-input-group input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 16px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+    }
+
+    .hlc-input-group input:focus {
+        border-color: #1565c0;
+        box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.12);
+    }
+
+    .hlc-input-group input::placeholder {
+        color: #bbb;
+    }
+
+    /* Buttons */
+    .hlc-btn-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .hlc-btn {
+        padding: 12px 28px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex: 1;
+    }
+
+    .hlc-btn-calc {
+        background: linear-gradient(135deg, #42a5f5, #1565c0);
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(21, 101, 192, 0.3);
+    }
+
+    .hlc-btn-calc:hover {
+        box-shadow: 0 5px 16px rgba(21, 101, 192, 0.45);
+        transform: translateY(-1px);
+    }
+
+    .hlc-btn-reset {
+        background: #f1f3f5;
+        color: #555;
+        border: 1px solid #ddd;
+        flex: 0.4;
+    }
+
+    .hlc-btn-reset:hover {
+        background: #e9ecef;
+    }
+
+    /* Result Area */
+    .hlc-result {
+        display: none;
+        margin-top: 24px;
+    }
+
+    .hlc-result h3 {
+        font-size: 18px;
+        color: #1a1a2e;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+
+    /* Stats Grid */
+    .hlc-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .hlc-stat-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 10px;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+
+    .hlc-stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .hlc-stat-card .hlc-stat-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1565c0;
+        display: block;
+        margin-bottom: 4px;
+        word-break: break-all;
+    }
+
+    .hlc-stat-card .hlc-stat-label {
+        font-size: 12px;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .hlc-stat-card.hlc-emi-highlight {
+        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        border-color: #90caf9;
+    }
+
+    .hlc-stat-card.hlc-emi-highlight .hlc-stat-value {
+        font-size: 24px;
+        color: #0d47a1;
+    }
+
+    /* Visual Breakdown Bar */
+    .hlc-breakdown-bar {
+        display: flex;
+        height: 28px;
+        border-radius: 14px;
+        overflow: hidden;
+        margin: 16px 0;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .hlc-bar-principal {
+        background: #1565c0;
+        transition: width 0.5s;
+    }
+
+    .hlc-bar-interest {
+        background: #ef5350;
+        transition: width 0.5s;
+    }
+
+    .hlc-breakdown-legend {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-bottom: 16px;
+        font-size: 14px;
+    }
+
+    .hlc-breakdown-legend span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .hlc-legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    /* Year-wise Table */
+    .hlc-table-wrapper {
+        max-height: 300px;
+        overflow-y: auto;
+        margin-top: 16px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+    }
+
+    .hlc-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+
+    .hlc-table th {
+        background: #1565c0;
+        color: #fff;
+        padding: 10px 12px;
+        text-align: right;
+        position: sticky;
+        top: 0;
+    }
+
+    .hlc-table th:first-child {
+        text-align: center;
+    }
+
+    .hlc-table td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #eee;
+        text-align: right;
+    }
+
+    .hlc-table td:first-child {
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .hlc-table tr:nth-child(even) {
+        background: #f5f8ff;
+    }
+
+    .hlc-table tr:last-child td {
+        font-weight: 700;
+        background: #e3f2fd;
+    }
+
+    /* Disclaimer */
+    .hlc-disclaimer {
+        background: #fff3e0;
+        border: 1px solid #ffe0b2;
+        border-left: 4px solid #ff9800;
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-top: 20px;
+        font-size: 13px;
+        color: #e65100;
+    }
+
+    /* --- Content Sections --- */
+    .hlc-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .hlc-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .hlc-wrapper ul,
+    .hlc-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .hlc-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .hlc-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .hlc-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .hlc-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .hlc-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .hlc-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .hlc-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    .hlc-formula-box {
+        background: #f5f8ff;
+        border: 1px solid #bbdefb;
+        border-left: 5px solid #1565c0;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .hlc-formula-box code {
+        background: #e3f2fd;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+    }
+
+    .hlc-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .hlc-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .hlc-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        .hlc-container {
+            padding: 20px 16px;
+        }
+
+        .hlc-stats-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="hlc-wrapper">
+
+    <!-- Intro Content -->
+    <h2>🏠 Home Loan EMI Calculator — Free Online Tool</h2>
+    <p>Planning to buy your dream home? Our free <strong>Home Loan EMI Calculator</strong> helps you instantly calculate
+        your <strong>monthly EMI, total interest payable, and total payment</strong> based on your loan amount, interest
+        rate, and tenure. Make informed financial decisions before taking a home loan.</p>
+
+    <!-- Tool Container -->
+    <div class="hlc-container">
+        <h2>🏠 Home Loan EMI Calculator</h2>
+
+        <div class="hlc-input-group">
+            <label>Loan Amount (₹)</label>
+            <input type="number" id="hlcLoanAmount" placeholder="e.g. 3000000">
+        </div>
+
+        <div class="hlc-input-group">
+            <label>Annual Interest Rate (%)</label>
+            <input type="number" id="hlcInterestRate" step="0.1" placeholder="e.g. 8.5">
+        </div>
+
+        <div class="hlc-input-group">
+            <label>Loan Tenure (Years)</label>
+            <input type="number" id="hlcTenure" placeholder="e.g. 20">
+        </div>
+
+        <div class="hlc-btn-row">
+            <button class="hlc-btn hlc-btn-calc" onclick="hlcCalculate()">📊 Calculate EMI</button>
+            <button class="hlc-btn hlc-btn-reset" onclick="hlcReset()">🗑️ Reset</button>
+        </div>
+
+        <!-- Result Area -->
+        <div class="hlc-result" id="hlcResult">
+            <h3>📋 EMI Breakdown</h3>
+
+            <div class="hlc-stats-grid">
+                <div class="hlc-stat-card hlc-emi-highlight">
+                    <span class="hlc-stat-value" id="hlcEmi">—</span>
+                    <span class="hlc-stat-label">Monthly EMI</span>
+                </div>
+                <div class="hlc-stat-card">
+                    <span class="hlc-stat-value" id="hlcTotalInterest">—</span>
+                    <span class="hlc-stat-label">Total Interest</span>
+                </div>
+                <div class="hlc-stat-card">
+                    <span class="hlc-stat-value" id="hlcTotalPayment">—</span>
+                    <span class="hlc-stat-label">Total Payment</span>
+                </div>
+            </div>
+
+            <!-- Visual Breakdown -->
+            <div class="hlc-breakdown-bar" id="hlcBreakdownBar">
+                <div class="hlc-bar-principal" id="hlcBarPrincipal"></div>
+                <div class="hlc-bar-interest" id="hlcBarInterest"></div>
+            </div>
+            <div class="hlc-breakdown-legend">
+                <span><span class="hlc-legend-dot" style="background:#1565c0;"></span> Principal</span>
+                <span><span class="hlc-legend-dot" style="background:#ef5350;"></span> Interest</span>
+            </div>
+
+            <!-- Year-wise Table -->
+            <div class="hlc-table-wrapper" id="hlcTableWrapper"></div>
+        </div>
+
+        <div class="hlc-disclaimer">
+            <strong>⚠️ Disclaimer:</strong> This calculator provides approximate estimates for informational purposes
+            only. Actual EMI may vary based on the bank's terms, processing fees, and other charges. Please consult your
+            bank or financial advisor for exact figures.
+        </div>
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Use the Home Loan EMI Calculator</h2>
+    <ol>
+        <li><strong>Enter Loan Amount</strong> — Type the total home loan amount you wish to borrow (in ₹).</li>
+        <li><strong>Enter Interest Rate</strong> — Provide the annual interest rate offered by your bank (e.g., 8.5%).
+        </li>
+        <li><strong>Enter Loan Tenure</strong> — Specify the loan repayment period in years (e.g., 20 years).</li>
+        <li><strong>Click "Calculate EMI"</strong> — The tool instantly displays your monthly EMI, total interest, total
+            payment, a visual breakdown bar, and a year-wise amortization table.</li>
+    </ol>
+
+    <!-- EMI Formula -->
+    <div class="hlc-formula-box">
+        <strong>📐 EMI Formula:</strong><br>
+        <code>EMI = [P × R × (1+R)^N] / [(1+R)^N – 1]</code><br><br>
+        Where:<br>
+        <strong>P</strong> = Principal Loan Amount<br>
+        <strong>R</strong> = Monthly Interest Rate (Annual Rate ÷ 12 ÷ 100)<br>
+        <strong>N</strong> = Total Number of Monthly Installments (Years × 12)
+    </div>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="hlc-features-grid">
+        <div class="hlc-feature-card">
+            <span class="icon">⚡</span>
+            <strong>Instant Results</strong>
+            <p>Get EMI, interest, and total payment in one click.</p>
+        </div>
+        <div class="hlc-feature-card">
+            <span class="icon">📊</span>
+            <strong>Visual Breakdown</strong>
+            <p>See principal vs interest ratio at a glance.</p>
+        </div>
+        <div class="hlc-feature-card">
+            <span class="icon">📅</span>
+            <strong>Year-wise Table</strong>
+            <p>Detailed amortization schedule for every year.</p>
+        </div>
+        <div class="hlc-feature-card">
+            <span class="icon">🔒</span>
+            <strong>100% Private</strong>
+            <p>All calculations run locally. No data stored.</p>
+        </div>
+    </div>
+
+    <!-- Tips -->
+    <h2>💡 Tips to Reduce Your Home Loan EMI</h2>
+    <ul>
+        <li><strong>Make a Larger Down Payment</strong> — A higher down payment reduces the loan amount and therefore
+            the EMI.</li>
+        <li><strong>Choose a Longer Tenure</strong> — Extending the tenure reduces your monthly EMI, though total
+            interest increases.</li>
+        <li><strong>Compare Interest Rates</strong> — Shop around and compare rates from multiple banks to find the best
+            deal.</li>
+        <li><strong>Opt for Floating Rate</strong> — Floating interest rates are usually lower than fixed rates and can
+            save you money over the long term.</li>
+        <li><strong>Make Prepayments</strong> — Whenever possible, make partial prepayments to reduce the outstanding
+            principal and save on interest.</li>
+        <li><strong>Maintain a Good Credit Score</strong> — A CIBIL score of 750+ can help you negotiate a lower
+            interest rate.</li>
+    </ul>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="hlc-faq-item">
+        <h3>How is Home Loan EMI calculated?</h3>
+        <p>EMI is calculated using the standard reducing balance formula: EMI = [P × R × (1+R)^N] / [(1+R)^N – 1], where
+            P is the loan amount, R is the monthly interest rate, and N is the total number of monthly installments.</p>
+    </div>
+
+    <div class="hlc-faq-item">
+        <h3>What factors affect my Home Loan EMI?</h3>
+        <p>Three main factors: (1) Loan Amount — higher amount means higher EMI, (2) Interest Rate — higher rate
+            increases EMI and total interest, (3) Loan Tenure — longer tenure reduces EMI but increases total interest
+            paid.</p>
+    </div>
+
+    <div class="hlc-faq-item">
+        <h3>Is this Home Loan Calculator free?</h3>
+        <p>Yes, completely free. No sign-up, no downloads — enter your details and get instant results.</p>
+    </div>
+
+    <div class="hlc-faq-item">
+        <h3>Should I choose a longer or shorter tenure?</h3>
+        <p>A longer tenure means lower monthly EMI but you pay more total interest. A shorter tenure means higher EMI
+            but you save significantly on interest. Choose based on your monthly budget and financial goals.</p>
+    </div>
+
+    <div class="hlc-faq-item">
+        <h3>Is my data safe?</h3>
+        <p>Yes! All calculations happen locally in your browser. No data is uploaded or stored on any server.</p>
+    </div>
+
+</div>
+
+<script>
+    function hlcFormatCurrency(num) {
+        return '\u20B9' + num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function hlcCalculate() {
+        var loanAmount = parseFloat(document.getElementById('hlcLoanAmount').value);
+        var annualRate = parseFloat(document.getElementById('hlcInterestRate').value);
+        var tenureYears = parseInt(document.getElementById('hlcTenure').value);
+
+        if (isNaN(loanAmount) || isNaN(annualRate) || isNaN(tenureYears) || loanAmount <= 0 || annualRate <= 0 || tenureYears <= 0) {
+            alert('Please enter valid values for all fields.');
+            return;
+        }
+
+        var monthlyRate = annualRate / 100 / 12;
+        var totalMonths = tenureYears * 12;
+
+        // EMI Calculation
+        var emi = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) / (Math.pow(1 + monthlyRate, totalMonths) - 1);
+        var totalPayment = emi * totalMonths;
+        var totalInterest = totalPayment - loanAmount;
+
+        // Display Stats
+        document.getElementById('hlcEmi').innerHTML = hlcFormatCurrency(emi);
+        document.getElementById('hlcTotalInterest').innerHTML = hlcFormatCurrency(totalInterest);
+        document.getElementById('hlcTotalPayment').innerHTML = hlcFormatCurrency(totalPayment);
+
+        // Visual Breakdown Bar
+        var principalPercent = (loanAmount / totalPayment) * 100;
+        var interestPercent = (totalInterest / totalPayment) * 100;
+        document.getElementById('hlcBarPrincipal').style.width = principalPercent + '%';
+        document.getElementById('hlcBarInterest').style.width = interestPercent + '%';
+
+        // Year-wise Amortization Table
+        var tableHTML = '<table class="hlc-table"><tr><th>Year</th><th>Principal (₹)</th><th>Interest (₹)</th><th>Balance (₹)</th></tr>';
+
+        var balance = loanAmount;
+        var totalPrincipalPaid = 0;
+        var totalInterestPaid = 0;
+
+        for (var y = 1; y <= tenureYears; y++) {
+            var yearPrincipal = 0;
+            var yearInterest = 0;
+
+            for (var m = 0; m < 12; m++) {
+                if (balance <= 0) break;
+                var interestPart = balance * monthlyRate;
+                var principalPart = emi - interestPart;
+                if (principalPart > balance) principalPart = balance;
+                balance -= principalPart;
+                yearPrincipal += principalPart;
+                yearInterest += interestPart;
+            }
+
+            totalPrincipalPaid += yearPrincipal;
+            totalInterestPaid += yearInterest;
+
+            tableHTML += '<tr><td>' + y + '</td><td>' + hlcFormatCurrency(yearPrincipal).replace('₹', '') + '</td><td>' + hlcFormatCurrency(yearInterest).replace('₹', '') + '</td><td>' + hlcFormatCurrency(Math.max(balance, 0)).replace('₹', '') + '</td></tr>';
+        }
+
+        // Total Row
+        tableHTML += '<tr><td>Total</td><td>' + hlcFormatCurrency(totalPrincipalPaid).replace('₹', '') + '</td><td>' + hlcFormatCurrency(totalInterestPaid).replace('₹', '') + '</td><td>0</td></tr>';
+        tableHTML += '</table>';
+
+        document.getElementById('hlcTableWrapper').innerHTML = tableHTML;
+        document.getElementById('hlcResult').style.display = 'block';
+    }
+
+    function hlcReset() {
+        document.getElementById('hlcLoanAmount').value = '';
+        document.getElementById('hlcInterestRate').value = '';
+        document.getElementById('hlcTenure').value = '';
+        document.getElementById('hlcResult').style.display = 'none';
+    }
+</script>
