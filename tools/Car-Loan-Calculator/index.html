@@ -1,0 +1,797 @@
+<!-- AIOCrafters - Car Loan EMI Calculator Tool - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Car Loan EMI Calculator",
+  "description": "Free online Car Loan EMI Calculator. Calculate your monthly EMI, total interest, and total payment for car loans instantly. Includes visual breakdown and month-wise amortization schedule.",
+  "url": "https://www.aiocrafters.com/p/car-loan-calculator.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is Car Loan EMI calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Car Loan EMI is calculated using the formula: EMI = [P x R x (1+R)^N] / [(1+R)^N - 1], where P is the loan amount, R is the monthly interest rate, and N is the total number of monthly installments."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the typical interest rate for car loans in India?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Car loan interest rates in India typically range from 7% to 14% per annum for new cars and 12% to 18% for used cars, depending on the bank, your credit score, and the car model."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the maximum tenure for a car loan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most banks offer car loans with a tenure of 12 to 84 months (1 to 7 years). The most common tenure is 60 months (5 years)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this Car Loan Calculator free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, this Car Loan EMI Calculator is completely free. No sign-up, no downloads — just enter your loan details and get instant results."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .clc-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .clc-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .clc-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 22px;
+    }
+
+    /* Input Groups */
+    .clc-input-group {
+        margin-bottom: 16px;
+    }
+
+    .clc-input-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 6px;
+    }
+
+    .clc-input-group input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 16px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+    }
+
+    .clc-input-group input:focus {
+        border-color: #2e7d32;
+        box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
+    }
+
+    .clc-input-group input::placeholder {
+        color: #bbb;
+    }
+
+    /* Tenure Toggle */
+    .clc-tenure-toggle {
+        display: flex;
+        gap: 0;
+        margin-bottom: 16px;
+    }
+
+    .clc-tenure-toggle button {
+        padding: 12px 18px;
+        border: 2px solid #e0e0e0;
+        background: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #777;
+    }
+
+    .clc-tenure-toggle button:first-child {
+        border-radius: 8px 0 0 8px;
+    }
+
+    .clc-tenure-toggle button:last-child {
+        border-radius: 0 8px 8px 0;
+        border-left: none;
+    }
+
+    .clc-tenure-toggle button.active {
+        background: #2e7d32;
+        color: #fff;
+        border-color: #2e7d32;
+    }
+
+    /* Buttons */
+    .clc-btn-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .clc-btn {
+        padding: 12px 28px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex: 1;
+    }
+
+    .clc-btn-calc {
+        background: linear-gradient(135deg, #66bb6a, #2e7d32);
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(46, 125, 50, 0.3);
+    }
+
+    .clc-btn-calc:hover {
+        box-shadow: 0 5px 16px rgba(46, 125, 50, 0.45);
+        transform: translateY(-1px);
+    }
+
+    .clc-btn-reset {
+        background: #f1f3f5;
+        color: #555;
+        border: 1px solid #ddd;
+        flex: 0.4;
+    }
+
+    .clc-btn-reset:hover {
+        background: #e9ecef;
+    }
+
+    /* Result Area */
+    .clc-result {
+        display: none;
+        margin-top: 24px;
+    }
+
+    .clc-result h3 {
+        font-size: 18px;
+        color: #1a1a2e;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+
+    /* Stats Grid */
+    .clc-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .clc-stat-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 10px;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+
+    .clc-stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .clc-stat-card .clc-stat-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #2e7d32;
+        display: block;
+        margin-bottom: 4px;
+        word-break: break-all;
+    }
+
+    .clc-stat-card .clc-stat-label {
+        font-size: 12px;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .clc-stat-card.clc-emi-highlight {
+        background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+        border-color: #a5d6a7;
+    }
+
+    .clc-stat-card.clc-emi-highlight .clc-stat-value {
+        font-size: 24px;
+        color: #1b5e20;
+    }
+
+    /* Visual Breakdown Bar */
+    .clc-breakdown-bar {
+        display: flex;
+        height: 28px;
+        border-radius: 14px;
+        overflow: hidden;
+        margin: 16px 0;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .clc-bar-principal {
+        background: #2e7d32;
+        transition: width 0.5s;
+    }
+
+    .clc-bar-interest {
+        background: #ef5350;
+        transition: width 0.5s;
+    }
+
+    .clc-breakdown-legend {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-bottom: 16px;
+        font-size: 14px;
+    }
+
+    .clc-breakdown-legend span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .clc-legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    /* Amortization Table */
+    .clc-table-wrapper {
+        max-height: 320px;
+        overflow-y: auto;
+        margin-top: 16px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+    }
+
+    .clc-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+    .clc-table th {
+        background: #2e7d32;
+        color: #fff;
+        padding: 10px 8px;
+        text-align: right;
+        position: sticky;
+        top: 0;
+    }
+
+    .clc-table th:first-child {
+        text-align: center;
+    }
+
+    .clc-table td {
+        padding: 7px 8px;
+        border-bottom: 1px solid #eee;
+        text-align: right;
+    }
+
+    .clc-table td:first-child {
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .clc-table tr:nth-child(even) {
+        background: #f1f8e9;
+    }
+
+    .clc-table tr:last-child td {
+        font-weight: 700;
+        background: #e8f5e9;
+    }
+
+    /* Disclaimer */
+    .clc-disclaimer {
+        background: #fff3e0;
+        border: 1px solid #ffe0b2;
+        border-left: 4px solid #ff9800;
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-top: 20px;
+        font-size: 13px;
+        color: #e65100;
+    }
+
+    /* --- Content Sections --- */
+    .clc-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .clc-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .clc-wrapper ul,
+    .clc-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .clc-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .clc-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .clc-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .clc-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .clc-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .clc-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .clc-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    .clc-formula-box {
+        background: #f1f8e9;
+        border: 1px solid #c8e6c9;
+        border-left: 5px solid #2e7d32;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .clc-formula-box code {
+        background: #e8f5e9;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+    }
+
+    /* New vs Used Car Table */
+    .clc-compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .clc-compare-table th {
+        background: #2e7d32;
+        color: #fff;
+        padding: 10px 14px;
+        text-align: left;
+    }
+
+    .clc-compare-table td {
+        border: 1px solid #e0e0e0;
+        padding: 10px 14px;
+    }
+
+    .clc-compare-table tr:nth-child(even) {
+        background: #f1f8e9;
+    }
+
+    .clc-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .clc-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .clc-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        .clc-container {
+            padding: 20px 16px;
+        }
+
+        .clc-stats-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="clc-wrapper">
+
+    <!-- Intro Content -->
+    <h2>🚗 Car Loan EMI Calculator — Free Online Tool</h2>
+    <p>Planning to buy your dream car? Our free <strong>Car Loan EMI Calculator</strong> helps you instantly calculate
+        your <strong>monthly EMI, total interest payable, and total repayment amount</strong>. Whether you're buying a
+        new car or a used one, plan your budget and know exactly what you'll pay every month — before you visit the
+        dealership.</p>
+
+    <!-- Tool Container -->
+    <div class="clc-container">
+        <h2>🚗 Car Loan EMI Calculator</h2>
+
+        <div class="clc-input-group">
+            <label>Loan Amount (₹)</label>
+            <input type="number" id="clcLoanAmount" placeholder="e.g. 800000">
+        </div>
+
+        <div class="clc-input-group">
+            <label>Annual Interest Rate (%)</label>
+            <input type="number" id="clcInterestRate" step="0.1" placeholder="e.g. 9.5">
+        </div>
+
+        <div class="clc-input-group">
+            <label id="clcTenureLabel">Loan Tenure (Months)</label>
+            <div style="display:flex; gap:10px;">
+                <input type="number" id="clcTenure" placeholder="e.g. 60" style="flex:1;">
+                <div class="clc-tenure-toggle">
+                    <button class="active" id="clcBtnMonths" onclick="clcToggleTenure('months')">Months</button>
+                    <button id="clcBtnYears" onclick="clcToggleTenure('years')">Years</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="clc-btn-row">
+            <button class="clc-btn clc-btn-calc" onclick="clcCalculate()">📊 Calculate EMI</button>
+            <button class="clc-btn clc-btn-reset" onclick="clcReset()">🗑️ Reset</button>
+        </div>
+
+        <!-- Result Area -->
+        <div class="clc-result" id="clcResult">
+            <h3>📋 EMI Breakdown</h3>
+
+            <div class="clc-stats-grid">
+                <div class="clc-stat-card clc-emi-highlight">
+                    <span class="clc-stat-value" id="clcEmi">—</span>
+                    <span class="clc-stat-label">Monthly EMI</span>
+                </div>
+                <div class="clc-stat-card">
+                    <span class="clc-stat-value" id="clcTotalInterest">—</span>
+                    <span class="clc-stat-label">Total Interest</span>
+                </div>
+                <div class="clc-stat-card">
+                    <span class="clc-stat-value" id="clcTotalPayment">—</span>
+                    <span class="clc-stat-label">Total Payment</span>
+                </div>
+            </div>
+
+            <!-- Visual Breakdown -->
+            <div class="clc-breakdown-bar">
+                <div class="clc-bar-principal" id="clcBarPrincipal"></div>
+                <div class="clc-bar-interest" id="clcBarInterest"></div>
+            </div>
+            <div class="clc-breakdown-legend">
+                <span><span class="clc-legend-dot" style="background:#2e7d32;"></span> Principal</span>
+                <span><span class="clc-legend-dot" style="background:#ef5350;"></span> Interest</span>
+            </div>
+
+            <!-- Amortization Table -->
+            <div class="clc-table-wrapper" id="clcTableWrapper"></div>
+        </div>
+
+        <div class="clc-disclaimer">
+            <strong>⚠️ Disclaimer:</strong> This calculator provides approximate estimates for informational purposes
+            only. Actual EMI may vary based on the lender's terms, processing fees, insurance, and other charges. Please
+            consult your bank or dealer for exact figures.
+        </div>
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Use the Car Loan EMI Calculator</h2>
+    <ol>
+        <li><strong>Enter Loan Amount</strong> — Type the car loan amount you wish to borrow (in ₹). This is the car
+            price minus your down payment.</li>
+        <li><strong>Enter Interest Rate</strong> — Provide the annual interest rate offered by your bank or dealer
+            (e.g., 9.5%).</li>
+        <li><strong>Enter Loan Tenure</strong> — Specify the repayment period in months or years using the toggle
+            button.</li>
+        <li><strong>Click "Calculate EMI"</strong> — Instantly see your monthly EMI, total interest, total payment, a
+            visual breakdown, and a month-wise amortization schedule.</li>
+    </ol>
+
+    <!-- EMI Formula -->
+    <div class="clc-formula-box">
+        <strong>📐 EMI Formula:</strong><br>
+        <code>EMI = [P x R x (1+R)^N] / [(1+R)^N - 1]</code><br><br>
+        Where:<br>
+        <strong>P</strong> = Principal Loan Amount (Car Price - Down Payment)<br>
+        <strong>R</strong> = Monthly Interest Rate (Annual Rate / 12 / 100)<br>
+        <strong>N</strong> = Total Number of Monthly Installments
+    </div>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="clc-features-grid">
+        <div class="clc-feature-card">
+            <span class="icon">⚡</span>
+            <strong>Instant Results</strong>
+            <p>Get EMI, interest, and total payment in one click.</p>
+        </div>
+        <div class="clc-feature-card">
+            <span class="icon">📊</span>
+            <strong>Visual Breakdown</strong>
+            <p>See principal vs interest ratio at a glance.</p>
+        </div>
+        <div class="clc-feature-card">
+            <span class="icon">📅</span>
+            <strong>Amortization Table</strong>
+            <p>Month-wise schedule of principal and interest.</p>
+        </div>
+        <div class="clc-feature-card">
+            <span class="icon">🔄</span>
+            <strong>Months or Years</strong>
+            <p>Toggle tenure input between months and years.</p>
+        </div>
+    </div>
+
+    <!-- New vs Used Car Loan -->
+    <h2>📊 New Car Loan vs Used Car Loan</h2>
+    <table class="clc-compare-table">
+        <tr>
+            <th>Feature</th>
+            <th>New Car Loan</th>
+            <th>Used Car Loan</th>
+        </tr>
+        <tr>
+            <td>Interest Rate</td>
+            <td>7% – 12%</td>
+            <td>12% – 18%</td>
+        </tr>
+        <tr>
+            <td>Max Tenure</td>
+            <td>Up to 7 years</td>
+            <td>Up to 5 years</td>
+        </tr>
+        <tr>
+            <td>Loan-to-Value</td>
+            <td>Up to 90% of car price</td>
+            <td>Up to 70–80% of car value</td>
+        </tr>
+        <tr>
+            <td>Processing Fee</td>
+            <td>0.5% – 2%</td>
+            <td>1% – 3%</td>
+        </tr>
+        <tr>
+            <td>Documentation</td>
+            <td>Standard</td>
+            <td>Requires car valuation report</td>
+        </tr>
+    </table>
+
+    <!-- Tips -->
+    <h2>💡 Tips Before Taking a Car Loan</h2>
+    <ul>
+        <li><strong>Make a Larger Down Payment</strong> — A higher down payment (20–30%) reduces your loan amount, EMI,
+            and total interest significantly.</li>
+        <li><strong>Compare Rates</strong> — Don't just accept the dealer's financing. Compare rates from multiple banks
+            and NBFCs.</li>
+        <li><strong>Choose the Right Tenure</strong> — A shorter tenure (3–4 years) means higher EMI but much less total
+            interest compared to 7 years.</li>
+        <li><strong>Check Your Credit Score</strong> — A CIBIL score of 750+ helps you secure lower interest rates.</li>
+        <li><strong>Factor in Total Cost</strong> — Remember to include insurance, registration, road tax, and
+            accessories in your budget.</li>
+        <li><strong>Avoid Long Tenures</strong> — Cars depreciate quickly. A 7-year loan may leave you owing more than
+            the car's value.</li>
+        <li><strong>Read the Fine Print</strong> — Check for processing fees, prepayment charges, and foreclosure
+            penalties before signing.</li>
+    </ul>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="clc-faq-item">
+        <h3>How is Car Loan EMI calculated?</h3>
+        <p>EMI is calculated using the reducing balance formula: EMI = [P x R x (1+R)^N] / [(1+R)^N - 1], where P is the
+            loan amount, R is the monthly interest rate, and N is the total number of monthly installments.</p>
+    </div>
+
+    <div class="clc-faq-item">
+        <h3>What is the typical interest rate for car loans?</h3>
+        <p>Car loan interest rates in India typically range from 7% to 12% for new cars and 12% to 18% for used cars,
+            depending on the bank, credit score, and car model.</p>
+    </div>
+
+    <div class="clc-faq-item">
+        <h3>What is the ideal down payment for a car?</h3>
+        <p>Most banks require a minimum down payment of 10–20% of the car's on-road price. However, making a 20–30% down
+            payment is recommended to reduce your EMI burden and total interest cost.</p>
+    </div>
+
+    <div class="clc-faq-item">
+        <h3>Is this Car Loan Calculator free?</h3>
+        <p>Yes, completely free. No sign-up or downloads needed — enter your details and get instant results.</p>
+    </div>
+
+    <div class="clc-faq-item">
+        <h3>Is my data safe?</h3>
+        <p>Yes! All calculations happen locally in your browser. No data is uploaded or stored on any server.</p>
+    </div>
+
+    <div class="clc-faq-item">
+        <h3>Can I prepay my car loan?</h3>
+        <p>Yes, most banks allow prepayment of car loans. Some may charge a prepayment penalty (typically 2–5%), while
+            others offer zero prepayment charges. Check with your lender for details.</p>
+    </div>
+
+</div>
+
+<script>
+    var clcTenureMode = 'months';
+
+    function clcToggleTenure(mode) {
+        clcTenureMode = mode;
+        document.getElementById('clcBtnMonths').classList.toggle('active', mode === 'months');
+        document.getElementById('clcBtnYears').classList.toggle('active', mode === 'years');
+        document.getElementById('clcTenureLabel').textContent = mode === 'months' ? 'Loan Tenure (Months)' : 'Loan Tenure (Years)';
+        document.getElementById('clcTenure').placeholder = mode === 'months' ? 'e.g. 60' : 'e.g. 5';
+    }
+
+    function clcFormatCurrency(num) {
+        return '\u20B9' + num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function clcCalculate() {
+        var loanAmount = parseFloat(document.getElementById('clcLoanAmount').value);
+        var annualRate = parseFloat(document.getElementById('clcInterestRate').value);
+        var tenureInput = parseInt(document.getElementById('clcTenure').value);
+
+        if (isNaN(loanAmount) || isNaN(annualRate) || isNaN(tenureInput) || loanAmount <= 0 || annualRate <= 0 || tenureInput <= 0) {
+            alert('Please enter valid values for all fields.');
+            return;
+        }
+
+        var totalMonths = clcTenureMode === 'years' ? tenureInput * 12 : tenureInput;
+        var monthlyRate = annualRate / 100 / 12;
+
+        // EMI Calculation
+        var emi = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) / (Math.pow(1 + monthlyRate, totalMonths) - 1);
+        var totalPayment = emi * totalMonths;
+        var totalInterest = totalPayment - loanAmount;
+
+        // Display Stats
+        document.getElementById('clcEmi').innerHTML = clcFormatCurrency(emi);
+        document.getElementById('clcTotalInterest').innerHTML = clcFormatCurrency(totalInterest);
+        document.getElementById('clcTotalPayment').innerHTML = clcFormatCurrency(totalPayment);
+
+        // Visual Breakdown Bar
+        var principalPercent = (loanAmount / totalPayment) * 100;
+        var interestPercent = (totalInterest / totalPayment) * 100;
+        document.getElementById('clcBarPrincipal').style.width = principalPercent + '%';
+        document.getElementById('clcBarInterest').style.width = interestPercent + '%';
+
+        // Month-wise Amortization Table
+        var tableHTML = '<table class="clc-table"><tr><th>Month</th><th>EMI (\u20B9)</th><th>Principal (\u20B9)</th><th>Interest (\u20B9)</th><th>Balance (\u20B9)</th></tr>';
+
+        var balance = loanAmount;
+        var totalPrincipalPaid = 0;
+        var totalInterestPaid = 0;
+
+        for (var m = 1; m <= totalMonths; m++) {
+            var interestPart = balance * monthlyRate;
+            var principalPart = emi - interestPart;
+            if (principalPart > balance) principalPart = balance;
+            balance -= principalPart;
+            totalPrincipalPaid += principalPart;
+            totalInterestPaid += interestPart;
+
+            tableHTML += '<tr><td>' + m + '</td><td>' + clcFormatCurrency(emi).replace('\u20B9', '') + '</td><td>' + clcFormatCurrency(principalPart).replace('\u20B9', '') + '</td><td>' + clcFormatCurrency(interestPart).replace('\u20B9', '') + '</td><td>' + clcFormatCurrency(Math.max(balance, 0)).replace('\u20B9', '') + '</td></tr>';
+        }
+
+        // Total Row
+        tableHTML += '<tr><td>Total</td><td>' + clcFormatCurrency(emi * totalMonths).replace('\u20B9', '') + '</td><td>' + clcFormatCurrency(totalPrincipalPaid).replace('\u20B9', '') + '</td><td>' + clcFormatCurrency(totalInterestPaid).replace('\u20B9', '') + '</td><td>0</td></tr>';
+        tableHTML += '</table>';
+
+        document.getElementById('clcTableWrapper').innerHTML = tableHTML;
+        document.getElementById('clcResult').style.display = 'block';
+    }
+
+    function clcReset() {
+        document.getElementById('clcLoanAmount').value = '';
+        document.getElementById('clcInterestRate').value = '';
+        document.getElementById('clcTenure').value = '';
+        document.getElementById('clcResult').style.display = 'none';
+    }
+</script>

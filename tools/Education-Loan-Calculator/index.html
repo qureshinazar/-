@@ -1,0 +1,876 @@
+<!-- AIOCrafters - Education Loan EMI Calculator Tool - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Education Loan EMI Calculator",
+  "description": "Free online Education Loan EMI Calculator. Calculate your monthly EMI, total interest, and total payment for education loans instantly. Includes moratorium period support, visual breakdown, and month-wise amortization schedule.",
+  "url": "https://www.aiocrafters.com/p/education-loan-calculator.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is Education Loan EMI calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Education Loan EMI is calculated using the formula: EMI = [P x R x (1+R)^N] / [(1+R)^N - 1], where P is the loan amount, R is the monthly interest rate, and N is the total number of monthly installments. If a moratorium period is included, interest accrues during that time and is added to the principal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a moratorium period in education loans?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A moratorium period is a grace period during which you are not required to pay EMIs. It typically covers the course duration plus 6-12 months after completion. However, interest continues to accrue during this period and is added to the total loan amount."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the typical interest rate for education loans in India?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Education loan interest rates in India typically range from 7% to 12% per annum for domestic studies and 8% to 14% for overseas studies, depending on the bank, loan amount, and whether collateral is provided."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this Education Loan Calculator free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, this Education Loan EMI Calculator is completely free. No sign-up, no downloads — just enter your loan details and get instant results."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .elc-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .elc-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .elc-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 22px;
+    }
+
+    /* Input Groups */
+    .elc-input-group {
+        margin-bottom: 16px;
+    }
+
+    .elc-input-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 6px;
+    }
+
+    .elc-input-group .elc-label-hint {
+        font-weight: 400;
+        font-size: 12px;
+        color: #999;
+    }
+
+    .elc-input-group input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 16px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+    }
+
+    .elc-input-group input:focus {
+        border-color: #4527a0;
+        box-shadow: 0 0 0 3px rgba(69, 39, 160, 0.12);
+    }
+
+    .elc-input-group input::placeholder {
+        color: #bbb;
+    }
+
+    /* Tenure Toggle */
+    .elc-tenure-toggle {
+        display: flex;
+        gap: 0;
+        margin-bottom: 16px;
+    }
+
+    .elc-tenure-toggle button {
+        padding: 12px 18px;
+        border: 2px solid #e0e0e0;
+        background: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #777;
+    }
+
+    .elc-tenure-toggle button:first-child {
+        border-radius: 8px 0 0 8px;
+    }
+
+    .elc-tenure-toggle button:last-child {
+        border-radius: 0 8px 8px 0;
+        border-left: none;
+    }
+
+    .elc-tenure-toggle button.active {
+        background: #4527a0;
+        color: #fff;
+        border-color: #4527a0;
+    }
+
+    /* Buttons */
+    .elc-btn-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .elc-btn {
+        padding: 12px 28px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex: 1;
+    }
+
+    .elc-btn-calc {
+        background: linear-gradient(135deg, #7e57c2, #4527a0);
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(69, 39, 160, 0.3);
+    }
+
+    .elc-btn-calc:hover {
+        box-shadow: 0 5px 16px rgba(69, 39, 160, 0.45);
+        transform: translateY(-1px);
+    }
+
+    .elc-btn-reset {
+        background: #f1f3f5;
+        color: #555;
+        border: 1px solid #ddd;
+        flex: 0.4;
+    }
+
+    .elc-btn-reset:hover {
+        background: #e9ecef;
+    }
+
+    /* Result Area */
+    .elc-result {
+        display: none;
+        margin-top: 24px;
+    }
+
+    .elc-result h3 {
+        font-size: 18px;
+        color: #1a1a2e;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+
+    /* Stats Grid */
+    .elc-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .elc-stat-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 10px;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+
+    .elc-stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .elc-stat-card .elc-stat-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #4527a0;
+        display: block;
+        margin-bottom: 4px;
+        word-break: break-all;
+    }
+
+    .elc-stat-card .elc-stat-label {
+        font-size: 12px;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .elc-stat-card.elc-emi-highlight {
+        background: linear-gradient(135deg, #ede7f6, #d1c4e9);
+        border-color: #b39ddb;
+    }
+
+    .elc-stat-card.elc-emi-highlight .elc-stat-value {
+        font-size: 24px;
+        color: #311b92;
+    }
+
+    /* Moratorium Info */
+    .elc-mora-info {
+        display: none;
+        background: #ede7f6;
+        border: 1px solid #d1c4e9;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        font-size: 14px;
+        color: #4527a0;
+        text-align: center;
+    }
+
+    /* Visual Breakdown Bar */
+    .elc-breakdown-bar {
+        display: flex;
+        height: 28px;
+        border-radius: 14px;
+        overflow: hidden;
+        margin: 16px 0;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .elc-bar-principal {
+        background: #4527a0;
+        transition: width 0.5s;
+    }
+
+    .elc-bar-interest {
+        background: #ef5350;
+        transition: width 0.5s;
+    }
+
+    .elc-breakdown-legend {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-bottom: 16px;
+        font-size: 14px;
+    }
+
+    .elc-breakdown-legend span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .elc-legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    /* Amortization Table */
+    .elc-table-wrapper {
+        max-height: 320px;
+        overflow-y: auto;
+        margin-top: 16px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+    }
+
+    .elc-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+    .elc-table th {
+        background: #4527a0;
+        color: #fff;
+        padding: 10px 8px;
+        text-align: right;
+        position: sticky;
+        top: 0;
+    }
+
+    .elc-table th:first-child {
+        text-align: center;
+    }
+
+    .elc-table td {
+        padding: 7px 8px;
+        border-bottom: 1px solid #eee;
+        text-align: right;
+    }
+
+    .elc-table td:first-child {
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .elc-table tr:nth-child(even) {
+        background: #f3f0fa;
+    }
+
+    .elc-table tr:last-child td {
+        font-weight: 700;
+        background: #ede7f6;
+    }
+
+    /* Disclaimer */
+    .elc-disclaimer {
+        background: #fff3e0;
+        border: 1px solid #ffe0b2;
+        border-left: 4px solid #ff9800;
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-top: 20px;
+        font-size: 13px;
+        color: #e65100;
+    }
+
+    /* --- Content Sections --- */
+    .elc-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .elc-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .elc-wrapper ul,
+    .elc-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .elc-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .elc-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .elc-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .elc-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .elc-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .elc-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .elc-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    .elc-formula-box {
+        background: #f3f0fa;
+        border: 1px solid #d1c4e9;
+        border-left: 5px solid #4527a0;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .elc-formula-box code {
+        background: #ede7f6;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+    }
+
+    /* Comparison Table */
+    .elc-compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .elc-compare-table th {
+        background: #4527a0;
+        color: #fff;
+        padding: 10px 14px;
+        text-align: left;
+    }
+
+    .elc-compare-table td {
+        border: 1px solid #e0e0e0;
+        padding: 10px 14px;
+    }
+
+    .elc-compare-table tr:nth-child(even) {
+        background: #f3f0fa;
+    }
+
+    .elc-highlight-box {
+        background: #ede7f6;
+        border: 1px solid #d1c4e9;
+        border-left: 5px solid #4527a0;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .elc-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .elc-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .elc-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        .elc-container {
+            padding: 20px 16px;
+        }
+
+        .elc-stats-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="elc-wrapper">
+
+    <!-- Intro Content -->
+    <h2>🎓 Education Loan EMI Calculator — Free Online Tool</h2>
+    <p>Planning to pursue higher education in India or abroad? Our free <strong>Education Loan EMI Calculator</strong>
+        helps you instantly calculate your <strong>monthly EMI, total interest payable, and total repayment
+            amount</strong>. It also factors in the <strong>moratorium (grace) period</strong> during which interest
+        accrues but no EMI is due. Plan your finances today — before you enroll.</p>
+
+    <!-- Tool Container -->
+    <div class="elc-container">
+        <h2>🎓 Education Loan EMI Calculator</h2>
+
+        <div class="elc-input-group">
+            <label>Loan Amount (₹)</label>
+            <input type="number" id="elcLoanAmount" placeholder="e.g. 1000000">
+        </div>
+
+        <div class="elc-input-group">
+            <label>Annual Interest Rate (%)</label>
+            <input type="number" id="elcInterestRate" step="0.1" placeholder="e.g. 8.5">
+        </div>
+
+        <div class="elc-input-group">
+            <label id="elcTenureLabel">Repayment Tenure (Months) <span class="elc-label-hint">— after moratorium
+                    ends</span></label>
+            <div style="display:flex; gap:10px;">
+                <input type="number" id="elcTenure" placeholder="e.g. 60" style="flex:1;">
+                <div class="elc-tenure-toggle">
+                    <button class="active" id="elcBtnMonths" onclick="elcToggleTenure('months')">Months</button>
+                    <button id="elcBtnYears" onclick="elcToggleTenure('years')">Years</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="elc-input-group">
+            <label>Moratorium Period (Months) <span class="elc-label-hint">— course duration + 6–12 months grace, set 0
+                    if none</span></label>
+            <input type="number" id="elcMoratorium" placeholder="e.g. 48" value="0">
+        </div>
+
+        <div class="elc-btn-row">
+            <button class="elc-btn elc-btn-calc" onclick="elcCalculate()">📊 Calculate EMI</button>
+            <button class="elc-btn elc-btn-reset" onclick="elcReset()">🗑️ Reset</button>
+        </div>
+
+        <!-- Result Area -->
+        <div class="elc-result" id="elcResult">
+            <h3>📋 EMI Breakdown</h3>
+
+            <!-- Moratorium Info -->
+            <div class="elc-mora-info" id="elcMoraInfo"></div>
+
+            <div class="elc-stats-grid">
+                <div class="elc-stat-card elc-emi-highlight">
+                    <span class="elc-stat-value" id="elcEmi">—</span>
+                    <span class="elc-stat-label">Monthly EMI</span>
+                </div>
+                <div class="elc-stat-card">
+                    <span class="elc-stat-value" id="elcTotalInterest">—</span>
+                    <span class="elc-stat-label">Total Interest</span>
+                </div>
+                <div class="elc-stat-card">
+                    <span class="elc-stat-value" id="elcTotalPayment">—</span>
+                    <span class="elc-stat-label">Total Payment</span>
+                </div>
+            </div>
+
+            <!-- Visual Breakdown -->
+            <div class="elc-breakdown-bar">
+                <div class="elc-bar-principal" id="elcBarPrincipal"></div>
+                <div class="elc-bar-interest" id="elcBarInterest"></div>
+            </div>
+            <div class="elc-breakdown-legend">
+                <span><span class="elc-legend-dot" style="background:#4527a0;"></span> Principal</span>
+                <span><span class="elc-legend-dot" style="background:#ef5350;"></span> Interest</span>
+            </div>
+
+            <!-- Amortization Table -->
+            <div class="elc-table-wrapper" id="elcTableWrapper"></div>
+        </div>
+
+        <div class="elc-disclaimer">
+            <strong>⚠️ Disclaimer:</strong> This calculator provides approximate estimates for informational purposes
+            only. Actual EMI may vary based on the lender's terms, processing fees, moratorium conditions, and other
+            charges. Please consult your bank for exact figures.
+        </div>
+    </div>
+
+    <!-- Highlight -->
+    <div class="elc-highlight-box">
+        <strong>💡 What is a Moratorium Period?</strong> Most education loans offer a moratorium (grace period) = course
+        duration + 6 to 12 months. During this time, no EMI is due, but <strong>interest keeps accruing</strong> and
+        gets added to your principal. This means a longer moratorium increases your total repayment amount.
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Use the Education Loan EMI Calculator</h2>
+    <ol>
+        <li><strong>Enter Loan Amount</strong> — Type the total education loan amount (in ₹). Include tuition, living
+            expenses, and other fees.</li>
+        <li><strong>Enter Interest Rate</strong> — Provide the annual interest rate offered by your bank (e.g., 8.5%).
+        </li>
+        <li><strong>Enter Repayment Tenure</strong> — Specify the repayment period after the moratorium ends, in months
+            or years.</li>
+        <li><strong>Enter Moratorium Period</strong> — Set the grace period in months (typically course duration + 6–12
+            months). Set 0 if no moratorium.</li>
+        <li><strong>Click "Calculate EMI"</strong> — Instantly see your monthly EMI, total interest, total payment with
+            moratorium impact, and a month-wise amortization schedule.</li>
+    </ol>
+
+    <!-- EMI Formula -->
+    <div class="elc-formula-box">
+        <strong>📐 EMI Formula:</strong><br>
+        <code>EMI = [P x R x (1+R)^N] / [(1+R)^N - 1]</code><br><br>
+        Where:<br>
+        <strong>P</strong> = Principal (Original Loan + Moratorium Interest, if applicable)<br>
+        <strong>R</strong> = Monthly Interest Rate (Annual Rate / 12 / 100)<br>
+        <strong>N</strong> = Total Repayment Months (after moratorium)
+    </div>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="elc-features-grid">
+        <div class="elc-feature-card">
+            <span class="icon">⚡</span>
+            <strong>Instant Results</strong>
+            <p>Get EMI, interest, and total payment in one click.</p>
+        </div>
+        <div class="elc-feature-card">
+            <span class="icon">⏳</span>
+            <strong>Moratorium Support</strong>
+            <p>Factors in grace period interest accrual.</p>
+        </div>
+        <div class="elc-feature-card">
+            <span class="icon">📊</span>
+            <strong>Visual Breakdown</strong>
+            <p>See principal vs interest ratio at a glance.</p>
+        </div>
+        <div class="elc-feature-card">
+            <span class="icon">📅</span>
+            <strong>Amortization Table</strong>
+            <p>Month-wise schedule of principal and interest.</p>
+        </div>
+    </div>
+
+    <!-- Domestic vs Overseas -->
+    <h2>📊 Domestic vs Overseas Education Loan</h2>
+    <table class="elc-compare-table">
+        <tr>
+            <th>Feature</th>
+            <th>Domestic (India)</th>
+            <th>Overseas (Abroad)</th>
+        </tr>
+        <tr>
+            <td>Interest Rate</td>
+            <td>7% – 11%</td>
+            <td>8% – 14%</td>
+        </tr>
+        <tr>
+            <td>Max Loan Amount</td>
+            <td>Up to ₹20 Lakhs (without collateral)</td>
+            <td>Up to ₹1.5 Crore (with collateral)</td>
+        </tr>
+        <tr>
+            <td>Collateral</td>
+            <td>Not required up to ₹7.5 Lakhs</td>
+            <td>Usually required above ₹7.5 Lakhs</td>
+        </tr>
+        <tr>
+            <td>Moratorium</td>
+            <td>Course + 6–12 months</td>
+            <td>Course + 6–12 months</td>
+        </tr>
+        <tr>
+            <td>Repayment Tenure</td>
+            <td>5 – 15 years</td>
+            <td>5 – 15 years</td>
+        </tr>
+        <tr>
+            <td>Tax Benefit</td>
+            <td>Section 80E (interest deduction)</td>
+            <td>Section 80E (interest deduction)</td>
+        </tr>
+    </table>
+
+    <!-- Tips -->
+    <h2>💡 Tips Before Taking an Education Loan</h2>
+    <ul>
+        <li><strong>Compare Interest Rates</strong> — Check rates from SBI, PNB, Bank of Baroda, HDFC, and NBFCs.
+            Government banks often offer lower rates.</li>
+        <li><strong>Understand the Moratorium</strong> — Know exactly when repayment starts. Interest accrues during the
+            moratorium and increases your total cost.</li>
+        <li><strong>Check for Scholarships First</strong> — Apply for scholarships and grants before borrowing. Even
+            partial funding reduces your loan burden.</li>
+        <li><strong>Claim Tax Benefits</strong> — Interest paid on education loans qualifies for tax deduction under
+            Section 80E for up to 8 years.</li>
+        <li><strong>Consider Partial Payments</strong> — Paying even small amounts during the moratorium period reduces
+            the interest that accumulates.</li>
+        <li><strong>Read the Fine Print</strong> — Check for processing fees, prepayment penalties, and whether the rate
+            is fixed or floating.</li>
+        <li><strong>Plan for Living Expenses</strong> — Include accommodation, travel, books, and daily expenses in your
+            loan estimate.</li>
+    </ul>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="elc-faq-item">
+        <h3>How is Education Loan EMI calculated?</h3>
+        <p>EMI is calculated using the reducing balance formula. If you have a moratorium period, interest accrues
+            during that time and is added to the principal before EMI calculation begins.</p>
+    </div>
+
+    <div class="elc-faq-item">
+        <h3>What is a moratorium period?</h3>
+        <p>It's a grace period (typically course duration + 6–12 months) during which you don't pay EMIs. However,
+            interest continues to accrue and gets added to the loan amount, increasing your total repayment.</p>
+    </div>
+
+    <div class="elc-faq-item">
+        <h3>What is the typical interest rate for education loans?</h3>
+        <p>Education loan rates range from 7% to 12% for domestic studies and 8% to 14% for overseas studies, depending
+            on the bank, loan amount, and collateral.</p>
+    </div>
+
+    <div class="elc-faq-item">
+        <h3>Can I get tax benefits on education loans?</h3>
+        <p>Yes! Under Section 80E of the Income Tax Act, the interest paid on education loans is fully deductible (no
+            upper limit) for up to 8 years from the year you start repaying.</p>
+    </div>
+
+    <div class="elc-faq-item">
+        <h3>Is this Education Loan Calculator free?</h3>
+        <p>Yes, completely free. No sign-up or downloads needed — enter your details and get instant results.</p>
+    </div>
+
+    <div class="elc-faq-item">
+        <h3>Is my data safe?</h3>
+        <p>Yes! All calculations happen locally in your browser. No data is uploaded or stored on any server.</p>
+    </div>
+
+</div>
+
+<script>
+    var elcTenureMode = 'months';
+
+    function elcToggleTenure(mode) {
+        elcTenureMode = mode;
+        document.getElementById('elcBtnMonths').classList.toggle('active', mode === 'months');
+        document.getElementById('elcBtnYears').classList.toggle('active', mode === 'years');
+        var labelEl = document.getElementById('elcTenureLabel');
+        if (mode === 'months') {
+            labelEl.innerHTML = 'Repayment Tenure (Months) <span class="elc-label-hint">\u2014 after moratorium ends</span>';
+            document.getElementById('elcTenure').placeholder = 'e.g. 60';
+        } else {
+            labelEl.innerHTML = 'Repayment Tenure (Years) <span class="elc-label-hint">\u2014 after moratorium ends</span>';
+            document.getElementById('elcTenure').placeholder = 'e.g. 5';
+        }
+    }
+
+    function elcFormatCurrency(num) {
+        return '\u20B9' + num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function elcCalculate() {
+        var loanAmount = parseFloat(document.getElementById('elcLoanAmount').value);
+        var annualRate = parseFloat(document.getElementById('elcInterestRate').value);
+        var tenureInput = parseInt(document.getElementById('elcTenure').value);
+        var moratorium = parseInt(document.getElementById('elcMoratorium').value) || 0;
+
+        if (isNaN(loanAmount) || isNaN(annualRate) || isNaN(tenureInput) || loanAmount <= 0 || annualRate <= 0 || tenureInput <= 0) {
+            alert('Please enter valid values for all fields.');
+            return;
+        }
+
+        var totalRepayMonths = elcTenureMode === 'years' ? tenureInput * 12 : tenureInput;
+        var monthlyRate = annualRate / 100 / 12;
+
+        // Calculate interest accrued during moratorium
+        var effectivePrincipal = loanAmount;
+        var moratoriumInterest = 0;
+        if (moratorium > 0) {
+            moratoriumInterest = loanAmount * monthlyRate * moratorium;
+            effectivePrincipal = loanAmount + moratoriumInterest;
+        }
+
+        // EMI Calculation on effective principal
+        var emi = (effectivePrincipal * monthlyRate * Math.pow(1 + monthlyRate, totalRepayMonths)) / (Math.pow(1 + monthlyRate, totalRepayMonths) - 1);
+        var totalPayment = emi * totalRepayMonths;
+        var totalInterest = totalPayment - loanAmount;
+
+        // Display Stats
+        document.getElementById('elcEmi').innerHTML = elcFormatCurrency(emi);
+        document.getElementById('elcTotalInterest').innerHTML = elcFormatCurrency(totalInterest);
+        document.getElementById('elcTotalPayment').innerHTML = elcFormatCurrency(totalPayment);
+
+        // Moratorium Info
+        var moraInfoEl = document.getElementById('elcMoraInfo');
+        if (moratorium > 0) {
+            moraInfoEl.style.display = 'block';
+            moraInfoEl.innerHTML = '\u23F3 <strong>Moratorium Period:</strong> ' + moratorium + ' months | <strong>Interest Accrued:</strong> ' + elcFormatCurrency(moratoriumInterest) + ' | <strong>Effective Principal:</strong> ' + elcFormatCurrency(effectivePrincipal);
+        } else {
+            moraInfoEl.style.display = 'none';
+        }
+
+        // Visual Breakdown Bar
+        var principalPercent = (loanAmount / totalPayment) * 100;
+        var interestPercent = (totalInterest / totalPayment) * 100;
+        document.getElementById('elcBarPrincipal').style.width = principalPercent + '%';
+        document.getElementById('elcBarInterest').style.width = interestPercent + '%';
+
+        // Month-wise Amortization Table
+        var tableHTML = '<table class="elc-table"><tr><th>Month</th><th>EMI (\u20B9)</th><th>Principal (\u20B9)</th><th>Interest (\u20B9)</th><th>Balance (\u20B9)</th></tr>';
+
+        var balance = effectivePrincipal;
+        var totalPrincipalPaid = 0;
+        var totalInterestPaid = 0;
+
+        for (var m = 1; m <= totalRepayMonths; m++) {
+            var interestPart = balance * monthlyRate;
+            var principalPart = emi - interestPart;
+            if (principalPart > balance) principalPart = balance;
+            balance -= principalPart;
+            totalPrincipalPaid += principalPart;
+            totalInterestPaid += interestPart;
+
+            tableHTML += '<tr><td>' + m + '</td><td>' + elcFormatCurrency(emi).replace('\u20B9', '') + '</td><td>' + elcFormatCurrency(principalPart).replace('\u20B9', '') + '</td><td>' + elcFormatCurrency(interestPart).replace('\u20B9', '') + '</td><td>' + elcFormatCurrency(Math.max(balance, 0)).replace('\u20B9', '') + '</td></tr>';
+        }
+
+        // Total Row
+        tableHTML += '<tr><td>Total</td><td>' + elcFormatCurrency(emi * totalRepayMonths).replace('\u20B9', '') + '</td><td>' + elcFormatCurrency(totalPrincipalPaid).replace('\u20B9', '') + '</td><td>' + elcFormatCurrency(totalInterestPaid).replace('\u20B9', '') + '</td><td>0</td></tr>';
+        tableHTML += '</table>';
+
+        document.getElementById('elcTableWrapper').innerHTML = tableHTML;
+        document.getElementById('elcResult').style.display = 'block';
+    }
+
+    function elcReset() {
+        document.getElementById('elcLoanAmount').value = '';
+        document.getElementById('elcInterestRate').value = '';
+        document.getElementById('elcTenure').value = '';
+        document.getElementById('elcMoratorium').value = '0';
+        document.getElementById('elcResult').style.display = 'none';
+    }
+</script>
