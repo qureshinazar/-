@@ -1,0 +1,1036 @@
+<!-- AIOCrafters - Abjad Name Calculator - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Abjad Name Calculator",
+  "description": "Free online Abjad Name Calculator. Calculate the Abjad (Ilm-ul-Adad) numerical value of any name using Arabic, Urdu, and Persian virtual keyboards. Includes full Abjad letter values reference table and per-letter breakdown.",
+  "url": "https://www.aiocrafters.com/p/abjad-name-calculator.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Abjad numerology?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Abjad numerology (Ilm-ul-Adad) is an ancient system that assigns numerical values to Arabic, Urdu, and Persian letters. Each letter has a fixed value from 1 to 1000. The total value of a name or word is the sum of its individual letter values. It is widely used in Islamic numerology, astrology, and spiritual practices."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate the Abjad value of a name?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Type or use the virtual keyboard to enter the name in Arabic, Urdu, or Persian script. The calculator automatically sums up the Abjad value of each letter and displays the total. A per-letter breakdown is also shown."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between Abjad-e-Kabeer and Abjad-e-Sagheer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Abjad-e-Kabeer (Greater Abjad) uses the standard values from 1 to 1000 as shown in the reference table. Abjad-e-Sagheer (Lesser Abjad) reduces each value to a single digit by taking the digital root. This calculator uses Abjad-e-Kabeer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a difference in Abjad values between Arabic, Urdu, and Persian?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The core Arabic letters share the same Abjad values across all three languages. Urdu and Persian have additional letters (like Pe, Che, Gaf, etc.) that take the same value as their closest Arabic equivalent."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .anc-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .anc-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .anc-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+    .anc-container .anc-subtitle {
+        font-size: 14px;
+        color: #888;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Input */
+    .anc-input-box {
+        position: relative;
+        margin-bottom: 16px;
+    }
+
+    .anc-input-box input {
+        width: 100%;
+        font-size: 22px;
+        padding: 14px 16px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        direction: rtl;
+        text-align: right;
+        font-family: 'Traditional Arabic', 'Noto Naskh Arabic', 'Segoe UI', sans-serif;
+        outline: none;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+        background: #fafbfc;
+    }
+
+    .anc-input-box input:focus {
+        border-color: #1565c0;
+        box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.12);
+    }
+
+    .anc-input-box input::placeholder {
+        color: #bbb;
+        font-size: 16px;
+    }
+
+    /* Keyboard Section */
+    .anc-keyboard-section {
+        margin-bottom: 16px;
+    }
+
+    .anc-keyboard-label {
+        font-weight: 600;
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 8px;
+        padding-bottom: 6px;
+        border-bottom: 2px solid #1565c0;
+        direction: rtl;
+        text-align: right;
+    }
+
+    .anc-keyboard {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: flex-start;
+        direction: rtl;
+    }
+
+    .anc-key {
+        padding: 8px 14px;
+        background: linear-gradient(135deg, #42a5f5, #1565c0);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 18px;
+        font-family: 'Traditional Arabic', 'Noto Naskh Arabic', sans-serif;
+        transition: all 0.2s;
+        min-width: 38px;
+        text-align: center;
+    }
+
+    .anc-key:hover {
+        background: linear-gradient(135deg, #1e88e5, #0d47a1);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(21, 101, 192, 0.3);
+    }
+
+    .anc-key:active {
+        transform: translateY(0);
+    }
+
+    /* Action Buttons */
+    .anc-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin: 16px 0;
+        flex-wrap: wrap;
+    }
+
+    .anc-btn {
+        padding: 10px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .anc-btn-space {
+        background: #e3f2fd;
+        color: #1565c0;
+        border: 1px solid #bbdefb;
+    }
+
+    .anc-btn-space:hover {
+        background: #bbdefb;
+    }
+
+    .anc-btn-backspace {
+        background: #fff3e0;
+        color: #e65100;
+        border: 1px solid #ffe0b2;
+    }
+
+    .anc-btn-backspace:hover {
+        background: #ffe0b2;
+    }
+
+    .anc-btn-clear {
+        background: #ffebee;
+        color: #c62828;
+        border: 1px solid #ef9a9a;
+    }
+
+    .anc-btn-clear:hover {
+        background: #ef9a9a;
+        color: #fff;
+    }
+
+    /* Output */
+    .anc-output {
+        background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+        border: 2px solid #66bb6a;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 16px;
+    }
+
+    .anc-output-label {
+        font-size: 14px;
+        color: #2e7d32;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    .anc-output-value {
+        font-size: 42px;
+        font-weight: 700;
+        color: #1b5e20;
+    }
+
+    /* Per-letter Breakdown */
+    .anc-breakdown {
+        display: none;
+        margin-bottom: 16px;
+    }
+
+    .anc-breakdown-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
+    .anc-breakdown-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        direction: rtl;
+        justify-content: center;
+    }
+
+    .anc-letter-chip {
+        background: #f8f9fb;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 6px 12px;
+        text-align: center;
+        min-width: 50px;
+    }
+
+    .anc-letter-char {
+        font-size: 20px;
+        font-family: 'Traditional Arabic', 'Noto Naskh Arabic', sans-serif;
+        color: #1565c0;
+        display: block;
+    }
+
+    .anc-letter-val {
+        font-size: 12px;
+        color: #888;
+        font-weight: 600;
+    }
+
+    .anc-letter-chip.anc-space-chip {
+        background: #e3f2fd;
+        border-color: #bbdefb;
+    }
+
+    .anc-letter-chip.anc-space-chip .anc-letter-char {
+        font-size: 12px;
+        color: #999;
+    }
+
+    /* Reference Table */
+    .anc-ref-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .anc-ref-table th {
+        background: #1565c0;
+        color: #fff;
+        padding: 10px 12px;
+        text-align: center;
+    }
+
+    .anc-ref-table td {
+        border: 1px solid #e0e0e0;
+        padding: 8px 12px;
+        text-align: center;
+        font-family: 'Traditional Arabic', 'Noto Naskh Arabic', sans-serif;
+        font-size: 18px;
+    }
+
+    .anc-ref-table td:nth-child(4) {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 14px;
+    }
+
+    .anc-ref-table td:nth-child(5) {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1565c0;
+    }
+
+    .anc-ref-table tr:nth-child(even) {
+        background: #e3f2fd;
+    }
+
+    /* --- Content Sections --- */
+    .anc-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .anc-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .anc-wrapper ul,
+    .anc-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .anc-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .anc-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .anc-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .anc-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .anc-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .anc-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .anc-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    .anc-highlight-box {
+        background: #e3f2fd;
+        border: 1px solid #bbdefb;
+        border-left: 5px solid #1565c0;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .anc-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .anc-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .anc-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    .anc-privacy {
+        background: #e8f5e9;
+        border: 1px solid #c8e6c9;
+        border-left: 4px solid #2e7d32;
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-top: 16px;
+        font-size: 13px;
+        color: #2e7d32;
+        text-align: center;
+    }
+
+    @media (max-width: 500px) {
+        .anc-container {
+            padding: 20px 16px;
+        }
+
+        .anc-key {
+            padding: 6px 10px;
+            font-size: 16px;
+            min-width: 32px;
+        }
+
+        .anc-output-value {
+            font-size: 32px;
+        }
+
+        .anc-input-box input {
+            font-size: 18px;
+        }
+    }
+</style>
+
+<div class="anc-wrapper">
+
+    <!-- Intro Content -->
+    <h2>📜 Abjad Name Calculator — Ilm-ul-Adad</h2>
+    <p>Calculate the <strong>Abjad numerical value</strong> of any name using Arabic, Urdu, and Persian letters. The
+        Abjad system (<em>Ilm-ul-Adad</em>) assigns a fixed numeric value to each letter. Simply type a name using the
+        built-in virtual keyboard and see the total Abjad value instantly with a <strong>per-letter breakdown</strong>.
+    </p>
+
+    <!-- Tool Container -->
+    <div class="anc-container">
+        <h2>📜 Abjad Name Calculator</h2>
+        <p class="anc-subtitle">Type a name using the virtual keyboard below</p>
+
+        <!-- Input -->
+        <div class="anc-input-box">
+            <input type="text" id="ancNameInput" placeholder="Use the keyboard below to type a name..." readonly>
+        </div>
+
+        <!-- Arabic Keyboard -->
+        <div class="anc-keyboard-section">
+            <div class="anc-keyboard-label">🔤 Arabic Letters</div>
+            <div class="anc-keyboard" id="ancArabicKeyboard"></div>
+        </div>
+
+        <!-- Urdu / Persian Keyboard -->
+        <div class="anc-keyboard-section">
+            <div class="anc-keyboard-label">🔤 Urdu / Persian Letters</div>
+            <div class="anc-keyboard" id="ancUrduKeyboard"></div>
+        </div>
+
+        <!-- Actions -->
+        <div class="anc-actions">
+            <button class="anc-btn anc-btn-space" onclick="ancAddSpace()">⎵ Space</button>
+            <button class="anc-btn anc-btn-backspace" onclick="ancBackspace()">⌫ Backspace</button>
+            <button class="anc-btn anc-btn-clear" onclick="ancClear()">🗑️ Clear</button>
+        </div>
+
+        <!-- Output -->
+        <div class="anc-output">
+            <div class="anc-output-label">Total Abjad Value</div>
+            <div class="anc-output-value" id="ancTotalValue">0</div>
+        </div>
+
+        <!-- Per-letter Breakdown -->
+        <div class="anc-breakdown" id="ancBreakdown">
+            <div class="anc-breakdown-label">Per-Letter Breakdown</div>
+            <div class="anc-breakdown-row" id="ancBreakdownRow"></div>
+        </div>
+
+        <!-- Privacy Note -->
+        <div class="anc-privacy">
+            🔒 <strong>100% Private:</strong> All calculations run locally in your browser. No data is sent or stored.
+        </div>
+    </div>
+
+    <!-- Highlight -->
+    <div class="anc-highlight-box">
+        <strong>📖 About Abjad (Ilm-ul-Adad):</strong> Abjad is an ancient numerological system used in Arabic, Persian,
+        and Urdu traditions. Each letter of the alphabet is assigned a numerical value. The total value of a word or
+        name is calculated by summing all its letter values. It is widely used in Islamic numerology, astrology, Taveez
+        writing, and spiritual practices.
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Use the Abjad Calculator</h2>
+    <ol>
+        <li><strong>Choose Letters</strong> — Click letters from the Arabic or Urdu/Persian virtual keyboard.</li>
+        <li><strong>Build Name</strong> — The name appears in the input field (right-to-left).</li>
+        <li><strong>View Result</strong> — The total Abjad value updates in real-time.</li>
+        <li><strong>See Breakdown</strong> — Each letter's individual value is shown below the result.</li>
+        <li><strong>Use Space</strong> — Click the Space button to separate words (e.g., first and last name).</li>
+        <li><strong>Clear/Backspace</strong> — Use Backspace to remove the last letter or Clear to reset.</li>
+    </ol>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="anc-features-grid">
+        <div class="anc-feature-card">
+            <span class="icon">🔤</span>
+            <strong>Virtual Keyboard</strong>
+            <p>Arabic + Urdu/Persian keyboards built-in.</p>
+        </div>
+        <div class="anc-feature-card">
+            <span class="icon">⚡</span>
+            <strong>Real-Time Calculation</strong>
+            <p>Total value updates instantly as you type.</p>
+        </div>
+        <div class="anc-feature-card">
+            <span class="icon">📊</span>
+            <strong>Letter Breakdown</strong>
+            <p>See the value of each letter individually.</p>
+        </div>
+        <div class="anc-feature-card">
+            <span class="icon">📜</span>
+            <strong>Full Reference Table</strong>
+            <p>Complete Abjad values for all letters.</p>
+        </div>
+    </div>
+
+    <!-- Reference Table -->
+    <h2>📜 Abjad Letter Values Reference</h2>
+    <div style="overflow-x:auto;">
+        <table class="anc-ref-table">
+            <thead>
+                <tr>
+                    <th>Arabic</th>
+                    <th>Persian</th>
+                    <th>Urdu</th>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ا</td>
+                    <td>ا</td>
+                    <td>ا</td>
+                    <td>Alif</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>ب</td>
+                    <td>ب</td>
+                    <td>ب</td>
+                    <td>Be</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>—</td>
+                    <td>پ</td>
+                    <td>پ</td>
+                    <td>Pe</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>ج</td>
+                    <td>ج</td>
+                    <td>ج</td>
+                    <td>Jeem</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>—</td>
+                    <td>چ</td>
+                    <td>چ</td>
+                    <td>Che</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>د</td>
+                    <td>د</td>
+                    <td>د</td>
+                    <td>Dal</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>ڈ</td>
+                    <td>Daal (Retroflex)</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>ه</td>
+                    <td>ه</td>
+                    <td>ہ</td>
+                    <td>He</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>و</td>
+                    <td>و</td>
+                    <td>و</td>
+                    <td>Waw</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>ز</td>
+                    <td>ز</td>
+                    <td>ز</td>
+                    <td>Ze</td>
+                    <td>7</td>
+                </tr>
+                <tr>
+                    <td>—</td>
+                    <td>ژ</td>
+                    <td>ژ</td>
+                    <td>Zhe</td>
+                    <td>7</td>
+                </tr>
+                <tr>
+                    <td>ح</td>
+                    <td>ح</td>
+                    <td>ح</td>
+                    <td>He (Haa)</td>
+                    <td>8</td>
+                </tr>
+                <tr>
+                    <td>ط</td>
+                    <td>ط</td>
+                    <td>ط</td>
+                    <td>Toe</td>
+                    <td>9</td>
+                </tr>
+                <tr>
+                    <td>ي</td>
+                    <td>ی</td>
+                    <td>ی</td>
+                    <td>Ye</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>ے</td>
+                    <td>Bari Ye</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>ك</td>
+                    <td>ک</td>
+                    <td>ک</td>
+                    <td>Kaaf</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>—</td>
+                    <td>گ</td>
+                    <td>گ</td>
+                    <td>Gaaf</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>ل</td>
+                    <td>ل</td>
+                    <td>ل</td>
+                    <td>Laam</td>
+                    <td>30</td>
+                </tr>
+                <tr>
+                    <td>م</td>
+                    <td>م</td>
+                    <td>م</td>
+                    <td>Meem</td>
+                    <td>40</td>
+                </tr>
+                <tr>
+                    <td>ن</td>
+                    <td>ن</td>
+                    <td>ن</td>
+                    <td>Noon</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>ں</td>
+                    <td>Noon Ghunna</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td>س</td>
+                    <td>س</td>
+                    <td>س</td>
+                    <td>Seen</td>
+                    <td>60</td>
+                </tr>
+                <tr>
+                    <td>ع</td>
+                    <td>ع</td>
+                    <td>ع</td>
+                    <td>Ain</td>
+                    <td>70</td>
+                </tr>
+                <tr>
+                    <td>ف</td>
+                    <td>ف</td>
+                    <td>ف</td>
+                    <td>Fe</td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>ص</td>
+                    <td>ص</td>
+                    <td>ص</td>
+                    <td>Suad</td>
+                    <td>90</td>
+                </tr>
+                <tr>
+                    <td>ق</td>
+                    <td>ق</td>
+                    <td>ق</td>
+                    <td>Qaaf</td>
+                    <td>100</td>
+                </tr>
+                <tr>
+                    <td>ر</td>
+                    <td>ر</td>
+                    <td>ر</td>
+                    <td>Re</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>ڑ</td>
+                    <td>Rre (Retroflex)</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td>ش</td>
+                    <td>ش</td>
+                    <td>ش</td>
+                    <td>Sheen</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>ت</td>
+                    <td>ت</td>
+                    <td>ت</td>
+                    <td>Te</td>
+                    <td>400</td>
+                </tr>
+                <tr>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>ٹ</td>
+                    <td>Tte (Retroflex)</td>
+                    <td>400</td>
+                </tr>
+                <tr>
+                    <td>ث</td>
+                    <td>ث</td>
+                    <td>ث</td>
+                    <td>Se</td>
+                    <td>500</td>
+                </tr>
+                <tr>
+                    <td>خ</td>
+                    <td>خ</td>
+                    <td>خ</td>
+                    <td>Khe</td>
+                    <td>600</td>
+                </tr>
+                <tr>
+                    <td>ذ</td>
+                    <td>ذ</td>
+                    <td>ذ</td>
+                    <td>Zal</td>
+                    <td>700</td>
+                </tr>
+                <tr>
+                    <td>ض</td>
+                    <td>ض</td>
+                    <td>ض</td>
+                    <td>Dwad</td>
+                    <td>800</td>
+                </tr>
+                <tr>
+                    <td>ظ</td>
+                    <td>ظ</td>
+                    <td>ظ</td>
+                    <td>Zo</td>
+                    <td>900</td>
+                </tr>
+                <tr>
+                    <td>غ</td>
+                    <td>غ</td>
+                    <td>غ</td>
+                    <td>Ghayn</td>
+                    <td>1000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Use Cases -->
+    <h2>🤔 Who Uses Abjad Numerology?</h2>
+    <ul>
+        <li><strong>Islamic Scholars</strong> — For understanding numerical significance of Quranic words and names.
+        </li>
+        <li><strong>Taveez Writers</strong> — Abjad values are used in writing Taveez (Islamic amulets/talismans).</li>
+        <li><strong>Astrologers (Ilm-e-Jafr)</strong> — For name analysis, compatibility matching, and predictions.</li>
+        <li><strong>Parents</strong> — To check the numerical value of a baby name before naming.</li>
+        <li><strong>Students</strong> — Learning Arabic, Urdu, or Persian numerology and history.</li>
+        <li><strong>Researchers</strong> — Studying the historical and cultural significance of Abjad system.</li>
+    </ul>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="anc-faq-item">
+        <h3>What is Abjad numerology (Ilm-ul-Adad)?</h3>
+        <p>Abjad is an ancient numerological system that assigns numerical values to Arabic, Persian, and Urdu letters.
+            Each letter has a fixed value from 1 to 1000. The total of all letters in a name or word is its Abjad value.
+        </p>
+    </div>
+
+    <div class="anc-faq-item">
+        <h3>How do I calculate the Abjad value of a name?</h3>
+        <p>Use the virtual keyboard to type the name in Arabic/Urdu script. The calculator shows the total value in
+            real-time, along with each letter's individual value.</p>
+    </div>
+
+    <div class="anc-faq-item">
+        <h3>What is the difference between Abjad-e-Kabeer and Abjad-e-Sagheer?</h3>
+        <p>Abjad-e-Kabeer (Greater Abjad) uses standard values from 1 to 1000. Abjad-e-Sagheer (Lesser Abjad) takes the
+            digital root of each value. This calculator uses Abjad-e-Kabeer.</p>
+    </div>
+
+    <div class="anc-faq-item">
+        <h3>Do Urdu/Persian letters have different values?</h3>
+        <p>Additional Urdu/Persian letters (Pe, Che, Gaf, etc.) take the same value as their closest Arabic equivalent.
+            For example, Pe = 2 (same as Ba), Che = 3 (same as Jeem).</p>
+    </div>
+
+    <div class="anc-faq-item">
+        <h3>Can I calculate the value of a full name?</h3>
+        <p>Yes! Use the Space button to separate words. The calculator sums all letters across all words of the full
+            name.</p>
+    </div>
+
+    <div class="anc-faq-item">
+        <h3>Is this tool free and safe?</h3>
+        <p>Yes, completely free. All calculations happen locally in your browser — no data is sent or stored anywhere.
+        </p>
+    </div>
+
+</div>
+
+<script>
+    var ancAbjadValues = {
+        "\u0627": 1, "\u0622": 1, "\u0623": 1, "\u0625": 1, "\u0621": 0,
+        "\u0628": 2, "\u067E": 2,
+        "\u062A": 400, "\u0679": 400,
+        "\u062B": 500,
+        "\u062C": 3, "\u0686": 3,
+        "\u062D": 8,
+        "\u062E": 600,
+        "\u062F": 4, "\u0688": 4,
+        "\u0630": 700,
+        "\u0631": 200, "\u0691": 200,
+        "\u0632": 7, "\u0698": 7,
+        "\u0633": 60,
+        "\u0634": 300,
+        "\u0635": 90,
+        "\u0636": 800,
+        "\u0637": 9,
+        "\u0638": 900,
+        "\u0639": 70,
+        "\u063A": 1000,
+        "\u0641": 80,
+        "\u0642": 100,
+        "\u0643": 20, "\u06A9": 20, "\u06AF": 20,
+        "\u0644": 30,
+        "\u0645": 40,
+        "\u0646": 50, "\u06BA": 50,
+        "\u0648": 6, "\u0624": 6,
+        "\u0647": 5, "\u06C1": 5,
+        "\u064A": 10, "\u06CC": 10, "\u06D2": 10, "\u0626": 10
+    };
+
+    var ancArabicLetters = [
+        "\u0627", "\u0628", "\u062A", "\u062B", "\u062C", "\u062D", "\u062E",
+        "\u062F", "\u0630", "\u0631", "\u0632", "\u0633", "\u0634", "\u0635",
+        "\u0636", "\u0637", "\u0638", "\u0639", "\u063A", "\u0641", "\u0642",
+        "\u0643", "\u0644", "\u0645", "\u0646", "\u0648", "\u0647", "\u064A",
+        "\u0622", "\u0623", "\u0625", "\u0621"
+    ];
+
+    var ancUrduLetters = [
+        "\u067E", "\u0686", "\u0679", "\u0688", "\u0691", "\u0698",
+        "\u06A9", "\u06AF", "\u06BA", "\u06C1", "\u06CC", "\u06D2",
+        "\u0624", "\u0626"
+    ];
+
+    function ancCreateKeyboard(containerId, letters) {
+        var container = document.getElementById(containerId);
+        container.innerHTML = '';
+        for (var i = 0; i < letters.length; i++) {
+            (function (letter) {
+                var btn = document.createElement('button');
+                btn.className = 'anc-key';
+                btn.textContent = letter;
+
+                // Show value as tooltip
+                var val = ancAbjadValues[letter];
+                btn.title = letter + ' = ' + (val !== undefined ? val : '0');
+
+                btn.onclick = function () {
+                    document.getElementById('ancNameInput').value += letter;
+                    ancCalculate();
+                };
+                container.appendChild(btn);
+            })(letters[i]);
+        }
+    }
+
+    function ancCalculate() {
+        var input = document.getElementById('ancNameInput').value;
+        var total = 0;
+        var breakdownHTML = '';
+        var hasChars = false;
+
+        for (var i = 0; i < input.length; i++) {
+            var ch = input[i];
+            if (ch === ' ') {
+                breakdownHTML += '<div class="anc-letter-chip anc-space-chip"><span class="anc-letter-char">space</span><span class="anc-letter-val">—</span></div>';
+                continue;
+            }
+            var val = ancAbjadValues[ch];
+            if (val !== undefined) {
+                total += val;
+                hasChars = true;
+                breakdownHTML += '<div class="anc-letter-chip"><span class="anc-letter-char">' + ch + '</span><span class="anc-letter-val">' + val + '</span></div>';
+            }
+        }
+
+        document.getElementById('ancTotalValue').textContent = total;
+
+        var breakdownEl = document.getElementById('ancBreakdown');
+        var breakdownRowEl = document.getElementById('ancBreakdownRow');
+        if (hasChars) {
+            breakdownEl.style.display = 'block';
+            breakdownRowEl.innerHTML = breakdownHTML;
+        } else {
+            breakdownEl.style.display = 'none';
+        }
+    }
+
+    function ancAddSpace() {
+        var input = document.getElementById('ancNameInput');
+        input.value += ' ';
+        ancCalculate();
+    }
+
+    function ancBackspace() {
+        var input = document.getElementById('ancNameInput');
+        input.value = input.value.slice(0, -1);
+        ancCalculate();
+    }
+
+    function ancClear() {
+        document.getElementById('ancNameInput').value = '';
+        document.getElementById('ancTotalValue').textContent = '0';
+        document.getElementById('ancBreakdown').style.display = 'none';
+    }
+
+    // Initialize keyboards on load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            ancCreateKeyboard('ancArabicKeyboard', ancArabicLetters);
+            ancCreateKeyboard('ancUrduKeyboard', ancUrduLetters);
+        });
+    } else {
+        ancCreateKeyboard('ancArabicKeyboard', ancArabicLetters);
+        ancCreateKeyboard('ancUrduKeyboard', ancUrduLetters);
+    }
+</script>
