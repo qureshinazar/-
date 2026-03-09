@@ -1,0 +1,1377 @@
+<!-- AIOCrafters - ID Card Generator Tool - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "ID Card Generator",
+  "description": "Free online ID Card Generator. Create professional identity cards with profile photo, company logo, organization name, custom fields, color themes, animated wave design, and downloadable output. No sign-up required — everything runs in your browser.",
+  "url": "https://www.aiocrafters.com/p/id-card-generator.html",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I create an ID card online?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Upload a profile photo, optionally add a logo, enter organization details, add fields (Name, Designation, etc.), choose a color theme, and click Download to save the ID card as a high-quality image."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this ID Card Generator free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, completely free. No sign-up, no watermarks, no limits. Everything runs locally in your browser — your data is never sent to any server."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I add a company logo to the ID card?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! Use the Logo button to upload a company or school logo. It appears in the top-left corner of the ID card, next to the organization name."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I choose from pre-built color themes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! The tool includes 8 pre-built color themes (Corporate Blue, Forest Green, Sunset Orange, Royal Purple, etc.) plus random gradient generation for unlimited customization."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What format is the downloaded ID card in?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can download the ID card as either JPEG or PNG format. PNG supports transparency and is ideal for further editing."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .idg-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .idg-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .idg-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+    .idg-container .idg-subtitle {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 20px;
+    }
+
+    /* Canvas */
+    .idg-canvas-wrap {
+        display: inline-block;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        margin-bottom: 20px;
+    }
+
+    .idg-canvas-wrap canvas {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Theme Chips */
+    .idg-theme-section {
+        margin-bottom: 16px;
+    }
+
+    .idg-theme-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .idg-theme-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .idg-theme-chip {
+        padding: 6px 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: #fff;
+    }
+
+    .idg-theme-chip:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .idg-theme-chip.active {
+        border-width: 2px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Controls Section */
+    .idg-controls-section {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+
+    .idg-controls-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .idg-control-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .idg-control-row label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #666;
+        white-space: nowrap;
+    }
+
+    .idg-control-row input[type="color"] {
+        width: 36px;
+        height: 30px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        cursor: pointer;
+        padding: 0;
+        background: transparent;
+    }
+
+    .idg-control-row select {
+        padding: 6px 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 13px;
+        font-family: inherit;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .idg-control-row select:focus {
+        border-color: #1565c0;
+    }
+
+    /* Button Grid */
+    .idg-btn-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        margin-bottom: 16px;
+    }
+
+    .idg-btn {
+        padding: 10px 18px;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .idg-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .idg-btn-photo {
+        background: #6c757d;
+        color: #fff;
+    }
+
+    .idg-btn-photo:hover {
+        background: #5a6268;
+        box-shadow: 0 3px 8px rgba(108, 117, 125, 0.3);
+    }
+
+    .idg-btn-logo {
+        background: linear-gradient(135deg, #ab47bc, #7b1fa2);
+        color: #fff;
+    }
+
+    .idg-btn-logo:hover {
+        box-shadow: 0 3px 8px rgba(123, 31, 162, 0.3);
+    }
+
+    .idg-btn-add {
+        background: linear-gradient(135deg, #66bb6a, #388e3c);
+        color: #fff;
+    }
+
+    .idg-btn-add:hover {
+        box-shadow: 0 3px 8px rgba(56, 142, 60, 0.3);
+    }
+
+    .idg-btn-org {
+        background: linear-gradient(135deg, #ffb74d, #f57c00);
+        color: #fff;
+    }
+
+    .idg-btn-org:hover {
+        box-shadow: 0 3px 8px rgba(245, 124, 0, 0.3);
+    }
+
+    .idg-btn-delete {
+        background: linear-gradient(135deg, #ef5350, #c62828);
+        color: #fff;
+    }
+
+    .idg-btn-delete:hover {
+        box-shadow: 0 3px 8px rgba(198, 40, 40, 0.3);
+    }
+
+    .idg-btn-border {
+        background: #e0e0e0;
+        color: #555;
+    }
+
+    .idg-btn-border:hover {
+        background: #bdbdbd;
+    }
+
+    .idg-btn-color-top {
+        background: linear-gradient(135deg, #64b5f6, #1565c0);
+        color: #fff;
+    }
+
+    .idg-btn-color-top:hover {
+        box-shadow: 0 3px 8px rgba(21, 101, 192, 0.3);
+    }
+
+    .idg-btn-color-bottom {
+        background: linear-gradient(135deg, #b0bec5, #607d8b);
+        color: #fff;
+    }
+
+    .idg-btn-color-bottom:hover {
+        box-shadow: 0 3px 8px rgba(96, 125, 139, 0.3);
+    }
+
+    .idg-btn-reset {
+        background: linear-gradient(135deg, #ff8a65, #e64a19);
+        color: #fff;
+    }
+
+    .idg-btn-reset:hover {
+        box-shadow: 0 3px 8px rgba(230, 74, 25, 0.3);
+    }
+
+    .idg-btn-download {
+        background: linear-gradient(135deg, #42a5f5, #1565c0);
+        color: #fff;
+        padding: 12px 28px;
+        font-size: 15px;
+    }
+
+    .idg-btn-download:hover {
+        box-shadow: 0 5px 16px rgba(21, 101, 192, 0.4);
+    }
+
+    .idg-btn-download-png {
+        background: linear-gradient(135deg, #66bb6a, #2e7d32);
+        color: #fff;
+        padding: 12px 28px;
+        font-size: 15px;
+    }
+
+    .idg-btn-download-png:hover {
+        box-shadow: 0 5px 16px rgba(46, 125, 50, 0.4);
+    }
+
+    .idg-hidden-input {
+        display: none;
+    }
+
+    /* Modal */
+    .idg-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .idg-modal-content {
+        background: #fff;
+        padding: 24px;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        width: 90%;
+        max-width: 420px;
+        text-align: center;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .idg-modal-content h3 {
+        margin: 0 0 16px 0;
+        font-size: 20px;
+        color: #1a1a2e;
+    }
+
+    .idg-modal-content input[type="text"] {
+        width: 100%;
+        padding: 10px 14px;
+        margin: 6px 0;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+    }
+
+    .idg-modal-content input[type="text"]:focus {
+        border-color: #1565c0;
+    }
+
+    .idg-modal-btn-row {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 16px;
+    }
+
+    .idg-modal-btn {
+        padding: 10px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .idg-modal-btn-confirm {
+        background: #388e3c;
+        color: #fff;
+    }
+
+    .idg-modal-btn-confirm:hover {
+        background: #2e7d32;
+    }
+
+    .idg-modal-btn-cancel {
+        background: #e0e0e0;
+        color: #555;
+    }
+
+    .idg-modal-btn-cancel:hover {
+        background: #bdbdbd;
+    }
+
+    /* Delete modal table */
+    .idg-delete-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 14px;
+    }
+
+    .idg-delete-table th {
+        background: #f5f5f5;
+        padding: 8px 10px;
+        border: 1px solid #e0e0e0;
+        font-size: 13px;
+        color: #555;
+    }
+
+    .idg-delete-table td {
+        padding: 8px 10px;
+        border: 1px solid #e0e0e0;
+        text-align: left;
+    }
+
+    .idg-delete-icon {
+        cursor: pointer;
+        color: #c62828;
+        font-weight: bold;
+        font-size: 16px;
+        transition: transform 0.2s;
+    }
+
+    .idg-delete-icon:hover {
+        transform: scale(1.2);
+    }
+
+    .idg-no-fields {
+        color: #999;
+        font-style: italic;
+        font-size: 14px;
+        padding: 16px 0;
+    }
+
+    /* Quick Fields */
+    .idg-quick-fields {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: center;
+        margin-bottom: 12px;
+    }
+
+    .idg-quick-chip {
+        padding: 4px 12px;
+        background: #e3f2fd;
+        border: 1px solid #bbdefb;
+        border-radius: 16px;
+        font-size: 12px;
+        color: #1565c0;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .idg-quick-chip:hover {
+        background: #bbdefb;
+        transform: translateY(-1px);
+    }
+
+    /* Privacy */
+    .idg-privacy {
+        background: #e8f5e9;
+        border: 1px solid #c8e6c9;
+        border-left: 4px solid #2e7d32;
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-top: 16px;
+        font-size: 13px;
+        color: #2e7d32;
+        text-align: center;
+    }
+
+    /* --- Content Sections --- */
+    .idg-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .idg-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .idg-wrapper ul,
+    .idg-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .idg-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    .idg-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .idg-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .idg-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .idg-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .idg-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .idg-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    .idg-highlight-box {
+        background: #e3f2fd;
+        border: 1px solid #bbdefb;
+        border-left: 5px solid #1565c0;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    .idg-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .idg-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .idg-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        .idg-container {
+            padding: 20px 16px;
+        }
+
+        .idg-btn {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        .idg-control-row {
+            gap: 8px;
+        }
+    }
+</style>
+
+<div class="idg-wrapper">
+
+    <!-- Intro Content -->
+    <h2>🪪 ID Card Generator — Free Online Tool</h2>
+    <p>Create professional-looking <strong>identity cards</strong> instantly. Upload a profile photo and company logo,
+        add organization details and custom fields, choose from <strong>8 pre-built color themes</strong>, customize
+        text colors, and download the finished ID card as a <strong>high-quality JPEG or PNG image</strong>. Perfect for
+        schools, offices, events, and mock-ups — all directly in your browser.</p>
+
+    <!-- Tool Container -->
+    <div class="idg-container">
+        <h2>🪪 ID Card Generator</h2>
+        <p class="idg-subtitle">Upload photo, add details, choose theme, and download</p>
+
+        <!-- Canvas -->
+        <div class="idg-canvas-wrap">
+            <canvas id="idgCanvas" width="590" height="1004"></canvas>
+        </div>
+
+        <!-- Color Themes -->
+        <div class="idg-theme-section">
+            <span class="idg-theme-label">🎨 Color Themes</span>
+            <div class="idg-theme-row">
+                <span class="idg-theme-chip active" style="border-color: #1565c0; color: #1565c0;"
+                    onclick="idgApplyTheme(0, this)">Corporate Blue</span>
+                <span class="idg-theme-chip" style="border-color: #2e7d32; color: #2e7d32;"
+                    onclick="idgApplyTheme(1, this)">Forest Green</span>
+                <span class="idg-theme-chip" style="border-color: #e65100; color: #e65100;"
+                    onclick="idgApplyTheme(2, this)">Sunset Orange</span>
+                <span class="idg-theme-chip" style="border-color: #6a1b9a; color: #6a1b9a;"
+                    onclick="idgApplyTheme(3, this)">Royal Purple</span>
+                <span class="idg-theme-chip" style="border-color: #b71c1c; color: #b71c1c;"
+                    onclick="idgApplyTheme(4, this)">Crimson Red</span>
+                <span class="idg-theme-chip" style="border-color: #00695c; color: #00695c;"
+                    onclick="idgApplyTheme(5, this)">Teal Ocean</span>
+                <span class="idg-theme-chip" style="border-color: #37474f; color: #37474f;"
+                    onclick="idgApplyTheme(6, this)">Slate Dark</span>
+                <span class="idg-theme-chip" style="border-color: #ff6f00; color: #ff6f00;"
+                    onclick="idgApplyTheme(7, this)">Golden Amber</span>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="idg-controls-section">
+            <span class="idg-controls-label">🎛️ Customize</span>
+            <div class="idg-control-row">
+                <label>Org Text Color:</label>
+                <input type="color" id="idgOrgColor" value="#cc0000" onchange="idgDraw()">
+                <label>Field Label Color:</label>
+                <input type="color" id="idgLabelColor" value="#333333" onchange="idgDraw()">
+                <label>Field Value Color:</label>
+                <input type="color" id="idgValueColor" value="#000000" onchange="idgDraw()">
+            </div>
+            <div class="idg-control-row">
+                <label>Circle Border:</label>
+                <input type="color" id="idgCircleColor" value="#ffff00" onchange="idgDraw()">
+                <label>Wave Line:</label>
+                <input type="color" id="idgWaveColor" value="#ffff00" onchange="idgDraw()">
+                <label>Font Size:</label>
+                <select id="idgFontSize" onchange="idgDraw()">
+                    <option value="16">Small</option>
+                    <option value="20" selected>Medium</option>
+                    <option value="24">Large</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Button Grid Row 1: Uploads -->
+        <div class="idg-btn-grid">
+            <label for="idgProfilePic" class="idg-btn idg-btn-photo">📷 Photo</label>
+            <input type="file" id="idgProfilePic" class="idg-hidden-input" accept="image/*">
+            <label for="idgLogoInput" class="idg-btn idg-btn-logo">🏷️ Logo</label>
+            <input type="file" id="idgLogoInput" class="idg-hidden-input" accept="image/*">
+            <button class="idg-btn idg-btn-org" onclick="idgShowOrgModal()">🏢 Organization</button>
+            <button class="idg-btn idg-btn-add" onclick="idgShowAddFieldModal()">➕ Add Field</button>
+            <button class="idg-btn idg-btn-delete" onclick="idgShowDeleteModal()">🗑️ Delete</button>
+            <button class="idg-btn idg-btn-border" onclick="idgToggleBorder()">▦ Border</button>
+        </div>
+
+        <!-- Button Grid Row 2: Colors -->
+        <div class="idg-btn-grid">
+            <button class="idg-btn idg-btn-color-top" onclick="idgChangeTopColor()">🎲 Random Top</button>
+            <button class="idg-btn idg-btn-color-bottom" onclick="idgChangeBottomColor()">🎲 Random Bottom</button>
+            <button class="idg-btn idg-btn-reset" onclick="idgResetAll()">🔄 Reset All</button>
+        </div>
+
+        <!-- Quick Field Chips -->
+        <div class="idg-quick-fields">
+            <span class="idg-quick-chip" onclick="idgQuickField('Name')">+ Name</span>
+            <span class="idg-quick-chip" onclick="idgQuickField('Designation')">+ Designation</span>
+            <span class="idg-quick-chip" onclick="idgQuickField('Employee ID')">+ Employee ID</span>
+            <span class="idg-quick-chip" onclick="idgQuickField('Department')">+ Department</span>
+            <span class="idg-quick-chip" onclick="idgQuickField('Phone')">+ Phone</span>
+            <span class="idg-quick-chip" onclick="idgQuickField('Blood Group')">+ Blood Group</span>
+            <span class="idg-quick-chip" onclick="idgQuickField('Valid Till')">+ Valid Till</span>
+        </div>
+
+        <!-- Download Row -->
+        <div class="idg-btn-grid">
+            <button class="idg-btn idg-btn-download" onclick="idgDownload('jpeg')">⬇️ Download JPEG</button>
+            <button class="idg-btn idg-btn-download-png" onclick="idgDownload('png')">⬇️ Download PNG</button>
+        </div>
+
+        <!-- Privacy Note -->
+        <div class="idg-privacy">
+            🔒 <strong>100% Private:</strong> Your photo and data stay in your browser. Nothing is uploaded to any
+            server.
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Field Modal -->
+    <div id="idgAddFieldModal" class="idg-modal">
+        <div class="idg-modal-content">
+            <h3>➕ Add Field</h3>
+            <input type="text" id="idgFieldLabel" placeholder="Field label (e.g., Name, Designation)">
+            <input type="text" id="idgFieldValue" placeholder="Field value (e.g., John Doe)">
+            <div class="idg-modal-btn-row">
+                <button class="idg-modal-btn idg-modal-btn-confirm" onclick="idgAddField()">Add</button>
+                <button class="idg-modal-btn idg-modal-btn-cancel" onclick="idgCloseModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Organization Modal -->
+    <div id="idgOrgModal" class="idg-modal">
+        <div class="idg-modal-content">
+            <h3>🏢 Add Organization</h3>
+            <input type="text" id="idgOrgName" placeholder="Organization Name">
+            <input type="text" id="idgOrgAddress" placeholder="Organization Address">
+            <div class="idg-modal-btn-row">
+                <button class="idg-modal-btn idg-modal-btn-confirm" onclick="idgAddOrg()">Add</button>
+                <button class="idg-modal-btn idg-modal-btn-cancel" onclick="idgCloseModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Field Modal -->
+    <div id="idgDeleteModal" class="idg-modal">
+        <div class="idg-modal-content">
+            <h3>🗑️ Manage Fields</h3>
+            <div id="idgDeleteContainer"></div>
+            <div class="idg-modal-btn-row">
+                <button class="idg-modal-btn idg-modal-btn-cancel" onclick="idgCloseModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Field Modal -->
+    <div id="idgQuickModal" class="idg-modal">
+        <div class="idg-modal-content">
+            <h3 id="idgQuickTitle">➕ Add Field</h3>
+            <input type="text" id="idgQuickValue" placeholder="Enter value...">
+            <div class="idg-modal-btn-row">
+                <button class="idg-modal-btn idg-modal-btn-confirm" onclick="idgConfirmQuickField()">Add</button>
+                <button class="idg-modal-btn idg-modal-btn-cancel" onclick="idgCloseModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Highlight -->
+    <div class="idg-highlight-box">
+        <strong>💡 Pro Tip:</strong> Use the <strong>Quick Field chips</strong> (+ Name, + Designation, etc.) to rapidly
+        add common fields. Upload a <strong>company logo</strong> for a professional look. Choose a <strong>color
+            theme</strong> or click "Random Top/Bottom" for unique gradients!
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Create an ID Card</h2>
+    <ol>
+        <li><strong>Upload Photo</strong> — Click "Photo" to add a profile picture. It appears in the circular frame.
+        </li>
+        <li><strong>Upload Logo</strong> — Click "Logo" to add a company/school logo. It appears in the top-left corner.
+        </li>
+        <li><strong>Add Organization</strong> — Click "Organization" to enter your company name and address.</li>
+        <li><strong>Add Fields</strong> — Use "Add Field" or click quick chips (+ Name, + Designation, etc.) to add
+            details.</li>
+        <li><strong>Choose Theme</strong> — Pick from 8 pre-built themes or generate random gradients.</li>
+        <li><strong>Customize Colors</strong> — Adjust org text color, field colors, circle border, wave line, and font
+            size.</li>
+        <li><strong>Toggle Border</strong> — Show or hide the dotted table border.</li>
+        <li><strong>Download</strong> — Save as JPEG or PNG (PNG supports transparency).</li>
+    </ol>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="idg-features-grid">
+        <div class="idg-feature-card">
+            <span class="icon">📷</span>
+            <strong>Profile Photo</strong>
+            <p>Circular photo frame with automatic cropping.</p>
+        </div>
+        <div class="idg-feature-card">
+            <span class="icon">🏷️</span>
+            <strong>Company Logo</strong>
+            <p>Upload a logo that appears in the top corner.</p>
+        </div>
+        <div class="idg-feature-card">
+            <span class="icon">🎨</span>
+            <strong>8 Color Themes</strong>
+            <p>Pre-built themes + unlimited random gradients.</p>
+        </div>
+        <div class="idg-feature-card">
+            <span class="icon">🎛️</span>
+            <strong>Color Controls</strong>
+            <p>Customize text, circle, and wave colors.</p>
+        </div>
+        <div class="idg-feature-card">
+            <span class="icon">⚡</span>
+            <strong>Quick Fields</strong>
+            <p>One-click chips for common field labels.</p>
+        </div>
+        <div class="idg-feature-card">
+            <span class="icon">🌊</span>
+            <strong>Animated Design</strong>
+            <p>Live wavy divider line animation.</p>
+        </div>
+        <div class="idg-feature-card">
+            <span class="icon">📥</span>
+            <strong>JPEG + PNG</strong>
+            <p>Download in JPEG or PNG format.</p>
+        </div>
+        <div class="idg-feature-card">
+            <span class="icon">🔄</span>
+            <strong>Reset All</strong>
+            <p>Start fresh with one click.</p>
+        </div>
+    </div>
+
+    <!-- Use Cases -->
+    <h2>🤔 Who Can Use This Tool?</h2>
+    <ul>
+        <li><strong>Schools & Colleges</strong> — Create student ID cards for classes, events, or mock-ups.</li>
+        <li><strong>Offices & Companies</strong> — Generate employee ID cards with logo and designation.</li>
+        <li><strong>Events & Conferences</strong> — Design temporary event badges or passes.</li>
+        <li><strong>Freelancers</strong> — Create a professional identity card for client meetings.</li>
+        <li><strong>Government Offices</strong> — Quick ID templates for visitors or temporary staff.</li>
+        <li><strong>Designers</strong> — Rapid mock-ups and prototypes for ID card designs.</li>
+    </ul>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="idg-faq-item">
+        <h3>How do I create an ID card online?</h3>
+        <p>Upload a photo, optionally add a logo, enter organization details, add fields, choose a color theme, and
+            click Download to save as JPEG or PNG.</p>
+    </div>
+
+    <div class="idg-faq-item">
+        <h3>Can I add a company logo?</h3>
+        <p>Yes! Click "Logo" to upload your company or school logo. It appears in the top-left corner of the card.</p>
+    </div>
+
+    <div class="idg-faq-item">
+        <h3>Can I choose pre-built color themes?</h3>
+        <p>Yes! There are 8 themes: Corporate Blue, Forest Green, Sunset Orange, Royal Purple, Crimson Red, Teal Ocean,
+            Slate Dark, and Golden Amber. You can also generate random gradients.</p>
+    </div>
+
+    <div class="idg-faq-item">
+        <h3>Can I customize text colors?</h3>
+        <p>Yes! Use the color pickers to change organization text color, field label color, field value color, circle
+            border color, and wave line color.</p>
+    </div>
+
+    <div class="idg-faq-item">
+        <h3>What is the difference between JPEG and PNG?</h3>
+        <p>JPEG is smaller in file size, ideal for printing and sharing. PNG supports transparency and is ideal for
+            further editing in design software.</p>
+    </div>
+
+    <div class="idg-faq-item">
+        <h3>Is this tool free and safe?</h3>
+        <p>Yes, completely free. No sign-up, no watermarks. All processing runs locally in your browser — your photos
+            and data are never uploaded.</p>
+    </div>
+
+</div>
+
+<script>
+    (function () {
+        var canvas = document.getElementById('idgCanvas');
+        var ctx = canvas.getContext('2d');
+
+        // Pre-built themes: [topColor1, topColor2, topColor3, bottomColor, line/circle color]
+        var idgThemes = [
+            { name: 'Corporate Blue', top: ['#90caf9', '#42a5f5', '#1565c0'], bottom: '#f5f5f5', accent: '#ffd600' },
+            { name: 'Forest Green', top: ['#a5d6a7', '#66bb6a', '#2e7d32'], bottom: '#f1f8e9', accent: '#ffee58' },
+            { name: 'Sunset Orange', top: ['#ffcc80', '#ff9800', '#e65100'], bottom: '#fff3e0', accent: '#ffffff' },
+            { name: 'Royal Purple', top: ['#ce93d8', '#ab47bc', '#6a1b9a'], bottom: '#f3e5f5', accent: '#ffd600' },
+            { name: 'Crimson Red', top: ['#ef9a9a', '#ef5350', '#b71c1c'], bottom: '#fce4ec', accent: '#ffd600' },
+            { name: 'Teal Ocean', top: ['#80cbc4', '#26a69a', '#00695c'], bottom: '#e0f2f1', accent: '#ffee58' },
+            { name: 'Slate Dark', top: ['#90a4ae', '#546e7a', '#263238'], bottom: '#eceff1', accent: '#ffab40' },
+            { name: 'Golden Amber', top: ['#ffe082', '#ffb300', '#ff6f00'], bottom: '#fff8e1', accent: '#ffffff' }
+        ];
+
+        var idgState = {
+            topColors: idgThemes[0].top.slice(),
+            bottomColor: idgThemes[0].bottom,
+            accentColor: idgThemes[0].accent,
+            line: { startY: 300, amplitude: 10, frequency: 0.02, thickness: 5, phase: 0 },
+            circle: { centerX: canvas.width / 2, centerY: 300, radius: 150 },
+            fields: [],
+            organization: null,
+            profilePic: null,
+            logoPic: null,
+            borderEnabled: true,
+            currentTheme: 0
+        };
+
+        var idgQuickLabel = '';
+
+        // Create gradient from theme top colors
+        function idgMakeTopGradient() {
+            var gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+            for (var i = 0; i < idgState.topColors.length; i++) {
+                gradient.addColorStop(i / (idgState.topColors.length - 1), idgState.topColors[i]);
+            }
+            return gradient;
+        }
+
+        // Random gradient for top region
+        function idgRandomGradientTop() {
+            var colors = [];
+            for (var i = 0; i < 3; i++) {
+                colors.push('hsl(' + Math.floor(Math.random() * 360) + ', 80%, 70%)');
+            }
+            idgState.topColors = colors;
+        }
+
+        // Random gradient for bottom region
+        function idgRandomGradientBottom() {
+            var palette = ['#ffffff', '#f5f5f5', '#fafafa', '#eceff1', '#f3e5f5', '#e8f5e9', '#e3f2fd', '#fff3e0', '#fce4ec', '#f1f8e9'];
+            idgState.bottomColor = palette[Math.floor(Math.random() * palette.length)];
+        }
+
+        // Draw wavy line
+        function idgDrawWavyLine() {
+            var waveColor = document.getElementById('idgWaveColor').value;
+            ctx.beginPath();
+            for (var x = 0; x <= canvas.width; x++) {
+                var y = idgState.line.startY + Math.sin(x * idgState.line.frequency + idgState.line.phase) * idgState.line.amplitude;
+                ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = waveColor;
+            ctx.lineWidth = idgState.line.thickness;
+            ctx.stroke();
+        }
+
+        // Fill top region
+        function idgFillTop() {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            for (var x = 0; x <= canvas.width; x++) {
+                var y = idgState.line.startY + Math.sin(x * idgState.line.frequency + idgState.line.phase) * idgState.line.amplitude;
+                ctx.lineTo(x, y);
+            }
+            ctx.lineTo(canvas.width, 0);
+            ctx.closePath();
+            ctx.clip();
+            ctx.fillStyle = idgMakeTopGradient();
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.restore();
+        }
+
+        // Fill bottom region
+        function idgFillBottom() {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height);
+            for (var x = 0; x <= canvas.width; x++) {
+                var y = idgState.line.startY + Math.sin(x * idgState.line.frequency + idgState.line.phase) * idgState.line.amplitude;
+                ctx.lineTo(x, y);
+            }
+            ctx.lineTo(canvas.width, canvas.height);
+            ctx.closePath();
+            ctx.clip();
+            ctx.fillStyle = idgState.bottomColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.restore();
+        }
+
+        // Draw circle
+        function idgDrawCircle() {
+            var circleColor = document.getElementById('idgCircleColor').value;
+            ctx.beginPath();
+            ctx.arc(idgState.circle.centerX, idgState.circle.centerY, idgState.circle.radius + 4, 0, Math.PI * 2);
+            ctx.fillStyle = circleColor;
+            ctx.fill();
+
+            // Inner white ring
+            ctx.beginPath();
+            ctx.arc(idgState.circle.centerX, idgState.circle.centerY, idgState.circle.radius + 2, 0, Math.PI * 2);
+            ctx.fillStyle = '#fff';
+            ctx.fill();
+
+            // Placeholder circle
+            ctx.beginPath();
+            ctx.arc(idgState.circle.centerX, idgState.circle.centerY, idgState.circle.radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#e0e0e0';
+            ctx.fill();
+
+            // Placeholder icon
+            if (!idgState.profilePic) {
+                ctx.font = '60px Arial';
+                ctx.fillStyle = '#bbb';
+                ctx.textAlign = 'center';
+                ctx.fillText('\uD83D\uDC64', idgState.circle.centerX, idgState.circle.centerY + 20);
+            }
+        }
+
+        // Draw logo
+        function idgDrawLogo() {
+            if (!idgState.logoPic) return;
+            var maxW = 80;
+            var maxH = 80;
+            var ratio = Math.min(maxW / idgState.logoPic.width, maxH / idgState.logoPic.height);
+            var w = idgState.logoPic.width * ratio;
+            var h = idgState.logoPic.height * ratio;
+            ctx.drawImage(idgState.logoPic, 20, 20, w, h);
+        }
+
+        // Draw organization
+        function idgDrawOrg() {
+            if (!idgState.organization) return;
+            var orgColor = document.getElementById('idgOrgColor').value;
+            var centerX = canvas.width / 2;
+            var orgY = idgState.logoPic ? 40 : 100;
+            var fontSize = 24;
+            var parts = idgState.organization.value.split(',');
+            var orgName = parts[0] || '';
+            var orgAddr = parts.length > 1 ? parts.slice(1).join(',').trim() : '';
+
+            ctx.font = 'bold ' + fontSize + 'px Arial';
+            ctx.fillStyle = orgColor;
+            ctx.textAlign = 'center';
+            ctx.fillText(orgName.toUpperCase(), centerX, orgY);
+            if (orgAddr) {
+                ctx.font = (fontSize - 4) + 'px Arial';
+                ctx.fillText(orgAddr, centerX, orgY + fontSize + 8);
+            }
+        }
+
+        // Draw table of fields
+        function idgDrawTable() {
+            if (idgState.fields.length === 0) return;
+            var labelColor = document.getElementById('idgLabelColor').value;
+            var valueColor = document.getElementById('idgValueColor').value;
+            var fontSize = parseInt(document.getElementById('idgFontSize').value);
+
+            var tableX = 50;
+            var tableY = 500;
+            var rowHeight = fontSize + 30;
+            var col1Width = 150;
+            var col2Width = 350;
+            var padding = 10;
+            var rowSpacing = 10;
+
+            if (idgState.borderEnabled) {
+                ctx.strokeStyle = '#007bff';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([5, 5]);
+                var totalH = (rowHeight + rowSpacing) * idgState.fields.length - rowSpacing;
+                ctx.strokeRect(tableX, tableY, col1Width + col2Width, totalH);
+
+                ctx.beginPath();
+                ctx.moveTo(tableX + col1Width, tableY);
+                ctx.lineTo(tableX + col1Width, tableY + totalH);
+                ctx.stroke();
+
+                for (var i = 1; i < idgState.fields.length; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(tableX, tableY + (rowHeight + rowSpacing) * i);
+                    ctx.lineTo(tableX + col1Width + col2Width, tableY + (rowHeight + rowSpacing) * i);
+                    ctx.stroke();
+                }
+                ctx.setLineDash([]);
+            }
+
+            ctx.textAlign = 'left';
+
+            for (var j = 0; j < idgState.fields.length; j++) {
+                var rowY = tableY + (rowHeight + rowSpacing) * j + rowHeight / 2 + fontSize / 2;
+
+                // Label (bold)
+                ctx.font = 'bold ' + fontSize + 'px Arial';
+                ctx.fillStyle = labelColor;
+                ctx.fillText(idgState.fields[j].label + ':', tableX + padding, rowY);
+
+                // Value
+                ctx.font = fontSize + 'px Arial';
+                ctx.fillStyle = valueColor;
+                ctx.fillText(idgState.fields[j].value, tableX + col1Width + padding, rowY);
+            }
+        }
+
+        // Main draw
+        window.idgDraw = function () {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            idgFillTop();
+            idgFillBottom();
+            idgDrawWavyLine();
+            idgDrawCircle();
+
+            if (idgState.profilePic) {
+                var cx = canvas.width / 2;
+                var cy = 300;
+                var r = 150;
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.clip();
+                ctx.drawImage(idgState.profilePic, cx - r, cy - r, r * 2, r * 2);
+                ctx.restore();
+            }
+
+            idgDrawLogo();
+            idgDrawOrg();
+            idgDrawTable();
+        };
+
+        // Animation
+        function idgAnimate() {
+            idgState.line.phase += 0.05;
+            idgDraw();
+            requestAnimationFrame(idgAnimate);
+        }
+
+        // Profile pic upload
+        document.getElementById('idgProfilePic').addEventListener('change', function (e) {
+            var file = e.target.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function (ev) {
+                idgState.profilePic = new Image();
+                idgState.profilePic.src = ev.target.result;
+                idgState.profilePic.onload = function () { idgDraw(); };
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Logo upload
+        document.getElementById('idgLogoInput').addEventListener('change', function (e) {
+            var file = e.target.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function (ev) {
+                idgState.logoPic = new Image();
+                idgState.logoPic.src = ev.target.result;
+                idgState.logoPic.onload = function () { idgDraw(); };
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Apply theme
+        window.idgApplyTheme = function (index, chipEl) {
+            var theme = idgThemes[index];
+            idgState.topColors = theme.top.slice();
+            idgState.bottomColor = theme.bottom;
+            idgState.currentTheme = index;
+
+            // Update accent colors
+            document.getElementById('idgCircleColor').value = theme.accent === '#ffd600' ? '#ffd600' : theme.accent === '#ffee58' ? '#ffee58' : theme.accent === '#ffab40' ? '#ffab40' : '#ffffff';
+            document.getElementById('idgWaveColor').value = document.getElementById('idgCircleColor').value;
+
+            // Update active chip
+            var chips = document.querySelectorAll('.idg-theme-chip');
+            for (var i = 0; i < chips.length; i++) { chips[i].classList.remove('active'); }
+            chipEl.classList.add('active');
+
+            idgDraw();
+        };
+
+        // --- Modal Functions (global) ---
+        window.idgShowAddFieldModal = function () {
+            document.getElementById('idgAddFieldModal').style.display = 'flex';
+            document.getElementById('idgFieldLabel').focus();
+        };
+
+        window.idgShowOrgModal = function () {
+            document.getElementById('idgOrgModal').style.display = 'flex';
+            document.getElementById('idgOrgName').focus();
+        };
+
+        window.idgCloseModal = function () {
+            var modals = document.querySelectorAll('.idg-modal');
+            for (var i = 0; i < modals.length; i++) { modals[i].style.display = 'none'; }
+        };
+
+        window.idgAddField = function () {
+            var label = document.getElementById('idgFieldLabel').value.trim();
+            var value = document.getElementById('idgFieldValue').value.trim();
+            if (label && value) {
+                idgState.fields.push({ label: label, value: value });
+                idgDraw();
+                idgCloseModal();
+                document.getElementById('idgFieldLabel').value = '';
+                document.getElementById('idgFieldValue').value = '';
+            } else {
+                alert('Please enter both label and value.');
+            }
+        };
+
+        window.idgAddOrg = function () {
+            var name = document.getElementById('idgOrgName').value.trim();
+            var addr = document.getElementById('idgOrgAddress').value.trim();
+            if (name && addr) {
+                idgState.organization = { label: 'Organization', value: name + ', ' + addr };
+                idgDraw();
+                idgCloseModal();
+                document.getElementById('idgOrgName').value = '';
+                document.getElementById('idgOrgAddress').value = '';
+            } else {
+                alert('Please enter both name and address.');
+            }
+        };
+
+        // Quick field
+        window.idgQuickField = function (label) {
+            idgQuickLabel = label;
+            document.getElementById('idgQuickTitle').textContent = '\u2795 Add ' + label;
+            document.getElementById('idgQuickValue').value = '';
+            document.getElementById('idgQuickValue').placeholder = 'Enter ' + label + '...';
+            document.getElementById('idgQuickModal').style.display = 'flex';
+            document.getElementById('idgQuickValue').focus();
+        };
+
+        window.idgConfirmQuickField = function () {
+            var value = document.getElementById('idgQuickValue').value.trim();
+            if (value) {
+                idgState.fields.push({ label: idgQuickLabel, value: value });
+                idgDraw();
+                idgCloseModal();
+            } else {
+                alert('Please enter a value.');
+            }
+        };
+
+        window.idgShowDeleteModal = function () {
+            var container = document.getElementById('idgDeleteContainer');
+            container.innerHTML = '';
+
+            var hasItems = idgState.fields.length > 0 || idgState.organization || idgState.logoPic;
+            if (!hasItems) {
+                container.innerHTML = '<p class="idg-no-fields">No fields, organization, or logo to delete.</p>';
+            } else {
+                var html = '<table class="idg-delete-table"><thead><tr><th>Item</th><th>Value</th><th>Action</th></tr></thead><tbody>';
+
+                if (idgState.logoPic) {
+                    html += '<tr><td>Logo</td><td>Uploaded</td><td><span class="idg-delete-icon" onclick="idgDeleteField(\'logo\')">&#10060;</span></td></tr>';
+                }
+
+                if (idgState.organization) {
+                    html += '<tr><td>Organization</td><td>' + idgEscape(idgState.organization.value) + '</td><td><span class="idg-delete-icon" onclick="idgDeleteField(\'org\')">&#10060;</span></td></tr>';
+                }
+
+                for (var i = 0; i < idgState.fields.length; i++) {
+                    html += '<tr><td>' + idgEscape(idgState.fields[i].label) + '</td><td>' + idgEscape(idgState.fields[i].value) + '</td><td><span class="idg-delete-icon" onclick="idgDeleteField(' + i + ')">&#10060;</span></td></tr>';
+                }
+
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            }
+
+            document.getElementById('idgDeleteModal').style.display = 'flex';
+        };
+
+        window.idgDeleteField = function (index) {
+            if (index === 'org') {
+                idgState.organization = null;
+            } else if (index === 'logo') {
+                idgState.logoPic = null;
+            } else {
+                idgState.fields.splice(index, 1);
+            }
+            idgDraw();
+            idgShowDeleteModal();
+        };
+
+        window.idgToggleBorder = function () {
+            idgState.borderEnabled = !idgState.borderEnabled;
+            idgDraw();
+        };
+
+        window.idgChangeTopColor = function () {
+            idgRandomGradientTop();
+            // Deselect theme chips
+            var chips = document.querySelectorAll('.idg-theme-chip');
+            for (var i = 0; i < chips.length; i++) { chips[i].classList.remove('active'); }
+            idgDraw();
+        };
+
+        window.idgChangeBottomColor = function () {
+            idgRandomGradientBottom();
+            idgDraw();
+        };
+
+        window.idgResetAll = function () {
+            idgState.fields = [];
+            idgState.organization = null;
+            idgState.profilePic = null;
+            idgState.logoPic = null;
+            idgState.borderEnabled = true;
+            idgState.topColors = idgThemes[0].top.slice();
+            idgState.bottomColor = idgThemes[0].bottom;
+
+            document.getElementById('idgProfilePic').value = '';
+            document.getElementById('idgLogoInput').value = '';
+            document.getElementById('idgOrgColor').value = '#cc0000';
+            document.getElementById('idgLabelColor').value = '#333333';
+            document.getElementById('idgValueColor').value = '#000000';
+            document.getElementById('idgCircleColor').value = '#ffff00';
+            document.getElementById('idgWaveColor').value = '#ffff00';
+            document.getElementById('idgFontSize').value = '20';
+
+            var chips = document.querySelectorAll('.idg-theme-chip');
+            for (var i = 0; i < chips.length; i++) { chips[i].classList.remove('active'); }
+            chips[0].classList.add('active');
+
+            idgDraw();
+        };
+
+        window.idgDownload = function (format) {
+            var link = document.createElement('a');
+            if (format === 'png') {
+                link.href = canvas.toDataURL('image/png');
+                link.download = 'ID_Card.png';
+            } else {
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                link.download = 'ID_Card.jpg';
+            }
+            link.click();
+        };
+
+        function idgEscape(str) {
+            var div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Initialize
+        idgDraw();
+        idgAnimate();
+    })();
+</script>
