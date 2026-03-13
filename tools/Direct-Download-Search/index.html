@@ -1,0 +1,681 @@
+<!-- AIOCrafters - Direct Download Link Finder - Blogger Compatible -->
+
+<!-- On-Page SEO: Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Direct Download Link Finder",
+  "description": "Find direct download links for movies, music, books, software, games and more using advanced open directory search across Google, Bing and Yahoo.",
+  "url": "https://www.aiocrafters.com/p/direct-download-link-finder.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AIOCrafters",
+    "url": "https://www.aiocrafters.com/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is an open directory search?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An open directory search uses special search engine operators like intitle:index.of to find web server pages that publicly list downloadable files. These are standard web pages served by Apache, Nginx and other web servers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which search engine gives the best results?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Google typically returns the most comprehensive results. However, Bing and Yahoo can sometimes surface different results, so it's worth trying all three for maximum coverage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this tool free and safe to use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! This tool is completely free. All processing happens locally in your browser — the tool simply constructs a search URL and opens it in a new tab. No data is collected or stored."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do file type filters work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "When you select a category like Music, the tool adds file extension filters (e.g. mp3|wav|flac) to the search query. This narrows down results to only directories containing those file types."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+    .ddl-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #333;
+        line-height: 1.7;
+    }
+
+    /* --- Tool Container --- */
+    .ddl-container {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        padding: 28px 30px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .ddl-container h2 {
+        font-size: 24px;
+        color: #1a1a2e;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+    .ddl-container .ddl-subtitle {
+        font-size: 14px;
+        color: #888;
+        text-align: center;
+        margin-bottom: 22px;
+    }
+
+    /* Category Chips */
+    .ddl-chips-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .ddl-chips-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .ddl-chip {
+        padding: 7px 16px;
+        background: #e0f2f1;
+        border: 1px solid #b2dfdb;
+        border-radius: 20px;
+        font-size: 13px;
+        color: #00695c;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        user-select: none;
+    }
+
+    .ddl-chip:hover {
+        background: #b2dfdb;
+        transform: translateY(-1px);
+    }
+
+    .ddl-chip.active {
+        background: #00695c;
+        color: #fff;
+        border-color: #00695c;
+    }
+
+    /* Engine Selection */
+    .ddl-engine-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .ddl-engine-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .ddl-engine-chip {
+        padding: 8px 18px;
+        background: #f8f9fb;
+        border: 2px solid #eef0f3;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        user-select: none;
+    }
+
+    .ddl-engine-chip:hover {
+        border-color: #00695c;
+        color: #00695c;
+    }
+
+    .ddl-engine-chip.active {
+        background: #e0f2f1;
+        border-color: #00695c;
+        color: #00695c;
+    }
+
+    .ddl-engine-chip img {
+        width: 18px;
+        height: 18px;
+        border-radius: 3px;
+    }
+
+    /* Search Input */
+    .ddl-search-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .ddl-search-wrap {
+        position: relative;
+        margin-bottom: 16px;
+    }
+
+    .ddl-search-wrap input {
+        width: 100%;
+        padding: 14px 56px 14px 18px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        box-sizing: border-box;
+        color: #333;
+        background: #fafbfc;
+    }
+
+    .ddl-search-wrap input::placeholder {
+        color: #aaa;
+    }
+
+    .ddl-search-wrap input:focus {
+        border-color: #00695c;
+        box-shadow: 0 0 0 3px rgba(0, 105, 92, 0.1);
+        background: #fff;
+    }
+
+    .ddl-search-wrap button {
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background: linear-gradient(135deg, #4db6ac, #00695c);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.15s, box-shadow 0.2s;
+        font-size: 20px;
+        box-shadow: 0 3px 10px rgba(0, 105, 92, 0.3);
+    }
+
+    .ddl-search-wrap button:hover {
+        transform: translateY(-50%) scale(1.05);
+        box-shadow: 0 5px 16px rgba(0, 105, 92, 0.45);
+    }
+
+    /* Privacy Note */
+    .ddl-privacy {
+        background: #e8f5e9;
+        border: 1px solid #c8e6c9;
+        border-left: 4px solid #2e7d32;
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-top: 8px;
+        font-size: 13px;
+        color: #2e7d32;
+        text-align: center;
+    }
+
+    /* --- Content Sections --- */
+    .ddl-wrapper h2 {
+        font-size: 22px;
+        color: #1a1a2e;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .ddl-wrapper p {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .ddl-wrapper ul,
+    .ddl-wrapper ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
+
+    .ddl-wrapper li {
+        font-size: 15px;
+        padding: 3px 0;
+    }
+
+    /* Highlight Box */
+    .ddl-highlight-box {
+        background: #e0f2f1;
+        border: 1px solid #b2dfdb;
+        border-left: 5px solid #00695c;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    /* Features Grid */
+    .ddl-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .ddl-feature-card {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .ddl-feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .ddl-feature-card .icon {
+        font-size: 26px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .ddl-feature-card strong {
+        display: block;
+        font-size: 15px;
+        color: #1a1a2e;
+        margin-bottom: 4px;
+    }
+
+    .ddl-feature-card p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    /* Use Cases Table */
+    .ddl-use-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 14px;
+    }
+
+    .ddl-use-table th {
+        background: #00695c;
+        color: #fff;
+        padding: 10px 12px;
+        text-align: left;
+    }
+
+    .ddl-use-table td {
+        border: 1px solid #e0e0e0;
+        padding: 8px 12px;
+    }
+
+    .ddl-use-table tr:nth-child(even) {
+        background: #e0f2f1;
+    }
+
+    /* FAQ */
+    .ddl-faq-item {
+        background: #f8f9fb;
+        border: 1px solid #eef0f3;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+    }
+
+    .ddl-faq-item h3 {
+        font-size: 16px;
+        color: #1a1a2e;
+        margin: 0 0 8px 0;
+    }
+
+    .ddl-faq-item p {
+        font-size: 15px;
+        color: #555;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        .ddl-container {
+            padding: 20px 16px;
+        }
+
+        .ddl-chips-row,
+        .ddl-engine-row {
+            gap: 6px;
+        }
+
+        .ddl-chip,
+        .ddl-engine-chip {
+            font-size: 12px;
+            padding: 6px 12px;
+        }
+    }
+</style>
+
+<div class="ddl-wrapper">
+
+    <!-- Intro Content -->
+    <h2>⬇️ Direct Download Link Finder — Open Directory Search</h2>
+    <p>Looking for <strong>direct download links</strong> for movies, music, books, software, or games? Our free
+        <strong>Direct Download Link Finder</strong> uses advanced search engine operators to discover
+        <strong>open directory (index of) pages</strong> across the web. Search via Google, Bing or Yahoo — all directly
+        in your browser with no installation needed.
+    </p>
+
+    <!-- Tool Container -->
+    <div class="ddl-container">
+        <h2>⬇️ Direct Download Link Finder</h2>
+        <p class="ddl-subtitle">Search open directory index pages for direct download links</p>
+
+        <!-- File Type Chips -->
+        <span class="ddl-chips-label">Choose File Type</span>
+        <div class="ddl-chips-row" id="ddlChipRow">
+            <span class="ddl-chip active" data-type="" data-res="all" onclick="ddlSelectChip(this)">🔍 All Types</span>
+            <span class="ddl-chip" data-type="mkv|mp4|avi|mov|mpg|wmv|divx|mpeg" data-res="video"
+                onclick="ddlSelectChip(this)">🎬 Movies / TV</span>
+            <span class="ddl-chip" data-type="mp3|wav|ac3|ogg|flac|wma|m4a|aac" data-res="audio"
+                onclick="ddlSelectChip(this)">🎵 Music</span>
+            <span class="ddl-chip" data-type="MOBI|CBZ|CBR|EPUB|PDF|DOC|DOCX|RTF" data-res="ebook"
+                onclick="ddlSelectChip(this)">📚 Books</span>
+            <span class="ddl-chip" data-type="exe|iso|dmg|tar|7z|bz2|gz|rar|zip|apk" data-res="archive"
+                onclick="ddlSelectChip(this)">💿 Software / Games</span>
+            <span class="ddl-chip" data-type="jpg|png|bmp|gif|tif|tiff|psd|svg|webp" data-res="picture"
+                onclick="ddlSelectChip(this)">🖼️ Images</span>
+        </div>
+
+        <!-- Search Engine Selection -->
+        <span class="ddl-engine-label">Search Engine</span>
+        <div class="ddl-engine-row" id="ddlEngineRow">
+            <span class="ddl-engine-chip active" data-engine="google" onclick="ddlSelectEngine(this)">
+                <img src="https://www.google.com/favicon.ico" alt="Google" /> Google
+            </span>
+            <span class="ddl-engine-chip" data-engine="bing" onclick="ddlSelectEngine(this)">
+                <img src="https://www.bing.com/favicon.ico" alt="Bing" /> Bing
+            </span>
+            <span class="ddl-engine-chip" data-engine="yahoo" onclick="ddlSelectEngine(this)">
+                <img src="https://www.yahoo.com/favicon.ico" alt="Yahoo" /> Yahoo
+            </span>
+        </div>
+
+        <!-- Search Input -->
+        <span class="ddl-search-label">What do you want to download?</span>
+        <div class="ddl-search-wrap">
+            <input type="text" id="ddlQuery" placeholder="e.g. The.Blacklist.S01, K.Flay discography, 1985 book..."
+                autocomplete="off" />
+            <button type="button" id="ddlSearchBtn" title="Search" onclick="ddlStartSearch()">🔍</button>
+        </div>
+
+        <!-- Privacy Note -->
+        <div class="ddl-privacy">
+            🔒 <strong>100% Private:</strong> Search queries are built locally in your browser. Nothing is stored or
+            tracked.
+        </div>
+    </div>
+
+    <!-- Highlight Box -->
+    <div class="ddl-highlight-box">
+        <strong>💡 How It Works:</strong> This tool appends advanced search operators like <code>intitle:index.of</code>
+        and file type filters to your query, then opens the search in a new tab. You'll see open directory pages with
+        direct file links — no middleman, no ads, just raw file listings.
+    </div>
+
+    <!-- How to Use -->
+    <h2>📖 How to Use the Direct Download Finder</h2>
+    <ol>
+        <li><strong>Select a File Type</strong> — Choose "Movies / TV", "Music", "Books", "Software / Games", "Images",
+            or "All Types" from the category chips.</li>
+        <li><strong>Choose Search Engine</strong> — Pick Google, Bing, or Yahoo as your search engine.</li>
+        <li><strong>Enter Your Query</strong> — Type the name of the file, movie, album, or software you want to find.
+        </li>
+        <li><strong>Click Search</strong> — The tool builds an advanced search query targeting open directory index
+            pages.</li>
+        <li><strong>Browse Results</strong> — Results open in a new tab. Look for "index of" pages with direct file
+            download links.</li>
+    </ol>
+
+    <!-- Search Tips Table -->
+    <h2>📏 Search Tips by Category</h2>
+    <table class="ddl-use-table">
+        <tr>
+            <th>Category</th>
+            <th>Example Query</th>
+            <th>File Extensions</th>
+        </tr>
+        <tr>
+            <td>Movies / TV Shows</td>
+            <td>The.Blacklist.S01</td>
+            <td>mkv, mp4, avi, mov</td>
+        </tr>
+        <tr>
+            <td>Music</td>
+            <td>K.Flay discography</td>
+            <td>mp3, flac, wav, ogg</td>
+        </tr>
+        <tr>
+            <td>Books / eBooks</td>
+            <td>1985 George Orwell</td>
+            <td>pdf, epub, mobi, doc</td>
+        </tr>
+        <tr>
+            <td>Software / Games</td>
+            <td>GTA V</td>
+            <td>exe, iso, dmg, zip, apk</td>
+        </tr>
+        <tr>
+            <td>Images</td>
+            <td>wallpapers 4k nature</td>
+            <td>jpg, png, bmp, psd</td>
+        </tr>
+        <tr>
+            <td>All Types</td>
+            <td>any search term</td>
+            <td>No filter applied</td>
+        </tr>
+    </table>
+
+    <!-- Features -->
+    <h2>⭐ Features</h2>
+    <div class="ddl-features-grid">
+        <div class="ddl-feature-card">
+            <span class="icon">🌐</span>
+            <strong>3 Search Engines</strong>
+            <p>Search via Google, Bing, or Yahoo for broader coverage.</p>
+        </div>
+        <div class="ddl-feature-card">
+            <span class="icon">🧠</span>
+            <strong>Smart Query Builder</strong>
+            <p>Auto-appends intitle:index.of operators and file type filters.</p>
+        </div>
+        <div class="ddl-feature-card">
+            <span class="icon">📁</span>
+            <strong>Category Filters</strong>
+            <p>Filter by Movies, Music, Books, Software, Images, or All.</p>
+        </div>
+        <div class="ddl-feature-card">
+            <span class="icon">🔒</span>
+            <strong>100% Private</strong>
+            <p>Everything runs locally. No data stored or tracked.</p>
+        </div>
+    </div>
+
+    <!-- What are Open Directories -->
+    <h2>🤔 What are Open Directories?</h2>
+    <p>Open directories (also called "index of" pages) are web server file listings that are publicly accessible. When a
+        web server doesn't have an index.html file in a directory, it displays the raw file listing instead. This tool
+        leverages search engine operators to find these open listings across the web.</p>
+    <p>Common use cases include finding public domain media, open-source software, academic papers, and other freely
+        shared files.</p>
+
+    <!-- FAQ -->
+    <h2>❓ Frequently Asked Questions</h2>
+
+    <div class="ddl-faq-item">
+        <h3>What is an open directory search?</h3>
+        <p>An open directory search uses special search engine operators like <strong>intitle:index.of</strong> to find
+            web server pages that publicly list downloadable files. These are standard web pages served by Apache,
+            Nginx,
+            and other web servers.</p>
+    </div>
+
+    <div class="ddl-faq-item">
+        <h3>Which search engine gives the best results?</h3>
+        <p><strong>Google</strong> typically returns the most comprehensive results. However, <strong>Bing</strong> and
+            <strong>Yahoo</strong> can sometimes surface different results, so it's worth trying all three for maximum
+            coverage.
+        </p>
+    </div>
+
+    <div class="ddl-faq-item">
+        <h3>Is this tool free and safe to use?</h3>
+        <p>Yes! This tool is completely free. All processing happens locally in your browser — the tool simply
+            constructs
+            a search URL and opens it in a new tab. No data is collected or stored.</p>
+    </div>
+
+    <div class="ddl-faq-item">
+        <h3>How do file type filters work?</h3>
+        <p>When you select a category like "Music", the tool adds file extension filters (e.g.
+            <code>mp3|wav|flac</code>) to the search query. This narrows down results to only directories containing
+            those file types.
+        </p>
+    </div>
+
+    <div class="ddl-faq-item">
+        <h3>Can I search for any file type?</h3>
+        <p>Yes! Select "All Types" to search without file extension restrictions. This will find all open directory
+            pages
+            matching your query regardless of file type.</p>
+    </div>
+
+    <div class="ddl-faq-item">
+        <h3>Is this tool free?</h3>
+        <p>Yes, completely free. No sign-up, no watermarks, no limits.</p>
+    </div>
+
+</div>
+
+<script>
+    /* ===== State ===== */
+    var ddlSelectedEngine = 'google';
+    var ddlSelectedFileType = '';
+
+    /* ===== Chip Selection ===== */
+    function ddlSelectChip(el) {
+        var chips = document.querySelectorAll('.ddl-chip');
+        for (var i = 0; i < chips.length; i++) chips[i].classList.remove('active');
+        el.classList.add('active');
+        ddlSelectedFileType = el.getAttribute('data-type');
+        document.getElementById('ddlQuery').focus();
+    }
+
+    /* ===== Engine Selection ===== */
+    function ddlSelectEngine(el) {
+        var chips = document.querySelectorAll('.ddl-engine-chip');
+        for (var i = 0; i < chips.length; i++) chips[i].classList.remove('active');
+        el.classList.add('active');
+        ddlSelectedEngine = el.getAttribute('data-engine');
+        document.getElementById('ddlQuery').focus();
+    }
+
+    /* ===== Search ===== */
+    function ddlStartSearch() {
+        var query = document.getElementById('ddlQuery').value.trim();
+        if (!query) {
+            document.getElementById('ddlQuery').focus();
+            return;
+        }
+
+        var fileType = ddlSelectedFileType;
+        var finalQuery;
+
+        if (!fileType || fileType === '') {
+            finalQuery = query + ' -inurl:(jsp|pl|php|html|aspx|htm|cf|shtml) intitle:index.of -inurl:(listen77|mp3raid|mp3toss|mp3drug|index_of|index-of|wallywashis|downloadmana)';
+        } else {
+            finalQuery = query + ' +(' + fileType + ') -inurl:(jsp|pl|php|html|aspx|htm|cf|shtml) intitle:index.of -inurl:(listen77|mp3raid|mp3toss|mp3drug|index_of|index-of|wallywashis|downloadmana)';
+        }
+
+        var url = '';
+        switch (ddlSelectedEngine) {
+            case 'google':
+                url = 'https://www.google.com/search?q=' + encodeURIComponent(finalQuery);
+                break;
+            case 'bing':
+                url = 'https://www.bing.com/search?q=' + encodeURIComponent(finalQuery);
+                break;
+            case 'yahoo':
+                url = 'https://search.yahoo.com/search?p=' + encodeURIComponent(finalQuery);
+                break;
+            default:
+                url = 'https://www.google.com/search?q=' + encodeURIComponent(finalQuery);
+        }
+
+        window.open(url, '_blank');
+    }
+
+    /* Enter key */
+    document.getElementById('ddlQuery').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            ddlStartSearch();
+        }
+    });
+</script>
